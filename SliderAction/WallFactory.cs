@@ -17,7 +17,7 @@ namespace SliderAction
             BIG_SHORT, BIG_MIDDLE, BIG_LONG,
         }
         static readonly Texture2D[] sizeTyepSr = new Texture2D[sizeof(SizeTyep)]; //画像
-        Dictionary<SizeTyep, Func<Wall>> wallTable = new Dictionary<SizeTyep, Func<Wall>>()  //サイズとインスタンス化
+        static readonly Dictionary<SizeTyep, Func<Wall>> wallTable = new Dictionary<SizeTyep, Func<Wall>>()  //サイズとインスタンス化
         {
             { SizeTyep.SMALL_SHORT, () => new Wall() {Size= new Vector2(100,32)} },
             { SizeTyep.SMALL_MIDDLE, () => new Wall() {Size= new Vector2(200,32)} }
@@ -33,21 +33,20 @@ namespace SliderAction
             STAGE00,
             STAGE01,
         }
-        Dictionary<int, (SizeTyep[], Vector2[])> mapTable = new Dictionary<int, (SizeTyep[], Vector2[])>() //壁のステータスすべて
+        static readonly Dictionary<int, (SizeTyep[], Vector2[])> mapTable = new Dictionary<int, (SizeTyep[], Vector2[])>() //壁のステータスすべて
         {
             { (int)Stage.STAGE00,( stList,posList)  },
             { (int)Stage.STAGE01,( stList01,posList01)  }
         };
 
-        public void Load(ContentManager c)
+        static public void Load(ContentManager c)
         {
             sizeTyepSr[(int)SizeTyep.SMALL_SHORT] = c.Load<Texture2D>("SmallShort");
             sizeTyepSr[(int)SizeTyep.SMALL_MIDDLE] = c.Load<Texture2D>("SmallMiddle");
-
         }
 
 
-        public Wall[] WallsCreate(int sn)
+        static public Wall[] WallsCreate(int sn)
         {
             Wall[] walls = new Wall[mapTable[sn].Item1.Length]; //壁の個数
             for (int i = 0; i < walls.Length; i++) //ここで量産
