@@ -16,18 +16,17 @@ namespace SliderAction
         int stageNum;
         bool initF;
         //壁
-        WallFactory wallFactory = new WallFactory();
         Wall[] walls;
 
         public SlideGame() { stageNum = 0; initF = false; }
         public void Loads(ContentManager content)
         {
-            wallFactory.Load(content);
+            WallFactory.Load(content);
         }
 
         public void Init()
         {
-            walls = wallFactory.WallsCreate(stageNum);
+            walls = WallFactory.WallsCreate(stageNum);
             initF = true;
         }
         public void Main()
@@ -39,7 +38,7 @@ namespace SliderAction
         public void Draw(SpriteBatch sb)
         {
             for (int i = 0; i < walls.Length; i++)
-                sb.Draw(walls[i].Sprite, walls[i].Pos, Color.White);
+                walls[i].Draw(sb);
         }
     }
 }

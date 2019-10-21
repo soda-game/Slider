@@ -48,7 +48,7 @@
     <Compile Include="SlideGame.cs" />
     <Compile Include="Wall.cs" />
     <Compile Include="WallFactory.cs" />
-    <Compile Include="Walls.cs" />
+    <Compile Include="IWall.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

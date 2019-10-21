@@ -9,30 +9,22 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace SliderAction
 {
-    abstract class Walls
+    abstract class IWall
     {
         public Texture2D Sprite { get; set; }
         public Vector2 Pos { get; set; }
         public Vector2 Size { get; set; }
-        bool nowDraw;
+        public bool nowDraw;
 
-        public Walls()
-        {  }
-        public void Init()
-        {
-            //Pos = p;
-            //Size = s;
-            nowDraw = false;
-        }
-
-        public void DrawChenge()
-        {
-
-        }
-
-        public void Draw()
-        {
-
-        }
+        //public IWall()
+        //{ }
+        //public void Init()
+        //{ }
+        //public void DrawChenge()
+        //{ }
+        //public void Draw(SpriteBatch sb)
+        //{ }
+        //internal class Init
+        //{ }
     }
 }
