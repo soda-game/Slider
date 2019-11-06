@@ -11,11 +11,14 @@ namespace SliderAction
 {
     class Wall : IWall
     {
+        const int HALF = 2;
+
         public Wall()
         { }
         public void Init()
         {
             nowDraw = false;
+            bend = false;
         }
 
         public void DrawChenge()
@@ -24,7 +27,7 @@ namespace SliderAction
 
         public void Draw(SpriteBatch sb)
         {
-            sb.Draw(Sprite, Pos, Color.White);
+            sb.Draw(Sprite, Pos,null, Cr,Rot,new Vector2(Size.X/HALF,Size.Y/HALF),Vector2.One,SpriteEffects.None,0);
         }
     }
 }

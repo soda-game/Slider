@@ -14,7 +14,10 @@ namespace SliderAction
         public Texture2D Sprite { get; set; }
         public Vector2 Pos { get; set; }
         public Vector2 Size { get; set; }
-        public bool nowDraw;
+        public float Rot { get; set; }
+        public Color Cr { get; set; }
+        protected bool bend; //曲がり角かどうか
+        protected bool nowDraw;
 
         //public IWall()
         //{ }
