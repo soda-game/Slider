@@ -27,7 +27,7 @@ namespace SliderAction
         public void Draw(SpriteBatch sb)
         {
             if (!nowDraw) return;
-            sb.Draw(Spl, Pos, null, Cr, Rot, new Vector2(SIZE / HALF, SIZE / HALF), Vector2.One, SpriteEffects.None, 0);
+            sb.Draw(Spr, Pos, null, Cr, Rot, new Vector2(SIZE / HALF, SIZE / HALF), Vector2.One, SpriteEffects.None, 0);
         }
     }
 }

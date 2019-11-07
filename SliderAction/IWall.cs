@@ -13,7 +13,7 @@ namespace SliderAction
     {
         public int Num { get; set; } //CSV内で何個目か
         public  readonly int SIZE = 64;
-        public Texture2D Spl { get; set; }
+        public Texture2D Spr { get; set; }
         public Vector2 Pos { get; set; }
         public float Rot { get; set; }
         public Color Cr { get; set; }

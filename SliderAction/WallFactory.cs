@@ -13,29 +13,29 @@ namespace SliderAction
     {
         //ステージごとにCSVを分ける
         const int WHITS_IDX = 0;
-        static readonly string[] mapPaths = new string[] { "CSV/map.txt" };
-        static readonly string[] statPaths = new string[] { "CSV/wall.txt" };
+        static readonly string[] mapPaths = new string[] { "CSV/map.csv" };
+        static readonly string[] statPaths = new string[] { "CSV/status.csv" };
         enum ColumnNum
         { NUM, SPR, CR, ROT, BEND, GAPX, GAPY }
 
-        //Splite
+        //Sprite
         const int HALF = 2;
         enum SizeTyep
         { WAY, END }
-        static Texture2D[] splites;
+        static Texture2D[] spr;
         //Rot
         enum RotTyep
         { HENG, VERTICAL }
         static readonly float[] rots = new float[] { 0, MathHelper.ToRadians(90) };
         //Cr
         enum CrTyep
-        { BLUE, RED, ORANGE, YELLOW, GREEN }
-        static readonly Color[] crs = new Color[] { Color.Blue, Color.Red, Color.Orange, Color.Yellow, Color.Green };
+        { BLUE, ORANGE, YELLOW, GREEN }
+        static readonly Color[] crs = new Color[] { Color.Red, Color.Blue, Color.Orange, Color.Yellow, Color.Green }; //***
 
 
         static public void Load(ContentManager c)
         {
-            splites = new Texture2D[] { c.Load<Texture2D>("wall") /*,c.Load<Texture2D>("SmallMiddle")*/ };//***
+            spr = new Texture2D[] { c.Load<Texture2D>("wall") /*,c.Load<Texture2D>("SmallMiddle")*/ };//***
         }
 
         static public Wall[] WallsCreate(int sn)
@@ -52,7 +52,7 @@ namespace SliderAction
                 Wall w = walls[i];
                 w = new Wall();
                 w.Num = StatusCsv[i][(int)ColumnNum.NUM];
-                w.Spl = splites[StatusCsv[i][(int)ColumnNum.SPR]];
+                w.Spr = spr[StatusCsv[i][(int)ColumnNum.SPR]];
                 w.Cr = crs[StatusCsv[i][(int)ColumnNum.CR]];
                 w.Grap = new Vector2(StatusCsv[i][(int)ColumnNum.GAPX], StatusCsv[i][(int)ColumnNum.GAPY]);
                 w.Rot = rots[StatusCsv[i][(int)ColumnNum.ROT]];
