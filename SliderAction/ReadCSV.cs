@@ -10,7 +10,7 @@ namespace SliderAction
     //CSV読み込み専用クラス
      class ReadCSV
     {
-        static public List<int[]> WallCsv(string csvPase) //CSVの要素を返す 引数で読み込むファイルを決める
+        static public List<int[]> ReadArray(string csvPase) //CSVの要素を返す 引数で読み込むファイルを決める
         {
             //何行か分からないのでリスト化
             List<int[]> csvList = new List<int[]>();
@@ -33,6 +33,37 @@ namespace SliderAction
             catch (Exception e) //失敗したときのエラーを受け取る
             {
                 Console.WriteLine("CSVエラー:"+e.Message);
+            }
+
+            return csvList;
+        }
+
+        static public List<int> ReadList(string csvPase) 
+        {
+            //Linqのために１行に
+            List<int> csvList = new List<int>();
+
+            try
+            {
+                using (StreamReader wc = new StreamReader(@csvPase)) 
+                {
+                    while (!wc.EndOfStream)
+                    {
+                        string line = wc.ReadLine();
+                        string[] elements = line.Split(','); 
+                        int[] e_int = elements.Select(int.Parse).ToArray(); 
+                        
+                        for(int i=0;i < e_int.Length;i++)
+                        {
+                            csvList.Add(e_int[i]);
+                        }
+                    }
+                }
+            }
+
+            catch (Exception e)  
+            {
+                Console.WriteLine("CSVエラー:" + e.Message);
             }
 
             return csvList;

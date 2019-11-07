@@ -18,7 +18,7 @@ namespace SliderAction
         public void Init()
         {
             nowDraw = true;
-            bend = false;
+            Pos = new Vector2((Pos.X * SIZE) + SIZE / HALF, (Pos.Y * SIZE) + SIZE / HALF);
         }
 
         public void DrawChenge() //***最初はfalse 移ったものだけtrue
@@ -28,7 +28,7 @@ namespace SliderAction
         public void Draw(SpriteBatch sb)
         {
             if (!nowDraw) return;
-            sb.Draw(Sprite, Pos,null, Cr,Rot,new Vector2(Size.X/HALF,Size.Y/HALF),Vector2.One,SpriteEffects.None,0);
+            sb.Draw(Spl, Pos, null, Cr, Rot, new Vector2(SIZE / HALF, SIZE / HALF), Vector2.One, SpriteEffects.None, 0);
         }
     }
 }

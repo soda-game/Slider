@@ -12,56 +12,54 @@ namespace SliderAction
     class WallFactory
     {
         //ステージごとにCSVを分ける
-        static readonly string[] csvPaths = new string[] { "CSV/wall.txt" };
+        const int WHITS_IDX = 0;
+        static readonly string[] mapPaths = new string[] { "CSV/map.txt" };
+        static readonly string[] statPaths = new string[] { "CSV/wall.txt" };
         enum ColumnNum
-        { NUM, SIZE, PX, PY, CR, ROT }
+        { NUM, SPR, CR, ROT, BEND }
 
-        //Size
-        enum SizeTyep
-        {
-            SMALL_SHORT, SMALL_MIDDLE, SMALL_LONG,
-            BIG_SHORT, BIG_MIDDLE, BIG_LONG,
-        }
-        static readonly Vector2[] sizes = new Vector2[] { new Vector2(100, 32), new Vector2(200, 32), new Vector2(300, 32), new Vector2(100, 60), new Vector2(200, 60), new Vector2(300, 60) };
         //Splite
+        enum SizeTyep
+        { WAY, END }
         static Texture2D[] splites;
         //Rot
         enum RotTyep
-        {
-            HENG, VERTICAL
-        }
+        { HENG, VERTICAL }
         static readonly float[] rots = new float[] { 0, MathHelper.ToRadians(90) };
         //Cr
         enum CrTyep
-        {
-            BLUE, RED, ORANGE, YELLOW, GREEN
-        }
+        { BLUE, RED, ORANGE, YELLOW, GREEN }
         static readonly Color[] crs = new Color[] { Color.Blue, Color.Red, Color.Orange, Color.Yellow, Color.Green };
 
 
         static public void Load(ContentManager c)
         {
-            splites = new Texture2D[] {
-                c.Load<Texture2D>("SmallShort"), c.Load<Texture2D>("SmallMiddle"), c.Load<Texture2D>("SmallLong"),
-                c.Load<Texture2D>("BigShort"), c.Load<Texture2D>("BigMiddle"), c.Load<Texture2D>("BigLong")
-            };
+            splites = new Texture2D[] { c.Load<Texture2D>("wall") /*,c.Load<Texture2D>("SmallMiddle")*/ };//***
         }
 
         static public Wall[] WallsCreate(int sn)
         {
-            List<int[]> csvList = ReadCSV.WallCsv(csvPaths[sn]); //csv読み込み結果を受け取り
-            Wall[] walls = new Wall[csvList.Count]; //壁の個数
+            List<int> mapCsv = ReadCSV.ReadList(mapPaths[sn]);
+            List<int[]> StatusCsv = ReadCSV.ReadArray(statPaths[sn]); //csv読み込み結果を受け取り
+            Wall[] walls = new Wall[StatusCsv.Count]; //壁の個数
+
+            int wight = mapCsv[WHITS_IDX]; //１要素目はwightが入っている
+            mapCsv.RemoveAt(WHITS_IDX); //使ったら消す
 
             for (int i = 0; i < walls.Length; i++) //ここで量産
             {
                 walls[i] = new Wall();
-                walls[i].Num = csvList[i][(int)ColumnNum.NUM];
-                walls[i].Cr = crs[csvList[i][(int)ColumnNum.CR]];
-                walls[i].Pos = new Vector2(csvList[i][(int)ColumnNum.PX], csvList[i][(int)ColumnNum.PY]);
-                walls[i].Size = sizes[csvList[i][(int)ColumnNum.SIZE]];
-                walls[i].Sprite = splites[csvList[i][(int)ColumnNum.SIZE]];
-                walls[i].Rot = rots[csvList[i][(int)ColumnNum.ROT]];
+                walls[i].Num = StatusCsv[i][(int)ColumnNum.NUM];
+                walls[i].Spl = splites[StatusCsv[i][(int)ColumnNum.SPR]];
+                walls[i].Cr = crs[StatusCsv[i][(int)ColumnNum.CR]];
+                walls[i].Rot = rots[StatusCsv[i][(int)ColumnNum.ROT]];
+                walls[i].Bend = Convert.ToBoolean(StatusCsv[i][(int)ColumnNum.BEND]); //intをbool変換
 
+                //mapCsvから自分の番号の座標を抜き出しす
+                int index = mapCsv.FindIndex(n => n == walls[i].Num),
+                    wx = index % wight,
+                    wy = index / wight;
+                walls[i].Pos = new Vector2(wx, wy);
             }
 
             return walls;
