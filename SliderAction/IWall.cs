@@ -11,6 +11,7 @@ namespace SliderAction
 {
     abstract class IWall
     {
+        public int Num { get; set; } //CSV内で何個目か
         public Texture2D Sprite { get; set; }
         public Vector2 Pos { get; set; }
         public Vector2 Size { get; set; }

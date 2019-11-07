@@ -27,6 +27,7 @@ namespace SliderAction
         public void Init()
         {
             walls = WallFactory.WallsCreate(stageNum);
+            foreach (var w in walls) w.Init();
             initF = true;
         }
         public void Main()
@@ -37,8 +38,7 @@ namespace SliderAction
 
         public void Draw(SpriteBatch sb)
         {
-            for (int i = 0; i < walls.Length; i++)
-                walls[i].Draw(sb);
+            foreach (var w in walls) w.Draw(sb);
         }
     }
 }

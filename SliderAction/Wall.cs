@@ -17,16 +17,17 @@ namespace SliderAction
         { }
         public void Init()
         {
-            nowDraw = false;
+            nowDraw = true;
             bend = false;
         }
 
-        public void DrawChenge()
+        public void DrawChenge() //***最初はfalse 移ったものだけtrue
         {
         }
 
         public void Draw(SpriteBatch sb)
         {
+            if (!nowDraw) return;
             sb.Draw(Sprite, Pos,null, Cr,Rot,new Vector2(Size.X/HALF,Size.Y/HALF),Vector2.One,SpriteEffects.None,0);
         }
     }

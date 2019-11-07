@@ -11,6 +11,11 @@ namespace SliderAction
 {
     class WallFactory
     {
+        //ステージごとにCSVを分ける
+        static readonly string[] csvPaths = new string[] { "CSV/wall.txt" };
+        enum ColumnNum
+        { NUM, SIZE, PX, PY, CR, ROT }
+
         //Size
         enum SizeTyep
         {
@@ -23,56 +28,40 @@ namespace SliderAction
         //Rot
         enum RotTyep
         {
-            VERTICAL,HENG
+            HENG, VERTICAL
         }
-        static readonly float[] rots = new float[] { MathHelper.ToRadians(90), 0 };
+        static readonly float[] rots = new float[] { 0, MathHelper.ToRadians(90) };
         //Cr
         enum CrTyep
         {
-           BLUE, RED,ORANGE, YELLOW,GREEN
+            BLUE, RED, ORANGE, YELLOW, GREEN
         }
         static readonly Color[] crs = new Color[] { Color.Blue, Color.Red, Color.Orange, Color.Yellow, Color.Green };
 
 
-        //StageList
-        static readonly SizeTyep[] stList = new SizeTyep[] { SizeTyep.SMALL_SHORT, SizeTyep.SMALL_MIDDLE, SizeTyep.SMALL_SHORT }; //ステージ01の画像
-        static readonly Vector2[] posList = new Vector2[] { new Vector2(350, 200), new Vector2(350, 350), new Vector2(350, 500) }; //ステージ01の壁の座標
-        static readonly RotTyep[] rotList = new RotTyep[] {RotTyep.VERTICAL, RotTyep.VERTICAL,RotTyep.VERTICAL}; //ステージ01の縦横
-        static readonly CrTyep[] crList = new CrTyep[] { CrTyep.BLUE, CrTyep.BLUE, CrTyep.BLUE }; //色
-        static readonly SizeTyep[] stList01 = new SizeTyep[] { SizeTyep.SMALL_SHORT }; //ステージ02の画像
-        static readonly Vector2[] posList01 = new Vector2[] { new Vector2(50, 10) }; //ステージ02の壁の座標
-        static readonly RotTyep[] rotList01 = new RotTyep[] { RotTyep.VERTICAL, RotTyep.VERTICAL, RotTyep.VERTICAL }; //ステージ02の縦横
-        static readonly CrTyep[] crList01 = new CrTyep[] { CrTyep.BLUE, CrTyep.BLUE, CrTyep.BLUE }; //色
-
-
-        public enum Stage
-        {
-            STAGE00,
-            STAGE01,
-        }
-        static readonly Dictionary<int, (SizeTyep[], Vector2[],RotTyep[],CrTyep[])> mapTable = new Dictionary<int, (SizeTyep[], Vector2[],RotTyep[],CrTyep[])>() //壁のステータスすべて
-        {
-            { (int)Stage.STAGE00,( stList,posList,rotList,crList)  },
-            { (int)Stage.STAGE01,( stList01,posList01,rotList01,crList01)  }
-        };
-
         static public void Load(ContentManager c)
         {
-            splites = new Texture2D[] { c.Load<Texture2D>("SmallShort"), c.Load<Texture2D>("SmallMiddle") };
+            splites = new Texture2D[] {
+                c.Load<Texture2D>("SmallShort"), c.Load<Texture2D>("SmallMiddle"), c.Load<Texture2D>("SmallLong"),
+                c.Load<Texture2D>("BigShort"), c.Load<Texture2D>("BigMiddle"), c.Load<Texture2D>("BigLong")
+            };
         }
-
 
         static public Wall[] WallsCreate(int sn)
         {
-            Wall[] walls = new Wall[mapTable[sn].Item1.Length]; //壁の個数
+            List<int[]> csvList = ReadCSV.WallCsv(csvPaths[sn]); //csv読み込み結果を受け取り
+            Wall[] walls = new Wall[csvList.Count]; //壁の個数
+
             for (int i = 0; i < walls.Length; i++) //ここで量産
             {
                 walls[i] = new Wall();
-                walls[i].Sprite = splites[(int)mapTable[sn].Item1[i]];
-                walls[i].Size = sizes[(int)mapTable[sn].Item1[i]];
-                walls[i].Pos = mapTable[sn].Item2[i];
-                walls[i].Rot = rots[(int)mapTable[sn].Item3[i]];
-                walls[i].Cr = crs[(int)mapTable[sn].Item4[i]];
+                walls[i].Num = csvList[i][(int)ColumnNum.NUM];
+                walls[i].Cr = crs[csvList[i][(int)ColumnNum.CR]];
+                walls[i].Pos = new Vector2(csvList[i][(int)ColumnNum.PX], csvList[i][(int)ColumnNum.PY]);
+                walls[i].Size = sizes[csvList[i][(int)ColumnNum.SIZE]];
+                walls[i].Sprite = splites[csvList[i][(int)ColumnNum.SIZE]];
+                walls[i].Rot = rots[csvList[i][(int)ColumnNum.ROT]];
+
             }
 
             return walls;
