@@ -12,12 +12,14 @@ namespace SliderAction
     abstract class IWall
     {
         public int Num { get; set; } //CSV内で何個目か
-        public Texture2D Sprite { get; set; }
+        public  readonly int SIZE = 64;
+        public Texture2D Spr { get; set; }
         public Vector2 Pos { get; set; }
-        public Vector2 Size { get; set; }
         public float Rot { get; set; }
         public Color Cr { get; set; }
-        protected bool bend; //曲がり角かどうか
+        public Vector2 Grap { get; set; }
+        public bool Bend { get; set; } //曲がり角かどうか
+
         protected bool nowDraw;
 
         //public IWall()

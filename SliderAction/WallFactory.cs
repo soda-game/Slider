@@ -12,56 +12,60 @@ namespace SliderAction
     class WallFactory
     {
         //ステージごとにCSVを分ける
-        static readonly string[] csvPaths = new string[] { "CSV/wall.txt" };
+        const int WHITS_IDX = 0;
+        static readonly string[] mapPaths = new string[] { "CSV/map.csv" };
+        static readonly string[] statPaths = new string[] { "CSV/status.csv" };
         enum ColumnNum
-        { NUM, SIZE, PX, PY, CR, ROT }
+        { NUM, SPR, CR, ROT, BEND, GAPX, GAPY }
 
-        //Size
+        //Sprite
+        const int HALF = 2;
         enum SizeTyep
-        {
-            SMALL_SHORT, SMALL_MIDDLE, SMALL_LONG,
-            BIG_SHORT, BIG_MIDDLE, BIG_LONG,
-        }
-        static readonly Vector2[] sizes = new Vector2[] { new Vector2(100, 32), new Vector2(200, 32), new Vector2(300, 32), new Vector2(100, 60), new Vector2(200, 60), new Vector2(300, 60) };
-        //Splite
-        static Texture2D[] splites;
+        { WAY, END }
+        static Texture2D[] spr;
         //Rot
         enum RotTyep
-        {
-            HENG, VERTICAL
-        }
+        { HENG, VERTICAL }
         static readonly float[] rots = new float[] { 0, MathHelper.ToRadians(90) };
         //Cr
         enum CrTyep
-        {
-            BLUE, RED, ORANGE, YELLOW, GREEN
-        }
-        static readonly Color[] crs = new Color[] { Color.Blue, Color.Red, Color.Orange, Color.Yellow, Color.Green };
+        { BLUE, ORANGE, YELLOW, GREEN }
+        static readonly Color[] crs = new Color[] { Color.Red, Color.Blue, Color.Orange, Color.Yellow, Color.Green }; //***
 
 
         static public void Load(ContentManager c)
         {
-            splites = new Texture2D[] {
-                c.Load<Texture2D>("SmallShort"), c.Load<Texture2D>("SmallMiddle"), c.Load<Texture2D>("SmallLong"),
-                c.Load<Texture2D>("BigShort"), c.Load<Texture2D>("BigMiddle"), c.Load<Texture2D>("BigLong")
-            };
+            spr = new Texture2D[] { c.Load<Texture2D>("wall") /*,c.Load<Texture2D>("SmallMiddle")*/ };//***
         }
 
         static public Wall[] WallsCreate(int sn)
         {
-            List<int[]> csvList = ReadCSV.WallCsv(csvPaths[sn]); //csv読み込み結果を受け取り
-            Wall[] walls = new Wall[csvList.Count]; //壁の個数
+            List<int> mapCsv = ReadCSV.ReadList(mapPaths[sn]);
+            List<int[]> StatusCsv = ReadCSV.ReadArray(statPaths[sn]); //csv読み込み結果を受け取り
+            Wall[] walls = new Wall[StatusCsv.Count]; //壁の個数
+
+            int wight = mapCsv[WHITS_IDX]; //１要素目はwightが入っている
+            mapCsv.RemoveAt(WHITS_IDX); //使ったら消す
 
             for (int i = 0; i < walls.Length; i++) //ここで量産
             {
-                walls[i] = new Wall();
-                walls[i].Num = csvList[i][(int)ColumnNum.NUM];
-                walls[i].Cr = crs[csvList[i][(int)ColumnNum.CR]];
-                walls[i].Pos = new Vector2(csvList[i][(int)ColumnNum.PX], csvList[i][(int)ColumnNum.PY]);
-                walls[i].Size = sizes[csvList[i][(int)ColumnNum.SIZE]];
-                walls[i].Sprite = splites[csvList[i][(int)ColumnNum.SIZE]];
-                walls[i].Rot = rots[csvList[i][(int)ColumnNum.ROT]];
+                Wall w = walls[i];
+                w = new Wall();
+                w.Num = StatusCsv[i][(int)ColumnNum.NUM];
+                w.Spr = spr[StatusCsv[i][(int)ColumnNum.SPR]];
+                w.Cr = crs[StatusCsv[i][(int)ColumnNum.CR]];
+                w.Grap = new Vector2(StatusCsv[i][(int)ColumnNum.GAPX], StatusCsv[i][(int)ColumnNum.GAPY]);
+                w.Rot = rots[StatusCsv[i][(int)ColumnNum.ROT]];
+                w.Bend = Convert.ToBoolean(StatusCsv[i][(int)ColumnNum.BEND]); //intをbool変換
 
+                //mapCsvから自分の番号の座標を抜き出しす
+                int index = mapCsv.FindIndex(n => n == w.Num),
+                    wx = index % wight,
+                    wy = index / wight;
+                w.Pos = new Vector2((wx * w.SIZE) + w.SIZE / HALF + w.Grap.X,
+                                    (wy * w.SIZE) + w.SIZE / HALF + w.Grap.Y);
+
+                walls[i] = w;
             }
 
             return walls;
