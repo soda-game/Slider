@@ -18,7 +18,6 @@ namespace SliderAction
         public void Init()
         {
             nowDraw = true;
-            Pos = new Vector2((Pos.X * SIZE) + SIZE / HALF, (Pos.Y * SIZE) + SIZE / HALF);
         }
 
         public void DrawChenge() //***最初はfalse 移ったものだけtrue

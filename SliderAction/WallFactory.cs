@@ -16,9 +16,10 @@ namespace SliderAction
         static readonly string[] mapPaths = new string[] { "CSV/map.txt" };
         static readonly string[] statPaths = new string[] { "CSV/wall.txt" };
         enum ColumnNum
-        { NUM, SPR, CR, ROT, BEND }
+        { NUM, SPR, CR, ROT, BEND, GAPX, GAPY }
 
         //Splite
+        const int HALF = 2;
         enum SizeTyep
         { WAY, END }
         static Texture2D[] splites;
@@ -48,18 +49,23 @@ namespace SliderAction
 
             for (int i = 0; i < walls.Length; i++) //ここで量産
             {
-                walls[i] = new Wall();
-                walls[i].Num = StatusCsv[i][(int)ColumnNum.NUM];
-                walls[i].Spl = splites[StatusCsv[i][(int)ColumnNum.SPR]];
-                walls[i].Cr = crs[StatusCsv[i][(int)ColumnNum.CR]];
-                walls[i].Rot = rots[StatusCsv[i][(int)ColumnNum.ROT]];
-                walls[i].Bend = Convert.ToBoolean(StatusCsv[i][(int)ColumnNum.BEND]); //intをbool変換
+                Wall w = walls[i];
+                w = new Wall();
+                w.Num = StatusCsv[i][(int)ColumnNum.NUM];
+                w.Spl = splites[StatusCsv[i][(int)ColumnNum.SPR]];
+                w.Cr = crs[StatusCsv[i][(int)ColumnNum.CR]];
+                w.Grap = new Vector2(StatusCsv[i][(int)ColumnNum.GAPX], StatusCsv[i][(int)ColumnNum.GAPY]);
+                w.Rot = rots[StatusCsv[i][(int)ColumnNum.ROT]];
+                w.Bend = Convert.ToBoolean(StatusCsv[i][(int)ColumnNum.BEND]); //intをbool変換
 
                 //mapCsvから自分の番号の座標を抜き出しす
-                int index = mapCsv.FindIndex(n => n == walls[i].Num),
+                int index = mapCsv.FindIndex(n => n == w.Num),
                     wx = index % wight,
                     wy = index / wight;
-                walls[i].Pos = new Vector2(wx, wy);
+                w.Pos = new Vector2((wx * w.SIZE) + w.SIZE / HALF + w.Grap.X,
+                                    (wy * w.SIZE) + w.SIZE / HALF + w.Grap.Y);
+
+                walls[i] = w;
             }
 
             return walls;
