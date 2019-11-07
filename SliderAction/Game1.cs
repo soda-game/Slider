@@ -12,6 +12,9 @@ namespace SliderAction
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        //クラス
+        SlideGame slideGame;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -27,10 +30,10 @@ namespace SliderAction
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            slideGame = new SlideGame();
 
             base.Initialize();
         }
-
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -41,6 +44,7 @@ namespace SliderAction
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            slideGame.Loads(Content);
         }
 
         /// <summary>
@@ -63,6 +67,8 @@ namespace SliderAction
                 Exit();
 
             // TODO: Add your update logic here
+            slideGame.Main();
+
 
             base.Update(gameTime);
         }
@@ -76,7 +82,11 @@ namespace SliderAction
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
 
+            slideGame.Draw(spriteBatch);
+
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }
