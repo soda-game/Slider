@@ -16,7 +16,7 @@ namespace SliderAction
         static readonly string[] mapPaths = new string[] { "CSV/map.csv" };
         static readonly string[] statPaths = new string[] { "CSV/status.csv" };
         enum ColumnNum
-        { NUM, SPR, CR, ROT, C_ROT, BEND, GAPX, GAPY }
+        { NUM, SPR, CR, ROT, BEND, GAPX, GAPY }
 
         //Sprite
         enum SizeTyep
@@ -39,34 +39,29 @@ namespace SliderAction
 
         static public List<Wall> WallsCreate(int sn)
         {
-            List<int> mapCsv = ReadCSV.Map(mapPaths[sn]);
+            const int FIX_ROW = 1;
+            List<int[]> mapCsv = ReadCSV.Map(mapPaths[sn]);
             List<int[]> StatusCsv = ReadCSV.Status(statPaths[sn]); //csv読み込み結果を受け取り
             List<Wall> walls = new List<Wall>(); //壁
 
-            int wight = mapCsv[WHITS_IDX]; //１要素目はwightが入っている
-            mapCsv.RemoveAt(WHITS_IDX); //使ったら消す
-
-            for (int i = 0; i < mapCsv.Count; i++) //ここで量産
+            for (int i = 0; i < mapCsv.Count; i++)
             {
-                if (mapCsv[i] == 0) continue;
+                for (int j = 0; j < mapCsv[0].Length; j++) //ここで量産
+                {
+                    if (mapCsv[i][j] == 0) continue;
 
-                Wall w = new Wall();
-                int me = mapCsv[i] - 1; //***
-                w.Spr = spr[StatusCsv[me][(int)ColumnNum.SPR]];
-                w.Cr = crs[StatusCsv[me][(int)ColumnNum.CR]];
-                w.Grap = new Vector2(StatusCsv[me][(int)ColumnNum.GAPX], StatusCsv[me][(int)ColumnNum.GAPY]);
-                w.Rot = rots[StatusCsv[me][(int)ColumnNum.ROT]];
-                w.C_Rot = StatusCsv[me][(int)ColumnNum.C_ROT];
-                w.Bend = Convert.ToBoolean(StatusCsv[me][(int)ColumnNum.BEND]); //intをbool変換
+                    Wall w = new Wall();
+                    int me = mapCsv[i][j] - FIX_ROW;
+                    w.Spr = spr[StatusCsv[me][(int)ColumnNum.SPR]];
+                    w.Cr = crs[StatusCsv[me][(int)ColumnNum.CR]];
+                    w.Grap = new Vector2(StatusCsv[me][(int)ColumnNum.GAPX], StatusCsv[me][(int)ColumnNum.GAPY]);
+                    w.Rot = rots[StatusCsv[me][(int)ColumnNum.ROT]];
+                    w.Bend = Convert.ToBoolean(StatusCsv[me][(int)ColumnNum.BEND]); //intをbool変換
+                    w.PosBase = new Vector2(j, i);
 
-                //mapCsvから自分の番号の座標を抜き出しす
-                int wx = i % wight,
-                    wy = i / wight;
-                w.PosBase = new Vector2(wx, wy);
-
-                walls.Add(w);
+                    walls.Add(w);
+                }
             }
-
             return walls;
         }
     }
