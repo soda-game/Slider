@@ -9,27 +9,39 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace SliderAction//***
 {
+    struct WallVO
+    {
+        public Texture2D Spr { get; }
+        public Vector2 PosBase { get; }
+        public float Rot { get; }
+        public Color Cr { get; }
+        public Vector2 Grap { get; }
+        public bool Bend { get; } //曲がり角かどうか
+
+        public WallVO(Texture2D spr, Vector2 pb, float rot, Color cr, Vector2 grap, bool bend)
+        {
+            Spr = spr;
+            PosBase = pb;
+            Rot = rot;
+            Cr = cr;
+            Grap = grap;
+            Bend = bend;
+        }
+    }
+
     abstract class IWall
     {
-        //public int Num { get; set; } //CSV内で何個目か
-        public Texture2D Spr { get; set; }
-        public Vector2 PosBase { get; set; }
-        public float Rot { get; set; }
-        public int C_Rot { get; set; }
-        public Color Cr { get; set; }
-        public Vector2 Grap { get; set; }
-        public bool Bend { get; set; } //曲がり角かどうか
 
+        const int HALF = 2;
+        protected const int SIZE = 64;
+        protected const int H_SIZE = SIZE / HALF;
+        const int C_SIZE = 64;
 
-        //public IWall()
-        //{ }
-        //public void Init()
-        //{ }
-        //public void DrawChenge()
-        //{ }
-        //public void Draw(SpriteBatch sb)
-        //{ }
-        //internal class Init
-        //{ }
+        public abstract Texture2D Spr { get; }
+        public abstract Vector2 PosBase { get; }
+        public abstract float Rot { get; }
+        public abstract Color Cr { get; }
+        public abstract Vector2 Grap { get; }
+        public abstract bool Bend { get; } //曲がり角かどうか
     }
 }

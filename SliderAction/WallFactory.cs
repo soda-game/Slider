@@ -22,6 +22,10 @@ namespace SliderAction
         enum SizeTyep
         { WAY, END }
         static Texture2D[] spr;
+        static public void Load(ContentManager c)
+        {
+            spr = new Texture2D[] { c.Load<Texture2D>("wall") /*,c.Load<Texture2D>("SmallMiddle")*/ };//***
+        }
         //Rot C_ROT
         enum RotTyep
         { UP, RIGHT, DOWN, LEFT }
@@ -31,11 +35,6 @@ namespace SliderAction
         { RED, BLUE, ORANGE, YELLOW, GREEN }
         static readonly Color[] crs = new Color[] { Color.Red, Color.Blue, Color.Orange, Color.Yellow, Color.Green };
 
-
-        static public void Load(ContentManager c)
-        {
-            spr = new Texture2D[] { c.Load<Texture2D>("wall") /*,c.Load<Texture2D>("SmallMiddle")*/ };//***
-        }
 
         static public List<Wall> WallsCreate(int sn)
         {
@@ -50,15 +49,17 @@ namespace SliderAction
                 {
                     if (mapCsv[i][j] == 0) continue;
 
-                    Wall w = new Wall();
                     int me = mapCsv[i][j] - FIX_ROW;
-                    w.Spr = spr[StatusCsv[me][(int)ColumnNum.SPR]];
-                    w.Cr = crs[StatusCsv[me][(int)ColumnNum.CR]];
-                    w.Grap = new Vector2(StatusCsv[me][(int)ColumnNum.GAPX], StatusCsv[me][(int)ColumnNum.GAPY]);
-                    w.Rot = rots[StatusCsv[me][(int)ColumnNum.ROT]];
-                    w.Bend = Convert.ToBoolean(StatusCsv[me][(int)ColumnNum.BEND]); //intをbool変換
-                    w.PosBase = new Vector2(j, i);
+                    WallVO wvo = new WallVO(                  //Factory → VO → wall で値を入れる
+                        spr[StatusCsv[me][(int)ColumnNum.SPR]],
+                        new Vector2(j, i),
+                        rots[StatusCsv[me][(int)ColumnNum.ROT]],
+                        crs[StatusCsv[me][(int)ColumnNum.CR]],
+                         new Vector2(StatusCsv[me][(int)ColumnNum.GAPX], StatusCsv[me][(int)ColumnNum.GAPY]),
+                          Convert.ToBoolean(StatusCsv[me][(int)ColumnNum.BEND])
+                        );
 
+                    Wall w = new Wall(wvo);
                     walls.Add(w);
                 }
             }
