@@ -12,12 +12,21 @@ namespace SliderAction
     class Wall : IWall
     {
         const int HALF = 2;
+        public const int SIZE = 64;
+        public const int H_SIZE = SIZE / HALF;
+        public const int C_SIZE = 64;
+
+        Vector2 pos;
+        public Vector2 Pos => pos;
+        bool nowDraw;
+        public bool NowDraw => nowDraw;
 
         public Wall()
         { }
         public void Init()
         {
             nowDraw = true;
+            pos = new Vector2((PosBase.X * SIZE) + Grap.X, (PosBase.Y * SIZE) + Grap.Y);
         }
 
         public void DrawChenge() //***最初はfalse 移ったものだけtrue

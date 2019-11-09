@@ -16,21 +16,20 @@ namespace SliderAction
         static readonly string[] mapPaths = new string[] { "CSV/map.csv" };
         static readonly string[] statPaths = new string[] { "CSV/status.csv" };
         enum ColumnNum
-        { NUM, SPR, CR, ROT, BEND, GAPX, GAPY }
+        { NUM, SPR, CR, ROT, C_ROT, BEND, GAPX, GAPY }
 
         //Sprite
-        const int HALF = 2;
         enum SizeTyep
         { WAY, END }
         static Texture2D[] spr;
-        //Rot
+        //Rot C_ROT
         enum RotTyep
-        { HENG, VERTICAL }
-        static readonly float[] rots = new float[] { 0, MathHelper.ToRadians(90) };
+        { UP, RIGHT, DOWN, LEFT }
+        static readonly float[] rots = new float[] { 0, MathHelper.ToRadians(90), MathHelper.ToRadians(180), MathHelper.ToRadians(270) };
         //Cr
         enum CrTyep
-        { BLUE, ORANGE, YELLOW, GREEN }
-        static readonly Color[] crs = new Color[] { Color.Red, Color.Blue, Color.Orange, Color.Yellow, Color.Green }; //***
+        { RED, BLUE, ORANGE, YELLOW, GREEN }
+        static readonly Color[] crs = new Color[] { Color.Red, Color.Blue, Color.Orange, Color.Yellow, Color.Green };
 
 
         static public void Load(ContentManager c)
@@ -38,34 +37,34 @@ namespace SliderAction
             spr = new Texture2D[] { c.Load<Texture2D>("wall") /*,c.Load<Texture2D>("SmallMiddle")*/ };//***
         }
 
-        static public Wall[] WallsCreate(int sn)
+        static public List<Wall> WallsCreate(int sn)
         {
-            List<int> mapCsv = ReadCSV.ReadList(mapPaths[sn]);
-            List<int[]> StatusCsv = ReadCSV.ReadArray(statPaths[sn]); //csv読み込み結果を受け取り
-            Wall[] walls = new Wall[StatusCsv.Count]; //壁の個数
+            List<int> mapCsv = ReadCSV.Map(mapPaths[sn]);
+            List<int[]> StatusCsv = ReadCSV.Status(statPaths[sn]); //csv読み込み結果を受け取り
+            List<Wall> walls = new List<Wall>(); //壁
 
             int wight = mapCsv[WHITS_IDX]; //１要素目はwightが入っている
             mapCsv.RemoveAt(WHITS_IDX); //使ったら消す
 
-            for (int i = 0; i < walls.Length; i++) //ここで量産
+            for (int i = 0; i < mapCsv.Count; i++) //ここで量産
             {
-                Wall w = walls[i];
-                w = new Wall();
-                w.Num = StatusCsv[i][(int)ColumnNum.NUM];
-                w.Spr = spr[StatusCsv[i][(int)ColumnNum.SPR]];
-                w.Cr = crs[StatusCsv[i][(int)ColumnNum.CR]];
-                w.Grap = new Vector2(StatusCsv[i][(int)ColumnNum.GAPX], StatusCsv[i][(int)ColumnNum.GAPY]);
-                w.Rot = rots[StatusCsv[i][(int)ColumnNum.ROT]];
-                w.Bend = Convert.ToBoolean(StatusCsv[i][(int)ColumnNum.BEND]); //intをbool変換
+                if (mapCsv[i] == 0) continue;
+
+                Wall w = new Wall();
+                int me = mapCsv[i] - 1; //***
+                w.Spr = spr[StatusCsv[me][(int)ColumnNum.SPR]];
+                w.Cr = crs[StatusCsv[me][(int)ColumnNum.CR]];
+                w.Grap = new Vector2(StatusCsv[me][(int)ColumnNum.GAPX], StatusCsv[me][(int)ColumnNum.GAPY]);
+                w.Rot = rots[StatusCsv[me][(int)ColumnNum.ROT]];
+                w.C_Rot = StatusCsv[me][(int)ColumnNum.C_ROT];
+                w.Bend = Convert.ToBoolean(StatusCsv[me][(int)ColumnNum.BEND]); //intをbool変換
 
                 //mapCsvから自分の番号の座標を抜き出しす
-                int index = mapCsv.FindIndex(n => n == w.Num),
-                    wx = index % wight,
-                    wy = index / wight;
-                w.Pos = new Vector2((wx * w.SIZE) + w.SIZE / HALF + w.Grap.X,
-                                    (wy * w.SIZE) + w.SIZE / HALF + w.Grap.Y);
+                int wx = i % wight,
+                    wy = i / wight;
+                w.PosBase = new Vector2(wx, wy);
 
-                walls[i] = w;
+                walls.Add(w);
             }
 
             return walls;

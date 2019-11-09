@@ -10,7 +10,7 @@ namespace SliderAction
     //CSV読み込み専用クラス
      class ReadCSV
     {
-        static public List<int[]> ReadArray(string csvPase) //CSVの要素を返す 引数で読み込むファイルを決める
+        static public List<int[]> Status(string csvPase) //CSVの要素を返す 引数で読み込むファイルを決める
         {
             //何行か分からないのでリスト化
             List<int[]> csvList = new List<int[]>();
@@ -38,7 +38,7 @@ namespace SliderAction
             return csvList;
         }
 
-        static public List<int> ReadList(string csvPase) 
+        static public List<int> Map(string csvPase) 
         {
             //Linqのために１行に
             List<int> csvList = new List<int>();

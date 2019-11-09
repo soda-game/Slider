@@ -7,20 +7,19 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace SliderAction
+namespace SliderAction//***
 {
     abstract class IWall
     {
-        public int Num { get; set; } //CSV内で何個目か
-        public  readonly int SIZE = 64;
+        //public int Num { get; set; } //CSV内で何個目か
         public Texture2D Spr { get; set; }
-        public Vector2 Pos { get; set; }
+        public Vector2 PosBase { get; set; }
         public float Rot { get; set; }
+        public int C_Rot { get; set; }
         public Color Cr { get; set; }
         public Vector2 Grap { get; set; }
         public bool Bend { get; set; } //曲がり角かどうか
 
-        protected bool nowDraw;
 
         //public IWall()
         //{ }
