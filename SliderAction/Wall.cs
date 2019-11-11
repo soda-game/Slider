@@ -21,7 +21,7 @@ namespace SliderAction
         public override Vector2 PosBase => wallVo.PosBase;
         public override float Rot => wallVo.Rot;
         public override Color Cr => wallVo.Cr;
-        public override Vector2 Grap => wallVo.Grap;
+        public override Vector2 Gap => wallVo.Gap;
         public override bool Bend => wallVo.Bend;
 
         public Wall(WallVO wvo)
@@ -31,7 +31,7 @@ namespace SliderAction
         public void Init()
         {
             nowDraw = true;
-            pos = new Vector2((PosBase.X * SIZE) + Grap.X, (PosBase.Y * SIZE) + Grap.Y);
+            pos = new Vector2((PosBase.X * SIZE) + Gap.X, (PosBase.Y * SIZE) + Gap.Y);
         }
 
         public void DrawChenge() //***最初はfalse 移ったものだけtrue

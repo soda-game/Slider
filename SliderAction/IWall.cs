@@ -15,7 +15,7 @@ namespace SliderAction//***
         public Vector2 PosBase { get; }
         public float Rot { get; }
         public Color Cr { get; }
-        public Vector2 Grap { get; }
+        public Vector2 Gap { get; }
         public bool Bend { get; } //曲がり角かどうか
 
         public WallVO(Texture2D spr, Vector2 pb, float rot, Color cr, Vector2 grap, bool bend)
@@ -24,7 +24,7 @@ namespace SliderAction//***
             PosBase = pb;
             Rot = rot;
             Cr = cr;
-            Grap = grap;
+            Gap = grap;
             Bend = bend;
         }
     }
@@ -41,7 +41,7 @@ namespace SliderAction//***
         public abstract Vector2 PosBase { get; }
         public abstract float Rot { get; }
         public abstract Color Cr { get; }
-        public abstract Vector2 Grap { get; }
+        public abstract Vector2 Gap { get; }
         public abstract bool Bend { get; } //曲がり角かどうか
     }
 }

@@ -50,13 +50,13 @@ namespace SliderAction
                     if (mapCsv[i][j] == 0) continue;
 
                     int me = mapCsv[i][j] - FIX_ROW;
-                    WallVO wvo = new WallVO(                  //Factory → VO → wall で値を入れる
+                    WallVO wvo = new WallVO(                  //Factory → VO → wall(Interface) で値を入れる
                         spr[StatusCsv[me][(int)ColumnNum.SPR]],
-                        new Vector2(j, i),
-                        rots[StatusCsv[me][(int)ColumnNum.ROT]],
-                        crs[StatusCsv[me][(int)ColumnNum.CR]],
-                         new Vector2(StatusCsv[me][(int)ColumnNum.GAPX], StatusCsv[me][(int)ColumnNum.GAPY]),
-                          Convert.ToBoolean(StatusCsv[me][(int)ColumnNum.BEND])
+                           new Vector2(j, i),
+                           rots[StatusCsv[me][(int)ColumnNum.ROT]],
+                           crs[StatusCsv[me][(int)ColumnNum.CR]],
+                           new Vector2(StatusCsv[me][(int)ColumnNum.GAPX], StatusCsv[me][(int)ColumnNum.GAPY]),
+                           Convert.ToBoolean(StatusCsv[me][(int)ColumnNum.BEND])
                         );
 
                     Wall w = new Wall(wvo);
