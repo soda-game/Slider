@@ -16,7 +16,7 @@ namespace SliderAction
         int stageNum;
         bool initF;
         //壁
-        Wall[] walls;
+        List<Wall> walls;
 
         public SlideGame() { stageNum = 0; initF = false; }
         public void Loads(ContentManager content)
@@ -33,7 +33,6 @@ namespace SliderAction
         public void Main()
         {
             if (!initF) Init();
-
         }
 
         public void Draw(SpriteBatch sb)
