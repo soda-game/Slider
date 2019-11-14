@@ -12,12 +12,16 @@ namespace SliderAction
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        const int WIN_SIZE= 700;
+
         //クラス
         SlideGame slideGame;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = WIN_SIZE;
+            graphics.PreferredBackBufferHeight = WIN_SIZE;
             Content.RootDirectory = "Content";
         }
 

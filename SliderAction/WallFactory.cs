@@ -29,7 +29,7 @@ namespace SliderAction
         //Rot C_ROT
         enum RotTyep
         { UP, RIGHT, DOWN, LEFT }
-        static readonly float[] rots = new float[] { 0, MathHelper.ToRadians(90), MathHelper.ToRadians(180), MathHelper.ToRadians(270) };
+        static  readonly float[] rots = new float[] { 0, MathHelper.ToRadians(90), MathHelper.ToRadians(180), MathHelper.ToRadians(270) };
         //Cr
         enum CrTyep
         { RED, BLUE, ORANGE, YELLOW, GREEN }
