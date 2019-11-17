@@ -26,22 +26,17 @@ namespace SliderAction
             spr = new Texture2D[] { c.Load<Texture2D>("Player") };
         }
 
-        //InitRot
-        enum RotTyep
-        { UP, RIGHT, DOWN, LEFT }
-        static readonly float[] rots = new float[] { 0, MathHelper.ToRadians(90), MathHelper.ToRadians(180), MathHelper.ToRadians(270) };
-
         static public Player PlayerCreate(int sn)
         {
             int[] stat = ReadCSV.Status("CSV/playerS.csv", sn + 1);
 
             int cNum = stat[(int)ColumnNum.Chara];
             Vector2 basePos = new Vector2(stat[(int)ColumnNum.POSX], stat[(int)ColumnNum.POSY]);
-            Vector2 iPos = PosAsk(basePos, Convert.ToBoolean(stat[(int)ColumnNum.POS_FIX]),new Vector2(64,100), 32);//SIZE***
-            float speed = stat[(int)ColumnNum.SPEED] / 10;
-            float rot = rots[stat[(int)ColumnNum.ROT]];
+            Vector2 iPos = PosAsk(basePos, Convert.ToBoolean(stat[(int)ColumnNum.POS_FIX]), new Vector2(64, 64), 32);//MAPSIZE***
+            float speed = stat[(int)ColumnNum.SPEED] / 10; 
+            int rotNum = stat[(int)ColumnNum.ROT] * 3;
 
-            PlayerVO pvo = new PlayerVO(cNum, spr, iPos, speed, rot);
+            PlayerVO pvo = new PlayerVO(cNum, spr, iPos, speed, rotNum);
 
             Player player = new Player(pvo);
             return player;
@@ -51,8 +46,8 @@ namespace SliderAction
         {
             Vector2 pos;
 
-             pos = new Vector2(bPos.X * size.X, bPos.Y * size.Y);
-            if(pFix)
+            pos = new Vector2(bPos.X * size.X, bPos.Y * size.Y);
+            if (pFix)
                 pos = new Vector2(bPos.X + sizeH, bPos.Y + sizeH);
 
             return pos;

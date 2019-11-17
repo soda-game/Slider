@@ -47,6 +47,7 @@ namespace SliderAction
         {
             if (!initF) Init();
 
+            player.Move();
             camera.Move(player.Pos);
         }
 
