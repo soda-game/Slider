@@ -16,6 +16,7 @@ namespace SliderAction
 
         //クラス
         SlideGame slideGame;
+        Camera camera;
 
         public Game1()
         {
@@ -34,7 +35,8 @@ namespace SliderAction
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            slideGame = new SlideGame();
+            camera = new Camera(600,400);
+            slideGame = new SlideGame(camera);
 
             base.Initialize();
         }
@@ -86,7 +88,13 @@ namespace SliderAction
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred,
+                              BlendState.AlphaBlend,
+                              SamplerState.LinearClamp,
+                              DepthStencilState.None,
+                              RasterizerState.CullCounterClockwise,
+                              null,
+                              camera.GetMatrix());
 
             slideGame.Draw(spriteBatch);
 

@@ -12,14 +12,20 @@ namespace SliderAction
 {
     class SlideGame
     {
-        //ステージ
+        Camera camera;
+
+        //ステージ1
         int stageNum;
         bool initF;
         //壁
         List<Wall> walls;
         Player player;
 
-        public SlideGame() { stageNum = 0; initF = false; }
+        public SlideGame(Camera c) {
+            stageNum = 0;
+            initF = false;
+            camera = c;
+        }
         public void Loads(ContentManager content)
         {
             WallFactory.Load(content);
