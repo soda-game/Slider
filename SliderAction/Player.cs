@@ -14,15 +14,14 @@ namespace SliderAction
         PlayerVO pvo;
 
         int charaNum;
-        public override int CharaNum => charaNum;
+        protected override int CharaNum => charaNum;
+        protected override Texture2D[] Spr => pvo.Sprs;
         Vector2 pos;
         public override Vector2 Pos =>pos;
         float speed;
-        public override float Speed => speed;
+        protected override float Speed => speed;
         float rot;
-        public override float Rot => rot;
-
-        public override Texture2D[] Spr => pvo.Sprs;
+        protected override float Rot => rot;
 
         public enum RotTyep //***
         { UP, RIGHT, DOWN, LEFT }

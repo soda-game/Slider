@@ -33,10 +33,10 @@ namespace SliderAction
         static protected readonly Vector2 SIZE = new Vector2(64, 100);
         protected readonly Vector2 H_SIZE = new Vector2(SIZE.X / HALF, SIZE.Y / HALF);
 
-        public abstract int CharaNum { get; }
+        protected abstract int CharaNum { get; }
         public abstract Vector2 Pos { get; }
-        public abstract float Speed { get; }
-        public abstract float Rot { get; }
-        public abstract Texture2D[] Spr { get; }
+        protected abstract float Speed { get; }
+        protected abstract float Rot { get; }
+        protected abstract Texture2D[] Spr { get; }
     }
 }

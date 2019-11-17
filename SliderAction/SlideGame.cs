@@ -12,14 +12,16 @@ namespace SliderAction
 {
     class SlideGame
     {
-        Camera camera;
 
         //ステージ1
         int stageNum;
         bool initF;
         //壁
         List<Wall> walls;
+
+        //プレイヤー
         Player player;
+        Camera camera;
 
         public SlideGame(Camera c) {
             stageNum = 0;
@@ -44,6 +46,8 @@ namespace SliderAction
         public void Main()
         {
             if (!initF) Init();
+
+            camera.Move(player.Pos);
         }
 
         public void Draw(SpriteBatch sb)

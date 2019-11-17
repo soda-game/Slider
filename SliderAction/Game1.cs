@@ -35,7 +35,7 @@ namespace SliderAction
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            camera = new Camera(600,400);
+            camera = new Camera(WIN_SIZE, WIN_SIZE);
             slideGame = new SlideGame(camera);
 
             base.Initialize();

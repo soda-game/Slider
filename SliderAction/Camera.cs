@@ -15,9 +15,11 @@ namespace SliderAction
         int w, h, wh, hh;
 
         Rectangle viewArea;
+        Vector3 viewOrigin;
+
+        Vector2 posOrigin;
         float rot;
         Vector2 zoom;
-        Vector2 origin;
 
 
         public Camera(int w, int h)
@@ -27,27 +29,29 @@ namespace SliderAction
             this.wh = w / HALF;
             this.hh = h / HALF;
 
-            viewArea = new Rectangle(0, 0, w, h);
+            viewArea = new Rectangle(0, 0, w, h); //オブジェクトが写っているかを確認するため
+            viewOrigin = new Vector3(wh, hh, 0.0f);
+
+            posOrigin = new Vector2(wh, hh);
             rot = 0.0f;
             zoom = Vector2.One;
-            origin = new Vector2(w / HALF, h / HALF);
         }
 
         public void Move(Vector2 pPos)
         {
-            viewArea.X = (int)pPos.X - wh;
-            viewArea.Y = (int)pPos.Y - hh;
+            posOrigin = new Vector2(pPos.X, pPos.Y);
+            viewArea.X = (int)posOrigin.X -wh;
+            viewArea.Y = (int)posOrigin.Y - hh;
         }
 
         public Matrix GetMatrix()
         {
-            Vector3 viewPosV3 = new Vector3(viewArea.X, viewArea.Y, 0);
-            Vector3 originV3 = new Vector3(origin, 0.0f);
+            Vector3 posV3 = new Vector3(posOrigin, 0.0f);
 
-            return Matrix.CreateTranslation(-viewPosV3) *
+            return Matrix.CreateTranslation(-posV3) *
                    Matrix.CreateScale(zoom.X, zoom.Y, 1.0f) *
                    Matrix.CreateRotationZ(rot) *
-                   Matrix.CreateTranslation(originV3);
+                   Matrix.CreateTranslation(viewOrigin);
         }
 
     }
