@@ -22,6 +22,8 @@ namespace SliderAction
         protected override float Speed => speed;
         int rotNum;
         protected override int RotNum => rotNum;
+        Vector2[] colliPos;
+        public override Vector2[] ColliPos => colliPos;
 
         enum RotTyep
         {
@@ -56,11 +58,13 @@ namespace SliderAction
             pos = pvo.InitPos;
             speed = pvo.InitSpeed;
             rotNum = pvo.InitRotNum;
+            colliPos = pvo.ColliPos;
         }
 
         public void Move()
         {
             pos += MovesAsk()[rotNum];
+            for(int i=0;i<colliPos.Length;i++) colliPos[i] += MovesAsk()[rotNum];
         }
 
         public void Checkout()

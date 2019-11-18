@@ -51,10 +51,12 @@ namespace SliderAction
         {
             if (!initF) Init();
 
-            if (input.DownKey(Keys.Space))
-                player.Checkout();
+            if (input.DownKey(Keys.Space)) player.Checkout();
+
             player.Move();
             camera.Move(player.Pos);
+
+            foreach (var w in walls) Collition.StayColl(w.DamagePos, player.ColliPos);
         }
 
         public void Draw(SpriteBatch sb)

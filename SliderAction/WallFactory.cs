@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
+using System.Diagnostics;
 
 namespace SliderAction
 {
@@ -35,7 +36,6 @@ namespace SliderAction
         { RED, BLUE, ORANGE, YELLOW, GREEN }
         static readonly Color[] crs = new Color[] { Color.Red, Color.Blue, Color.Orange, Color.Yellow, Color.Green };
 
-
         static public List<Wall> WallsCreate(int sn)
         {
             const int FIX_ROW = 1;
@@ -59,6 +59,9 @@ namespace SliderAction
                     Vector2 pos = PosAsk(j, i, 64, gap);
                     Vector2[] dp = DamagePosAsk(pos, 32);
 
+                    if (j == 9 && i == 16)
+                    { Debug.WriteLine("p:" + pos + " D:" + dp); }
+
                     WallVO wvo = new WallVO(spr, pos, dp, rot, cr, gap, bend);
                     Wall w = new Wall(wvo);
                     walls.Add(w);
@@ -67,7 +70,7 @@ namespace SliderAction
             return walls;
         }
 
-        enum Square
+        public enum Square
         { UP_LEFT, DOWN_RIGHT }
         static Vector2 PosAsk(int x, int y, int size, Vector2 gap)
         {
@@ -78,7 +81,7 @@ namespace SliderAction
         {
             Vector2[] dp = new Vector2[2];
             dp[(int)Square.UP_LEFT] = new Vector2(pos.X - hsize, pos.Y - hsize);
-            dp[(int)Square.DOWN_RIGHT] = new Vector2(pos.X + hsize, pos.X + hsize);
+            dp[(int)Square.DOWN_RIGHT] = new Vector2(pos.X + hsize, pos.Y + hsize);
 
             return dp;
         }
@@ -104,6 +107,8 @@ namespace SliderAction
 
         //        rpIndex++;
         //    }
+
+ 
     }
 }
 

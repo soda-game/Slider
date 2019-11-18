@@ -16,14 +16,16 @@ namespace SliderAction
         public float InitSpeed { get; }
         public int InitRotNum { get; }
         public Texture2D[] Sprs { get; }
+        public Vector2[] ColliPos { get; }
 
-        public PlayerVO(int cNum, Texture2D[] spr, Vector2 iPos, float speed, int IRot)
+        public PlayerVO(int cNum, Texture2D[] spr, Vector2 iPos, float speed, int IRot, Vector2[] cp)
         {
             InitCharaNum = cNum;
             Sprs = spr;
             InitPos = iPos;
             InitSpeed = speed;
             InitRotNum = IRot;
+            ColliPos = cp;
         }
     }
 
@@ -38,5 +40,6 @@ namespace SliderAction
         protected abstract float Speed { get; }
         protected abstract int RotNum { get; }
         protected abstract Texture2D[] Spr { get; }
+        public abstract Vector2[] ColliPos { get; }
     }
 }
