@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+//using InputManager.Input; //***
 
 namespace SliderAction
 {
@@ -18,12 +19,13 @@ namespace SliderAction
         bool initF;
         //壁
         List<Wall> walls;
-
         //プレイヤー
+        Input input;
         Player player;
         Camera camera;
 
-        public SlideGame(Camera c) {
+        public SlideGame(Camera c)
+        {
             stageNum = 0;
             initF = false;
             camera = c;
@@ -38,6 +40,7 @@ namespace SliderAction
         {
             walls = WallFactory.WallsCreate(stageNum);
             player = PlayerFactory.PlayerCreate(stageNum);
+            input = new Input();
 
             foreach (var w in walls) w.Init();
             player.Init();
@@ -47,6 +50,8 @@ namespace SliderAction
         {
             if (!initF) Init();
 
+            if (input.DownKey(Keys.Space))
+                player.Checkout();
             player.Move();
             camera.Move(player.Pos);
         }
