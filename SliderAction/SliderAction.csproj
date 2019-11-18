@@ -42,7 +42,12 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Camera.cs" />
+    <Compile Include="Input.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Player.cs" />
+    <Compile Include="PlayerFactory.cs" />
+    <Compile Include="IPlayer.cs" />
     <Compile Include="ReadCSV.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
