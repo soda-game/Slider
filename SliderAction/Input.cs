@@ -15,9 +15,9 @@ namespace SliderAction
             FARST,
             CONT
         }
-        InputStat statNum = InputStat.NONE;
+        static InputStat statNum = InputStat.NONE;
 
-        public bool DownKey(Keys key)
+        static public bool DownKey(Keys key)
         {
             bool down = false;
 

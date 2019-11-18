@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-//using InputManager.Input; //***
 
 namespace SliderAction
 {
@@ -41,7 +40,6 @@ namespace SliderAction
         {
             walls = WallFactory.WallsCreate(stageNum);
             player = PlayerFactory.PlayerCreate(stageNum);
-            input = new Input();
 
             foreach (var w in walls) w.Init();
             player.Init();
@@ -51,7 +49,7 @@ namespace SliderAction
         {
             if (!initF) Init();
 
-            if (input.DownKey(Keys.Space))
+            if (Input.DownKey(Keys.Space))
                 player.Checkout();
             player.Move();
             camera.Move(player.Pos);
