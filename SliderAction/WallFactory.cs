@@ -20,16 +20,16 @@ namespace SliderAction
 
         //Sprite
         enum SizeTyep
-        { WAY, END }
-        static Texture2D[] spr;
+        { WAY, END, CROSS }
+        static Texture2D[] sprs;
         static public void Load(ContentManager c)
         {
-            spr = new Texture2D[] { c.Load<Texture2D>("wall") /*,c.Load<Texture2D>("SmallMiddle")*/ };//***
+            sprs = new Texture2D[] { c.Load<Texture2D>("wall") /*,c.Load<Texture2D>("SmallMiddle")*/ };//***
         }
         //Rot C_ROT
         enum RotTyep
         { UP, RIGHT, DOWN, LEFT }
-        static  readonly float[] rots = new float[] { 0, MathHelper.ToRadians(90), MathHelper.ToRadians(180), MathHelper.ToRadians(270) };
+        static readonly float[] rots = new float[] { 0, MathHelper.ToRadians(90), MathHelper.ToRadians(180), MathHelper.ToRadians(270) };
         //Cr
         enum CrTyep
         { RED, BLUE, ORANGE, YELLOW, GREEN }
@@ -49,21 +49,61 @@ namespace SliderAction
                 {
                     if (mapCsv[i][j] == 0) continue;
 
-                    int me = mapCsv[i][j] - FIX_ROW;
-                    WallVO wvo = new WallVO(                  //Factory → VO → wall(Interface) で値を入れる
-                        spr[StatusCsv[me][(int)ColumnNum.SPR]],
-                           new Vector2(j, i),
-                           rots[StatusCsv[me][(int)ColumnNum.ROT]],
-                           crs[StatusCsv[me][(int)ColumnNum.CR]],
-                           new Vector2(StatusCsv[me][(int)ColumnNum.GAPX], StatusCsv[me][(int)ColumnNum.GAPY]),
-                           Convert.ToBoolean(StatusCsv[me][(int)ColumnNum.BEND])
-                        );
+                    int mapE = mapCsv[i][j] - FIX_ROW;
 
+                    Texture2D spr = sprs[StatusCsv[mapE][(int)ColumnNum.SPR]];
+                    float rot = rots[StatusCsv[mapE][(int)ColumnNum.ROT]];
+                    Color cr = crs[StatusCsv[mapE][(int)ColumnNum.CR]];
+                    Vector2 gap = new Vector2(StatusCsv[mapE][(int)ColumnNum.GAPX], StatusCsv[mapE][(int)ColumnNum.GAPY]);
+                    bool bend = Convert.ToBoolean(StatusCsv[mapE][(int)ColumnNum.BEND]);
+                    Vector2 pos = PosAsk(j, i, 64, gap);
+                    Vector2[] dp = DamagePosAsk(pos, 32);
+
+                    WallVO wvo = new WallVO(spr, pos, dp, rot, cr, gap, bend);
                     Wall w = new Wall(wvo);
                     walls.Add(w);
                 }
             }
             return walls;
         }
+
+        enum Square
+        { UP_LEFT, DOWN_RIGHT }
+        static Vector2 PosAsk(int x, int y, int size, Vector2 gap)
+        {
+            return new Vector2((x * size) + gap.X, (y * size) + gap.Y);
+        }
+
+        static Vector2[] DamagePosAsk(Vector2 pos, int hsize) //当たり判定の矩形を配列に
+        {
+            Vector2[] dp = new Vector2[2];
+            dp[(int)Square.UP_LEFT] = new Vector2(pos.X - hsize, pos.Y - hsize);
+            dp[(int)Square.DOWN_RIGHT] = new Vector2(pos.X + hsize, pos.X + hsize);
+
+            return dp;
+        }
+        //void RecoverPos(Vector2 bPos, Vector2 oPos,List<int[]> mapCsv)
+        //{
+        //    bool[] setWall = new bool[4];//Up Right Down Left
+
+        //   if(mapCsv[((int)bPos.X)-1][((int)bPos.Y) - 1] != 0)
+        //    {
+        //        setWall [0] = true;
+        //    }
+
+        //    int tCount = setWall.Count(n => n == true);
+        //    Vector2[][] rPos = new Vector2[tCount][];
+
+        //    int rpIndex = 0;
+        //    for (int i = 0; i < setWall.Length; i++)
+        //    {
+        //        if (!setWall[i]) continue;
+
+        //        rPos[rpIndex][0] = new Vector2(3, 3);
+        //        rPos[rpIndex][1] = new Vector2(3, 3);
+
+        //        rpIndex++;
+        //    }
     }
 }
+

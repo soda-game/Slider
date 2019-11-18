@@ -24,6 +24,7 @@ namespace SliderAction
         Player player;
         Camera camera;
 
+
         public SlideGame(Camera c)
         {
             stageNum = 0;

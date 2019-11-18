@@ -36,6 +36,15 @@ namespace SliderAction
              MathHelper.ToRadians(180), MathHelper.ToRadians(150), MathHelper.ToRadians(210),
              MathHelper.ToRadians(270), MathHelper.ToRadians(240), MathHelper.ToRadians(300)
         };
+        Vector2[] MovesAsk() //配列内にref出来なかったので
+        {
+            return new Vector2[] {
+              new Vector2(0, -speed),new Vector2(-speed, -speed), new Vector2(speed, -speed),
+              new Vector2(speed, 0), new Vector2(speed, -speed), new Vector2(speed, speed),
+              new Vector2(0, speed), new Vector2(speed, speed), new Vector2(-speed, speed),
+              new Vector2(-speed, 0), new Vector2(-speed, speed), new Vector2(-speed, -speed)
+              };
+        }
 
         public Player(PlayerVO pvo)
         {
@@ -47,21 +56,13 @@ namespace SliderAction
             pos = pvo.InitPos;
             speed = pvo.InitSpeed;
             rotNum = pvo.InitRotNum;
-
-            speed = 5;
         }
 
         public void Move()
         {
-            Vector2[] moves = new Vector2[] { //***ref
-              new Vector2(0, -speed),new Vector2(-speed, -speed), new Vector2(speed, -speed),
-              new Vector2(speed, 0), new Vector2(speed, -speed), new Vector2(speed, speed),
-              new Vector2(0, speed), new Vector2(speed, speed), new Vector2(-speed, speed),
-              new Vector2(-speed, 0), new Vector2(-speed, speed), new Vector2(-speed, -speed)
-              };
-
-            pos += moves[rotNum];
+            pos += MovesAsk()[rotNum];
         }
+
         public void Checkout()
         {
             switch (rotNum)

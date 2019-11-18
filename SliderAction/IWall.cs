@@ -7,41 +7,50 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace SliderAction//***
+namespace SliderAction
 {
     struct WallVO
     {
+
+
         public Texture2D Spr { get; }
-        public Vector2 PosBase { get; }
+        public Vector2 Pos { get; }
         public float Rot { get; }
         public Color Cr { get; }
         public Vector2 Gap { get; }
         public bool Bend { get; } //曲がり角かどうか
 
-        public WallVO(Texture2D spr, Vector2 pb, float rot, Color cr, Vector2 grap, bool bend)
+        public Vector2[] DamagePos { get; }
+        //public Vector2[][] RecoverPos { get; }
+
+        public WallVO(Texture2D spr, Vector2 pos, Vector2[] dp,/*Vector2 rp,*/ float rot, Color cr, Vector2 gap, bool bend)
         {
             Spr = spr;
-            PosBase = pb;
+            Pos = pos;
             Rot = rot;
             Cr = cr;
-            Gap = grap;
+            Gap = gap;
             Bend = bend;
+
+            DamagePos = dp;
         }
     }
 
     abstract class IWall
     {
-
-        const int HALF = 2;
-        protected const int SIZE = 64;
-        protected const int H_SIZE = SIZE / HALF;
-        const int C_SIZE = 64;
+        public const int HALF = 2;
+        public const int SIZE = 64;
+        public const int HALF_SIZE = SIZE / HALF;
+        public const int RECOVER_SIZE = 30;
 
         public abstract Texture2D Spr { get; }
-        public abstract Vector2 PosBase { get; }
+        public abstract Vector2 Pos { get; }
         public abstract float Rot { get; }
         public abstract Color Cr { get; }
         public abstract Vector2 Gap { get; }
         public abstract bool Bend { get; } //曲がり角かどうか
+
+        public abstract Vector2[] DamagePos { get; }
+
     }
 }
