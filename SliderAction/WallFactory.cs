@@ -14,7 +14,7 @@ namespace SliderAction
     {
         //ステージごとにCSVを分ける
         const int WHITS_IDX = 0;
-        static readonly string[] mapPaths = new string[] { "CSV/map.csv" };
+        static public readonly string[] mapPaths = new string[] { "CSV/map.csv" };
         static readonly string[] statPaths = new string[] { "CSV/status.csv" };
         enum ColumnNum
         { NUM, SPR, CR, ROT, BEND, GAPX, GAPY }
@@ -47,7 +47,7 @@ namespace SliderAction
             {
                 for (int j = 0; j < mapCsv[0].Length; j++) //ここで量産
                 {
-                    if (mapCsv[i][j] == 0) continue;
+                    if (mapCsv[i][j] == 0 || mapCsv[i][j]>=100) continue;
 
                     int mapE = mapCsv[i][j] - FIX_ROW;
 
@@ -108,7 +108,19 @@ namespace SliderAction
         //        rpIndex++;
         //    }
 
- 
+        //static public void BendPos(List<Wall> walls)
+        //{
+        //    List<Vector2[]> bps = new List<Vector2[]>();
+
+        //    foreach (var w in walls)
+        //        if (w.Bend)
+        //        {
+        //            Vector2[] dp = { new Vector2(w.DamagePos[(int)Square.UP_LEFT].X,),
+        //                            new Vector2(,) };
+        //            bps.Add(dp);
+        //        }
+
+        //}
     }
 }
 

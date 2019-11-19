@@ -24,7 +24,8 @@ namespace SliderAction
                     {
                         string line = wc.ReadLine(); //1行読み込む
                         string[] elements = line.Split(','); //lineを , で分割して配列へ
-                        if (nameColumn) { nameColumn = false; continue; }
+                        if (nameColumn) {
+                            nameColumn = false; continue; }
 
                         int[] e_int = elements.Select(int.Parse).ToArray(); //LINQでintに一斉変換
                         csvList.Add(e_int); //要素共をリストに リストのiで行数が取れる
