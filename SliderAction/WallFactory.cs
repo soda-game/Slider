@@ -27,7 +27,7 @@ namespace SliderAction
         {
             sprs = new Texture2D[] { c.Load<Texture2D>("wall") /*,c.Load<Texture2D>("SmallMiddle")*/ };//***
         }
-        //Rot C_ROT
+        //Rot
         enum RotTyep
         { UP, RIGHT, DOWN, LEFT }
         static readonly float[] rots = new float[] { 0, MathHelper.ToRadians(90), MathHelper.ToRadians(180), MathHelper.ToRadians(270) };
@@ -35,6 +35,7 @@ namespace SliderAction
         enum CrTyep
         { RED, BLUE, ORANGE, YELLOW, GREEN }
         static readonly Color[] crs = new Color[] { Color.Red, Color.Blue, Color.Orange, Color.Yellow, Color.Green };
+
 
         static public List<Wall> WallsCreate(int sn)
         {
@@ -47,7 +48,7 @@ namespace SliderAction
             {
                 for (int j = 0; j < mapCsv[0].Length; j++) //ここで量産
                 {
-                    if (mapCsv[i][j] == 0 || mapCsv[i][j]>=100) continue;
+                    if (mapCsv[i][j] == 0 || mapCsv[i][j] >= 100) continue;
 
                     int mapE = mapCsv[i][j] - FIX_ROW;
 
@@ -63,7 +64,7 @@ namespace SliderAction
                     { Debug.WriteLine("p:" + pos + " D:" + dp); }
 
                     WallVO wvo = new WallVO(spr, pos, dp, rot, cr, gap, bend);
-                    Wall w = new Wall(wvo);
+                    Wall w = new Wall(wvo, sprs[StatusCsv[mapE][(int)ColumnNum.SPR]]);
                     walls.Add(w);
                 }
             }
@@ -85,42 +86,52 @@ namespace SliderAction
 
             return dp;
         }
-        //void RecoverPos(Vector2 bPos, Vector2 oPos,List<int[]> mapCsv)
-        //{
-        //    bool[] setWall = new bool[4];//Up Right Down Left
 
-        //   if(mapCsv[((int)bPos.X)-1][((int)bPos.Y) - 1] != 0)
-        //    {
-        //        setWall [0] = true;
-        //    }
+        List<Vector2[]> RecoverPos(int j, int i, Vector2[] dp, List<int[]> mapCsv, int RecoSize)
+        {
+            int[,] afIndexs = { { 0, -1 }, { 1, 0 }, { 0, 1 }, { -1, 0 } };
+            List<Vector2[]> recoPos = new List<Vector2[]>();
 
-        //    int tCount = setWall.Count(n => n == true);
-        //    Vector2[][] rPos = new Vector2[tCount][];
+            for (int n = 0; n < rots.Length; n++)
+            {
+                //隣が壁でないか
+                int afE = mapCsv[i + afIndexs[n, 0]][j + afIndexs[n, 1]];
+                if (mapCsv[i][j] > 0 && mapCsv[i][j] < 100) continue;
 
-        //    int rpIndex = 0;
-        //    for (int i = 0; i < setWall.Length; i++)
-        //    {
-        //        if (!setWall[i]) continue;
+                //壁でなければ方向ごとにRecoPを格納
+                Vector2 ul; Vector2 dr;
+                Vector2[] sqr;//***
+                switch (n)
+                {
+                    case (int)RotTyep.UP:
+                        ul = new Vector2(dp[(int)Square.UP_LEFT].X, dp[(int)Square.UP_LEFT].Y - RecoSize);
+                        dr = new Vector2(dp[(int)Square.DOWN_RIGHT].X, dp[(int)Square.UP_LEFT].Y);
+                        sqr = new Vector2[] { ul, dr };
+                        recoPos.Add(sqr);
+                        break;
+                    case (int)RotTyep.RIGHT:
+                        ul = new Vector2(dp[(int)Square.DOWN_RIGHT].X, dp[(int)Square.UP_LEFT].Y);
+                        dr = new Vector2(dp[(int)Square.DOWN_RIGHT].X + RecoSize, dp[(int)Square.DOWN_RIGHT].Y);
+                        sqr = new Vector2[] { ul, dr };
+                        recoPos.Add(sqr);
+                        break;
+                    case (int)RotTyep.DOWN:
+                        ul = new Vector2(dp[(int)Square.UP_LEFT].X, dp[(int)Square.DOWN_RIGHT].Y);
+                        dr = new Vector2(dp[(int)Square.DOWN_RIGHT].X, dp[(int)Square.DOWN_RIGHT].Y + RecoSize);
+                        sqr = new Vector2[] { ul, dr };
+                        recoPos.Add(sqr);
+                        break;
+                    case (int)RotTyep.LEFT:
+                        ul = new Vector2(dp[(int)Square.UP_LEFT].X - RecoSize, dp[(int)Square.UP_LEFT].Y);
+                        dr = new Vector2(dp[(int)Square.UP_LEFT].X, dp[(int)Square.DOWN_RIGHT].Y);
+                        sqr = new Vector2[] { ul, dr };
+                        recoPos.Add(sqr);
+                        break;
+                }
+            }
 
-        //        rPos[rpIndex][0] = new Vector2(3, 3);
-        //        rPos[rpIndex][1] = new Vector2(3, 3);
-
-        //        rpIndex++;
-        //    }
-
-        //static public void BendPos(List<Wall> walls)
-        //{
-        //    List<Vector2[]> bps = new List<Vector2[]>();
-
-        //    foreach (var w in walls)
-        //        if (w.Bend)
-        //        {
-        //            Vector2[] dp = { new Vector2(w.DamagePos[(int)Square.UP_LEFT].X,),
-        //                            new Vector2(,) };
-        //            bps.Add(dp);
-        //        }
-
-        //}
+            return recoPos;
+        }
     }
 }
 
