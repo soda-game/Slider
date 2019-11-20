@@ -66,7 +66,10 @@ namespace SliderAction
             pos += MovesAsk()[rotNum];
             for(int i=0;i<colliPos.Length;i++) colliPos[i] += MovesAsk()[rotNum];
         }
-
+        public void RotChenge(int rot)
+        {
+            this.rotNum = rot;
+        }
         public void Checkout()
         {
             switch (rotNum)

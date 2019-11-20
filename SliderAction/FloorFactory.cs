@@ -87,7 +87,7 @@ namespace SliderAction
                 if (f.Bend == (int)BendType.START)
                 {
                     Vector2 ul = f.ColliPos[(int)WallFactory.Square.UP_LEFT];
-                    int rot = f.B_Rot - 1; //UP=1
+                    int rot = (f.B_Rot - 1)*3; //playerのenumに合わせる
 
                     Vector2 dr = Vector2.Zero;
 

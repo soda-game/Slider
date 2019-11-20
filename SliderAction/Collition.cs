@@ -29,5 +29,16 @@ namespace SliderAction
 
             return false;
         }
+
+        static public int StayColl(List<FloorFactory.BendSqr> floorOb, Vector2[] pDp) //どれか一つにあたっていればT
+        {
+            int index = -1;
+
+            for (int i = 0; i < floorOb.Count ; i++)
+                if (StayColl(floorOb[i].pos, pDp))
+                index = i;
+
+            return index;
+        }
     }
 }

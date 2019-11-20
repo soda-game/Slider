@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
-//using InputManager.Input; //***
 
 namespace SliderAction
 {
@@ -23,7 +22,6 @@ namespace SliderAction
         List<Floor> floors;
         List<FloorFactory.BendSqr> bendPos;
         //プレイヤー
-        Input input;
         Player player;
         Camera camera;
 
@@ -47,23 +45,28 @@ namespace SliderAction
             player = PlayerFactory.PlayerCreate(stageNum);
             floors = FloorFactory.CriateFloor(stageNum);
             bendPos = FloorFactory.BendPosAsk(floors);
-            input = new Input();
 
             foreach (var w in walls) w.Init();
             player.Init();
             initF = true;
         }
+
         public void Main()
         {
             if (!initF) Init();
 
-            if (input.DownKey(Keys.Space)) player.Checkout();
+            if (Input.DownKey(Keys.Space))
+            {
+                int i = Collition.StayColl(bendPos, player.ColliPos);
+
+                if (i != -1)
+                    player.RotChenge(bendPos[i].rot);
+                else
+                    player.Checkout();
+            }
 
             player.Move();
             camera.Move(player.Pos);
-
-            foreach (var w in walls) Collition.StayColl(w.DamagePos, player.ColliPos);
-            foreach (var b in bendPos) if (Collition.StayColl(b.pos, player.ColliPos)) Debug.WriteLine(b.rot);
         }
 
         public void Draw(SpriteBatch sb)
