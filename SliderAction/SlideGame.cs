@@ -59,22 +59,21 @@ namespace SliderAction
             {
                 int bi = Collition.StayColl(bendPos, player.ColliPos);
                 if (bi != -1)
-                    player.RotChenge(bendPos[bi].rot); //曲がり角だったら曲がる
-                else
-                {
+                { player.RotChenge(bendPos[bi].rot); } //曲がり角だったら曲がる
 
+                else//直線だったら斜め
+                {
                     foreach (var w in walls)
-                        {
-                            int ri = Collition.StayColl(w.RecoverPos, player.ColliPos);
-                            if (ri != -1)
-                            {
-                                //回復ゾーンだったら回復
-                            }
-                        }
-                    player.Checkout(); //直線だったら斜め
+                    {
+                        int ri = Collition.StayColl(w.RecoverPos, player.ColliPos);
+                        if (ri == -1) break;
+                        //回復ゾーンだったら回復
+                    }
+                    player.Checkout();
                 }
             }
-            else; //壁に当たったら死ぬ
+            else
+                ; //壁に当たったら死ぬ
 
             player.Move();
             camera.Move(player.Pos);
