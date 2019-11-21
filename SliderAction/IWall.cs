@@ -21,9 +21,9 @@ namespace SliderAction
         public bool Bend { get; } //曲がり角かどうか
 
         public Vector2[] DamagePos { get; }
-        //public Vector2[][] RecoverPos { get; }
+        public List<Vector2[]> RecoverPos { get; }
 
-        public WallVO(Texture2D spr, Vector2 pos, Vector2[] dp,/*Vector2 rp,*/ float rot, Color cr, Vector2 gap, bool bend)
+        public WallVO(Texture2D spr, Vector2 pos, Vector2[] dp, List<Vector2[]> rp, float rot, Color cr, Vector2 gap, bool bend)
         {
             Spr = spr;
             Pos = pos;
@@ -33,6 +33,7 @@ namespace SliderAction
             Bend = bend;
 
             DamagePos = dp;
+            RecoverPos = rp;
         }
     }
 
@@ -51,6 +52,7 @@ namespace SliderAction
         public abstract bool Bend { get; } //曲がり角かどうか
 
         public abstract Vector2[] DamagePos { get; }
+        public abstract List<Vector2[]> RecoverPos { get; }
 
     }
 }

@@ -25,7 +25,7 @@ namespace SliderAction
         Vector2[] colliPos;
         public override Vector2[] ColliPos => colliPos;
 
-        enum RotTyep
+        enum RotTyep //別クラス***
         {
             UP, UP_LEFT, UP_RIGHT,
             RIGHT, RIGHT_LEFT, RIGHT_RIGHT,

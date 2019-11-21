@@ -57,13 +57,24 @@ namespace SliderAction
 
             if (Input.DownKey(Keys.Space))
             {
-                int i = Collition.StayColl(bendPos, player.ColliPos);
-
-                if (i != -1)
-                    player.RotChenge(bendPos[i].rot);
+                int bi = Collition.StayColl(bendPos, player.ColliPos);
+                if (bi != -1)
+                    player.RotChenge(bendPos[bi].rot); //曲がり角だったら曲がる
                 else
-                    player.Checkout();
+                {
+
+                    foreach (var w in walls)
+                        {
+                            int ri = Collition.StayColl(w.RecoverPos, player.ColliPos);
+                            if (ri != -1)
+                            {
+                                //回復ゾーンだったら回復
+                            }
+                        }
+                    player.Checkout(); //直線だったら斜め
+                }
             }
+            else; //壁に当たったら死ぬ
 
             player.Move();
             camera.Move(player.Pos);
@@ -71,8 +82,8 @@ namespace SliderAction
 
         public void Draw(SpriteBatch sb)
         {
-            foreach (var w in walls) w.Draw(sb);
             foreach (var f in floors) f.Draw(sb);
+            foreach (var w in walls) w.Draw(sb);
             player.Draw(sb);
         }
     }

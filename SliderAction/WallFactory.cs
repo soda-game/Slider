@@ -59,11 +59,12 @@ namespace SliderAction
                     bool bend = Convert.ToBoolean(StatusCsv[mapE][(int)ColumnNum.BEND]);
                     Vector2 pos = PosAsk(j, i, 64, gap);
                     Vector2[] dp = DamagePosAsk(pos, 32);
+                    List<Vector2[]> recoP = RecoverPos(j, i, dp, mapCsv, 30); //SIZE
 
                     if (j == 9 && i == 16)
                     { Debug.WriteLine("p:" + pos + " D:" + dp); }
 
-                    WallVO wvo = new WallVO(spr, pos, dp, rot, cr, gap, bend);
+                    WallVO wvo = new WallVO(spr, pos, dp, recoP, rot, cr, gap, bend);
                     Wall w = new Wall(wvo, sprs[StatusCsv[mapE][(int)ColumnNum.SPR]]);
                     walls.Add(w);
                 }
@@ -87,18 +88,25 @@ namespace SliderAction
             return dp;
         }
 
-        List<Vector2[]> RecoverPos(int j, int i, Vector2[] dp, List<int[]> mapCsv, int RecoSize)
+        static List<Vector2[]> RecoverPos(int j, int i, Vector2[] dp, List<int[]> mapCsv, int RecoSize)
         {
             int[,] afIndexs = { { 0, -1 }, { 1, 0 }, { 0, 1 }, { -1, 0 } };
             List<Vector2[]> recoPos = new List<Vector2[]>();
 
             for (int n = 0; n < rots.Length; n++)
             {
-                //隣が壁でないか
-                int afE = mapCsv[i + afIndexs[n, 0]][j + afIndexs[n, 1]];
-                if (mapCsv[i][j] > 0 && mapCsv[i][j] < 100) continue;
+                //隣が床か
+                int jAfIndex, iAfIndex; //配列内か
 
-                //壁でなければ方向ごとにRecoPを格納
+                if (j + afIndexs[n, 0] < mapCsv[0].Length) jAfIndex = j + afIndexs[n, 0];
+                else jAfIndex = 0;
+                if (i + afIndexs[n, 1] < mapCsv.Count) iAfIndex = i + afIndexs[n, 1];
+                else iAfIndex = 0;
+
+                int afE = mapCsv[iAfIndex][jAfIndex];
+                if (afE < 100) continue;
+
+                //床なら方向ごとにRecoPを格納
                 Vector2 ul; Vector2 dr;
                 Vector2[] sqr;//***
                 switch (n)
