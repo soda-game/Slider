@@ -12,12 +12,17 @@ namespace SliderAction
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        const int WIN_SIZE= 700;
+
         //クラス
         SlideGame slideGame;
+        Camera camera;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = WIN_SIZE;
+            graphics.PreferredBackBufferHeight = WIN_SIZE;
             Content.RootDirectory = "Content";
         }
 
@@ -30,7 +35,8 @@ namespace SliderAction
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            slideGame = new SlideGame();
+            camera = new Camera(WIN_SIZE, WIN_SIZE);
+            slideGame = new SlideGame(camera);
 
             base.Initialize();
         }
@@ -82,7 +88,13 @@ namespace SliderAction
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred,
+                              BlendState.AlphaBlend,
+                              SamplerState.LinearClamp,
+                              DepthStencilState.None,
+                              RasterizerState.CullCounterClockwise,
+                              null,
+                              camera.GetMatrix());
 
             slideGame.Draw(spriteBatch);
 

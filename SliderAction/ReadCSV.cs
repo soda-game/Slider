@@ -19,15 +19,47 @@ namespace SliderAction
             {
                 using (StreamReader wc = new StreamReader(@csvPase)) //ファイルを開く
                 {
-                    bool nameRow = true;
+                    bool nameColumn = true;
                     while (!wc.EndOfStream) //末尾まで
                     {
                         string line = wc.ReadLine(); //1行読み込む
                         string[] elements = line.Split(','); //lineを , で分割して配列へ
-                        if (nameRow) { nameRow = false; continue; }
+                        if (nameColumn) {
+                            nameColumn = false; continue; }
 
                         int[] e_int = elements.Select(int.Parse).ToArray(); //LINQでintに一斉変換
                         csvList.Add(e_int); //要素共をリストに リストのiで行数が取れる
+                    }
+                }
+            }
+
+            catch (Exception e) //失敗したときのエラーを受け取る
+            {
+                Console.WriteLine("CSVエラー:" + e.Message);
+            }
+
+            return csvList;
+        }
+
+        static public int[] Status(string csvPase, int sn) //読む行数が決まっている
+        {
+            //何行か分からないのでリスト化
+            int[] csvList= { };
+
+            try
+            {
+                using (StreamReader wc = new StreamReader(@csvPase))
+                {
+                    int nowRow = 0;
+                    while (!wc.EndOfStream)
+                    {
+                        string line = wc.ReadLine();
+                        if (nowRow < sn) { nowRow++; continue; }
+
+                        string[] elements = line.Split(',');
+                        csvList = elements.Select(int.Parse).ToArray();
+
+                        break;
                     }
                 }
             }
