@@ -10,6 +10,7 @@ namespace SliderAction
 {
     class Player : IPlayer
     {
+        public const int hp = 20; //hp***
 
         PlayerVO pvo;
 
@@ -63,8 +64,9 @@ namespace SliderAction
 
         public void Move()
         {
-            pos += MovesAsk()[rotNum];
-            for(int i=0;i<colliPos.Length;i++) colliPos[i] += MovesAsk()[rotNum];
+            Vector2 move = Vector2.Normalize(MovesAsk()[rotNum]);
+            pos += move;
+            for (int i = 0; i < colliPos.Length; i++) colliPos[i] += move;
         }
         public void RotChenge(int rot)
         {

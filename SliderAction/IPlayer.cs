@@ -31,6 +31,7 @@ namespace SliderAction
 
     abstract class IPlayer
     {
+
         const int HALF = 2;
         static protected readonly Vector2 SIZE = new Vector2(32, 50);
         protected readonly Vector2 H_SIZE = new Vector2(SIZE.X / HALF, SIZE.Y / HALF);
