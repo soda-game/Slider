@@ -36,7 +36,7 @@ namespace SliderAction
         {
             // TODO: Add your initialization logic here
             camera = new Camera(WIN_SIZE, WIN_SIZE);
-            slideGame = new SlideGame(camera);
+            slideGame = new SlideGame(camera,new HpBar());
 
             base.Initialize();
         }

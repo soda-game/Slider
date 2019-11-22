@@ -46,6 +46,7 @@
     <Compile Include="Collition.cs" />
     <Compile Include="Floor.cs" />
     <Compile Include="FloorFactory.cs" />
+    <Compile Include="HpBar.cs" />
     <Compile Include="IFloor.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="Game1.cs" />

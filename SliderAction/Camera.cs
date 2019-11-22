@@ -17,7 +17,7 @@ namespace SliderAction
         Rectangle viewArea;
         Vector3 viewOrigin;
 
-        Vector2 posOrigin;
+       public Vector2 posOrigin; //***
         float rot;
         Vector2 zoom;
 
