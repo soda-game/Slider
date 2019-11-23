@@ -80,7 +80,7 @@ namespace SliderAction
                 case (int)RotTyep.RIGHT:
                 case (int)RotTyep.DOWN:
                 case (int)RotTyep.LEFT:
-                    //自分がその道の真ん中よりどっちか
+                    //自分がその道の真ん中よりどっちか***
                     rotNum++;
                     break;
                 case (int)RotTyep.UP_LEFT:

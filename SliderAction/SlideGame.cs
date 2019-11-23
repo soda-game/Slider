@@ -54,7 +54,7 @@ namespace SliderAction
             initF = true;
         }
 
-        public void Main()
+        public void Main()//***もっと細かくメソッド分ける***
         {
             if (!initF) Init();
 

@@ -11,12 +11,16 @@ namespace SliderAction
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
-        const int WIN_SIZE= 700;
+        const int WIN_SIZE = 700;
 
         //クラス
-        SlideGame slideGame;
         Camera camera;
+        Title title;
+        SlideGame slideGame;
+
+        enum Scene
+        { TITL, TUTO, GAME, RESU }
+        Scene scene;
 
         public Game1()
         {
@@ -35,10 +39,15 @@ namespace SliderAction
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            camera = new Camera(WIN_SIZE, WIN_SIZE);
-            slideGame = new SlideGame(camera,new HpBar());
-
+            Init();
             base.Initialize();
+        }
+        void Init()
+        {
+            camera = new Camera(WIN_SIZE, WIN_SIZE);
+            title = new Title();
+            slideGame = new SlideGame(camera, new HpBar());
+            scene = Scene.TITL;
         }
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
@@ -50,7 +59,19 @@ namespace SliderAction
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            slideGame.Loads(Content);
+            switch (scene)
+            {
+                case Scene.TITL:
+                    title.Load(Content);
+                    break;
+                case Scene.TUTO:
+                    break;
+                case Scene.GAME:
+                    slideGame.Loads(Content);
+                    break;
+                case Scene.RESU:
+                    break;
+            }
         }
 
         /// <summary>
@@ -73,7 +94,19 @@ namespace SliderAction
                 Exit();
 
             // TODO: Add your update logic here
-            slideGame.Main();
+            switch (scene)
+            {
+                case Scene.TITL:
+                    if (title.PushKey()) scene = Scene.TUTO;
+                    break;
+                case Scene.TUTO:
+                    break;
+                case Scene.GAME:
+                    slideGame.Main();
+                    break;
+                case Scene.RESU:
+                    break;
+            }
 
 
             base.Update(gameTime);
@@ -95,8 +128,20 @@ namespace SliderAction
                               RasterizerState.CullCounterClockwise,
                               null,
                               camera.GetMatrix());
+            switch (scene)
+            {
+                case Scene.TITL:
+                    title.Draw(spriteBatch);
+                    break;
+                case Scene.TUTO:
+                    break;
+                case Scene.GAME:
+                    slideGame.Draw(spriteBatch);
+                    break;
+                case Scene.RESU:
+                    break;
+            }
 
-            slideGame.Draw(spriteBatch);
 
             spriteBatch.End();
             base.Draw(gameTime);
