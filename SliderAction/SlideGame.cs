@@ -62,24 +62,9 @@ namespace SliderAction
 
             if (Input.DownKey(Keys.Space))
             {
-                int bi = Collition.StayColl(bendPos, player.ColliPos);
-                if (bi != -1)
+                if (!BendHit())
                 {
-                    player.RotChenge(bendPos[bi].rot); //曲がり角だったら曲がる
-                    hpBar.HpPlus(40f);
-                }
-                else
-                {
-                    //直線
-                    foreach (var w in walls)
-                    {
-                        int ri = Collition.StayColl(w.RecoverPos, player.ColliPos);
-                        if (ri != -1)
-                        {
-                            hpBar.HpPlus(10f); //回復ゾーンだったら回復
-                        }
-                    }
-                    player.Checkout(); //斜め
+                    Oblique();
                 }
             }
             //else if (Input.DownKey(Keys.J))
@@ -88,8 +73,7 @@ namespace SliderAction
             //}
             else
             {
-                foreach (var w in walls)
-                    if (Collition.StayColl(w.DamagePos, player.ColliPos)) hpBar.HpPlus(-100f); //壁に当たったら死ぬ
+                WallHit();
             }
 
             if (hpBar.DeadCheck()) Debug.WriteLine("し！");
@@ -97,6 +81,32 @@ namespace SliderAction
             player.Move();
             camera.Move(player.Pos);
             hpBar.Move(player.Pos);
+        }
+
+        bool BendHit()//曲がり角だったら曲がる
+        {
+            int bi = Collition.StayColl(bendPos, player.ColliPos);
+            if (bi == -1) return false;
+            player.RotChenge(bendPos[bi].rot); 
+            hpBar.HpPlus(40f);
+            return true;
+        }
+        void Oblique()//斜め
+        {
+            foreach (var w in walls)
+            {
+                int ri = Collition.StayColl(w.RecoverPos, player.ColliPos);
+                if (ri != -1)
+                {
+                    hpBar.HpPlus(10f); //回復ゾーンだったら回復
+                }
+            }
+            player.Checkout();
+        }
+        void WallHit()//壁に当たったら死ぬ
+        {
+            foreach (var w in walls)
+                if (Collition.StayColl(w.DamagePos, player.ColliPos)) hpBar.HpPlus(-100f);
         }
 
         public void Draw(SpriteBatch sb)
