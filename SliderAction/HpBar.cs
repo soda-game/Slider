@@ -37,8 +37,9 @@ namespace SliderAction
         }
         public void HpPlus(float value)
         {
-            if (nowHp + value > maxHp) return;
             nowHp += value;
+            if (nowHp < maxHp) return;
+            nowHp = maxHp;
         }
         public bool DeadCheck()
         {
