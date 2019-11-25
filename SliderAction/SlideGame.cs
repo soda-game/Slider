@@ -16,7 +16,7 @@ namespace SliderAction
 
         //ステージ1
         int stageNum;
-        bool initF;
+        public static bool initF;
         //壁
         List<Wall> walls;
         List<Floor> floors;
@@ -26,6 +26,8 @@ namespace SliderAction
         HpBar hpBar;
         Camera camera;
 
+        //あにめ
+        Animetion anime;
 
         public SlideGame(Camera c, HpBar h)
         {
@@ -33,6 +35,7 @@ namespace SliderAction
             initF = false;
             camera = c;
             hpBar = h;
+            anime = new Animetion();
         }
         public void Loads(ContentManager c)
         {
@@ -40,6 +43,7 @@ namespace SliderAction
             PlayerFactory.Load(c);
             FloorFactory.Load(c);
             hpBar.Load(c);
+            anime.Load(c);
         }
 
         public void Init()
@@ -51,12 +55,14 @@ namespace SliderAction
 
             foreach (var w in walls) w.Init();
             player.Init();
-            initF = true;
+            camera.Move(player.Pos);
+            hpBar.Move(player.Pos);
+            anime.SplitWaitDelay(2000);
         }
 
-        public void Main()//***もっと細かくメソッド分ける***
+        public void Main()
         {
-            if (!initF) Init();
+            if (!initF) { Init(); return; }
 
             hpBar.HpPlus(-0.3f);
 
@@ -87,7 +93,7 @@ namespace SliderAction
         {
             int bi = Collition.StayColl(bendPos, player.ColliPos);
             if (bi == -1) return false;
-            player.RotChenge(bendPos[bi].rot); 
+            player.RotChenge(bendPos[bi].rot);
             hpBar.HpPlus(40f);
             return true;
         }
@@ -114,6 +120,7 @@ namespace SliderAction
             foreach (var f in floors) f.Draw(sb);
             foreach (var w in walls) w.Draw(sb);
             player.Draw(sb);
+            anime.Draw(sb, player.Pos);
             hpBar.Draw(sb);
         }
     }
