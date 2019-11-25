@@ -59,19 +59,8 @@ namespace SliderAction
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            switch (scene)
-            {
-                case Scene.TITL:
-                    title.Load(Content);
-                    break;
-                case Scene.TUTO:
-                    break;
-                case Scene.GAME:
-                    slideGame.Loads(Content);
-                    break;
-                case Scene.RESU:
-                    break;
-            }
+            title.Load(Content);
+            slideGame.Loads(Content);
         }
 
         /// <summary>
@@ -94,18 +83,21 @@ namespace SliderAction
                 Exit();
 
             // TODO: Add your update logic here
-            switch (scene)
+            if (scene == Scene.TITL)
             {
-                case Scene.TITL:
-                    if (title.PushKey()) scene = Scene.TUTO;
-                    break;
-                case Scene.TUTO:
-                    break;
-                case Scene.GAME:
-                    slideGame.Main();
-                    break;
-                case Scene.RESU:
-                    break;
+                if (title.PushKey()) scene = Scene.GAME;
+            }
+            if (scene == Scene.TUTO)
+            {
+
+            }
+            if (scene == Scene.GAME)
+            {
+                slideGame.Main();
+            }
+            if (scene == Scene.RESU)
+            {
+
             }
 
 
