@@ -40,8 +40,19 @@ namespace SliderAction
                 await Task.Delay(time);
                 drawF = false;
                 SlideGame.initF = true;
+                a = 0;
             }
         }
+
+        public async void SplitWaitDelay2(Action d, int time)
+        {
+            drawF = true;
+            nowT = t[1];
+            await Task.Delay(time);
+            drawF = false;
+            d();
+        }
+
         public void Draw(SpriteBatch sb, Vector2 pPos)
         {
             if (drawF)

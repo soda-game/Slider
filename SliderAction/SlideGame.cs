@@ -23,19 +23,18 @@ namespace SliderAction
         List<FloorFactory.BendSqr> bendPos;
         //プレイヤー
         Player player;
-        HpBar hpBar;
+        HpBar hpBar= new HpBar();
         Camera camera;
 
         //あにめ
-        Animetion anime;
+        Animetion anime = new Animetion();
 
-        public SlideGame(Camera c, HpBar h)
+        public void Init(Camera c)
         {
             stageNum = 0;
             initF = false;
             camera = c;
-            hpBar = h;
-            anime = new Animetion();
+            hpBar.Init();
         }
         public void Loads(ContentManager c)
         {
@@ -58,12 +57,16 @@ namespace SliderAction
             camera.Move(player.Pos);
             hpBar.Move(player.Pos);
             anime.SplitWaitDelay(2000);
+            game = false;
         }
 
-        public void Main()
+        bool game = false;
+        public bool Main()
         {
-            if (!initF) { Init(); return; }
+            if (!initF) { Init(); return false; }
 
+            if (game) { return true; }
+            if (player.deadF) { return false; }
             hpBar.HpPlus(-0.3f);
 
             if (Input.DownKey(Keys.Space))
@@ -82,17 +85,28 @@ namespace SliderAction
                 WallHit();
             }
 
-            if (hpBar.DeadCheck()) Debug.WriteLine("し！");
+            if (hpBar.DeadCheck())
+            {
+                anime.SplitWaitDelay2(Dad,2000);
+                player.deadF = true;
+            }
 
             player.Move();
             camera.Move(player.Pos);
             hpBar.Move(player.Pos);
+            return false;
+        }
+
+        public void Dad()
+        {
+            game = true;
         }
 
         bool BendHit()//曲がり角だったら曲がる
         {
             int bi = Collition.StayColl(bendPos, player.ColliPos);
             if (bi == -1) return false;
+            if (player.RotNum == bendPos[bi].rot) return false;
             player.RotChenge(bendPos[bi].rot);
             hpBar.HpPlus(40f);
             return true;

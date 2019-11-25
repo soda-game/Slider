@@ -21,7 +21,7 @@ namespace SliderAction
         float nowHp;
         float percent; //hp最大値と画像サイズの割合 サイズや最大値が変わっても対応できる
 
-        public HpBar()
+        public void Init()
         {
             nowHp = maxHp;
             percent = size.X / maxHp;

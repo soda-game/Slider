@@ -13,6 +13,7 @@ namespace SliderAction
         public const int hp = 20; //hp***
 
         PlayerVO pvo;
+         public bool deadF;
 
         int charaNum;
         protected override int CharaNum => charaNum;
@@ -22,7 +23,7 @@ namespace SliderAction
         float speed;
         protected override float Speed => speed;
         int rotNum;
-        protected override int RotNum => rotNum;
+        public override int RotNum => rotNum;
         Vector2[] colliPos;
         public override Vector2[] ColliPos => colliPos;
 
@@ -55,6 +56,7 @@ namespace SliderAction
         }
         public void Init()
         {
+            deadF = false;
             charaNum = pvo.InitCharaNum;
             pos = pvo.InitPos;
             speed = pvo.InitSpeed;

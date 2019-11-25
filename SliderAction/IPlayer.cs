@@ -40,7 +40,7 @@ namespace SliderAction
         protected abstract int CharaNum { get; }
         public abstract Vector2 Pos { get; }
         protected abstract float Speed { get; }
-        protected abstract int RotNum { get; }
+        public abstract int RotNum { get; }
         protected abstract Texture2D[] Spr { get; }
         public abstract Vector2[] ColliPos { get; }
     }

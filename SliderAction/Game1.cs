@@ -39,15 +39,17 @@ namespace SliderAction
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            camera = new Camera();
+            title = new Title();
+            slideGame = new SlideGame();
             Init();
+            scene = Scene.TITL;
             base.Initialize();
         }
         void Init()
         {
-            camera = new Camera(WIN_SIZE, WIN_SIZE);
-            title = new Title();
-            slideGame = new SlideGame(camera, new HpBar());
-            scene = Scene.TITL;
+            camera.Init(WIN_SIZE, WIN_SIZE);
+            slideGame.Init(camera);
         }
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
@@ -93,7 +95,7 @@ namespace SliderAction
             }
             if (scene == Scene.GAME)
             {
-                slideGame.Main();
+                if (slideGame.Main()) { Init(); }
             }
             if (scene == Scene.RESU)
             {
