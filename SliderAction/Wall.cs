@@ -25,7 +25,7 @@ namespace SliderAction
         public override List<Vector2[]> RecoverPos => wallVo.RecoverPos;
 
         //テスト
-        Texture2D recT;
+     public  Texture2D recT;
 
         public Wall(WallVO wvo, Texture2D rect)
         {

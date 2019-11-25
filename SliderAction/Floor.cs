@@ -26,6 +26,7 @@ namespace SliderAction
 
         public void Draw(SpriteBatch sb)
         {
+
             sb.Draw(Spr, Pos, null, Color.White, 0, new Vector2(H_SIZE, H_SIZE), Vector2.One, SpriteEffects.None, 0);
         }
     }

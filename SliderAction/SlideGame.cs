@@ -23,7 +23,7 @@ namespace SliderAction
         List<FloorFactory.BendSqr> bendPos;
         //プレイヤー
         Player player;
-        HpBar hpBar= new HpBar();
+        HpBar hpBar = new HpBar();
         Camera camera;
 
         //あにめ
@@ -57,17 +57,20 @@ namespace SliderAction
             camera.Move(player.Pos);
             hpBar.Move(player.Pos);
             anime.SplitWaitDelay(2000);
-            game = false;
+            game = -1;
         }
 
-        bool game = false;
-        public bool Main()
+        int game = -1;
+        public int Main()
         {
-            if (!initF) { Init(); return false; }
-
-            if (game) { return true; }
-            if (player.deadF) { return false; }
-            hpBar.HpPlus(-0.3f);
+            if (!initF) { Init(); return -1; }
+ 
+            if (game == 0) { return 0; }
+            else if (game == 1)
+            {
+                return 1;
+            }
+            if (player.deadF) { return -1; }
 
             if (Input.DownKey(Keys.Space))
             {
@@ -85,21 +88,29 @@ namespace SliderAction
                 WallHit();
             }
 
-            if (hpBar.DeadCheck())
+            if (player.Pos.Y < 0)
             {
-                anime.SplitWaitDelay2(Dad,2000);
+                anime.SplitWaitDelay2(Dad, 0, 2000);
+                return -1;
+            }
+            else if (hpBar.DeadCheck())
+            {
+                anime.SplitWaitDelay2(Dad, 1, 2000);
                 player.deadF = true;
+                return -1;
             }
 
             player.Move();
             camera.Move(player.Pos);
             hpBar.Move(player.Pos);
-            return false;
+            hpBar.HpPlus(-0.3f);
+
+            return -1;
         }
 
-        public void Dad()
+        public void Dad(int num)
         {
-            game = true;
+            game = num;
         }
 
         bool BendHit()//曲がり角だったら曲がる
@@ -133,6 +144,8 @@ namespace SliderAction
         {
             foreach (var f in floors) f.Draw(sb);
             foreach (var w in walls) w.Draw(sb);
+            foreach (var f in bendPos)
+                sb.Draw(walls[0].recT, new Rectangle((int)f.pos[0].X, (int)f.pos[0].Y, (int)(f.pos[1].X - f.pos[0].X), (int)(f.pos[1].Y - f.pos[0].Y)), Color.Red);
             player.Draw(sb);
             anime.Draw(sb, player.Pos);
             hpBar.Draw(sb);

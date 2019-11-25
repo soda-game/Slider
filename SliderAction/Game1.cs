@@ -95,11 +95,13 @@ namespace SliderAction
             }
             if (scene == Scene.GAME)
             {
-                if (slideGame.Main()) { Init(); }
+                int  i =slideGame.Main();
+                if (i == 1) { Init(); }
+                else if (i == 0) { scene = Scene.RESU; }
             }
             if (scene == Scene.RESU)
             {
-
+               
             }
 
 

@@ -94,13 +94,14 @@ namespace SliderAction
                     //隣がどこまでつながっているか
                     int j = 0;
                     foreach (var fx in floors)
-                        if (fx.Index[(int)IndecType.X] == f.Index[(int)IndecType.X] + j)
+                        if (fx.Index[(int)IndecType.X] > f.Index[(int)IndecType.X])
                         {
                             if (fx.Bend != (int)BendType.END)
                                 j++;
                             else if (fx.Bend == (int)BendType.END)
                             {
                                 dr.X = fx.ColliPos[(int)WallFactory.Square.DOWN_RIGHT].X;
+                                Debug.WriteLine(f.Index[(int)IndecType.Y] + j);
                                 break;
                             }
                         }
@@ -114,7 +115,6 @@ namespace SliderAction
                             else if (fy.Bend == (int)BendType.END)
                             {
                                 dr.Y = fy.ColliPos[(int)WallFactory.Square.DOWN_RIGHT].Y;
-                                Debug.WriteLine(f.Index[(int)IndecType.Y] + i);
                                 break;
                             }
                         }

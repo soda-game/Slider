@@ -61,9 +61,6 @@ namespace SliderAction
                     Vector2[] dp = DamagePosAsk(pos, 32);
                     List<Vector2[]> recoP = RecoverPos(j, i, dp, mapCsv, 30); //SIZE
 
-                    if (j == 9 && i == 16)
-                    { Debug.WriteLine("p:" + pos + " D:" + dp); }
-
                     WallVO wvo = new WallVO(spr, pos, dp, recoP, rot, cr, gap, bend);
                     Wall w = new Wall(wvo, sprs[StatusCsv[mapE][(int)ColumnNum.SPR]]);
                     walls.Add(w);

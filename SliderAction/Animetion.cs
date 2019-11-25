@@ -44,13 +44,13 @@ namespace SliderAction
             }
         }
 
-        public async void SplitWaitDelay2(Action d, int time)
+        public async void SplitWaitDelay2(Action<int> d,int num, int time)
         {
             drawF = true;
-            nowT = t[1];
+            nowT = t[num];
             await Task.Delay(time);
             drawF = false;
-            d();
+            d(num);
         }
 
         public void Draw(SpriteBatch sb, Vector2 pPos)
