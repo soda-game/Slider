@@ -87,18 +87,16 @@ namespace SliderAction
                 if (f.Bend == (int)BendType.START)
                 {
                     Vector2 ul = f.ColliPos[(int)WallFactory.Square.UP_LEFT];
-                    int rot = (f.B_Rot - 1)*3; //playerのenumに合わせる
+                    int rot = (f.B_Rot - 1) * 3; //playerのenumに合わせる
 
                     Vector2 dr = Vector2.Zero;
 
                     //隣がどこまでつながっているか
                     int j = 0;
                     foreach (var fx in floors)
-                        if (fx.Index[(int)IndecType.X] == f.Index[(int)IndecType.X] + j)
+                        if (fx.Index[(int)IndecType.X] >= f.Index[(int)IndecType.X] && fx.Index[(int)IndecType.Y] == f.Index[(int)IndecType.Y])
                         {
-                            if (fx.Bend != (int)BendType.END)
-                                j++;
-                            else if (fx.Bend == (int)BendType.END)
+                            if (fx.Bend == (int)BendType.END)
                             {
                                 dr.X = fx.ColliPos[(int)WallFactory.Square.DOWN_RIGHT].X;
                                 break;
@@ -107,11 +105,9 @@ namespace SliderAction
                     //下がどこまでつながってるか
                     int i = 0;
                     foreach (var fy in floors)
-                        if (fy.Index[(int)IndecType.Y] == f.Index[(int)IndecType.Y] + i && fy.Index[(int)IndecType.X] == f.Index[(int)IndecType.X])
+                        if (fy.Index[(int)IndecType.X] == f.Index[(int)IndecType.X] && fy.Index[(int)IndecType.Y] >= f.Index[(int)IndecType.Y])
                         {
-                            if (fy.Bend != (int)BendType.END)
-                                i++;
-                            else if (fy.Bend == (int)BendType.END)
+                            if (fy.Bend == (int)BendType.END)
                             {
                                 dr.Y = fy.ColliPos[(int)WallFactory.Square.DOWN_RIGHT].Y;
                                 Debug.WriteLine(f.Index[(int)IndecType.Y] + i);
