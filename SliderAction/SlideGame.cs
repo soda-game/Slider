@@ -65,7 +65,8 @@ namespace SliderAction
         {
             if (!initF) { Init(); return -1; }
  
-            if (game == 0) { return 0; }
+            if (game == 0) {
+                return 0; }
             else if (game == 1)
             {
                 return 1;

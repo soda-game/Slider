@@ -101,7 +101,7 @@ namespace SliderAction
                 else iAfIndex = 0;
 
                 int afE = mapCsv[iAfIndex][jAfIndex];
-                if (afE < 100) continue;
+                if (afE != 101) continue;
 
                 //床なら方向ごとにRecoPを格納
                 Vector2 ul; Vector2 dr;

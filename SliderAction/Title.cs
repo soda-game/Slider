@@ -19,7 +19,7 @@ namespace SliderAction
         public Title()
         { }
 
-        //public bool Main() ***
+        //public bool Main() *** abs作る
         //{ }
         public bool PushKey()
         {

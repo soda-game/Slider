@@ -16,7 +16,9 @@ namespace SliderAction
         //クラス
         Camera camera;
         Title title;
+        Tutorial tutorial;
         SlideGame slideGame;
+        Result result;
 
         enum Scene
         { TITL, TUTO, GAME, RESU }
@@ -41,7 +43,9 @@ namespace SliderAction
             // TODO: Add your initialization logic here
             camera = new Camera();
             title = new Title();
+            tutorial = new Tutorial();
             slideGame = new SlideGame();
+            result = new Result();
             Init();
             scene = Scene.TITL;
             base.Initialize();
@@ -87,21 +91,23 @@ namespace SliderAction
             // TODO: Add your update logic here
             if (scene == Scene.TITL)
             {
-                if (title.PushKey()) scene = Scene.GAME;
+                if (title.PushKey()) scene = Scene.TUTO;
             }
             if (scene == Scene.TUTO)
             {
-
+                if (tutorial.PushKey()) scene = Scene.GAME;
             }
             if (scene == Scene.GAME)
             {
                 int  i =slideGame.Main();
                 if (i == 1) { Init(); }
-                else if (i == 0) { scene = Scene.RESU; }
+                else if (i == 0) {
+                    Init();
+                    scene = Scene.RESU; }
             }
             if (scene == Scene.RESU)
             {
-               
+                if (result.PushKey()) scene = Scene.TITL;
             }
 
 
