@@ -34,9 +34,9 @@ namespace SliderAction
             Vector2 pos = PosAsk(stat[(int)ColumnNum.POSX], stat[(int)ColumnNum.POSY], Convert.ToBoolean(stat[(int)ColumnNum.POS_FIX]), new Vector2(64, 64), 32);//MAPSIZE***
             float speed = stat[(int)ColumnNum.SPEED] / 10;
             int rotNum = stat[(int)ColumnNum.ROT] * 3;
-            Vector2[] cp = ColliPosAsk(pos, new Vector2(32 / 2, 50 / 2));
+            Vector2[] cp = ColliPosAsk(pos, new Vector2(32 / 2, 32 / 2));
 
-            PlayerVO pvo = new PlayerVO(cNum, spr, pos, speed, rotNum,cp);
+            PlayerVO pvo = new PlayerVO(cNum, spr, pos, speed, rotNum, cp);
 
             Player player = new Player(pvo);
             return player;
@@ -48,7 +48,7 @@ namespace SliderAction
 
             pos = new Vector2(x * size.X, y * size.Y);
             if (pFix)
-                pos = new Vector2(x + mapSizeH, y + mapSizeH);
+                pos += new Vector2(mapSizeH, 0);
 
             return pos;
         }

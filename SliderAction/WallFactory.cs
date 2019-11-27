@@ -25,7 +25,7 @@ namespace SliderAction
         static Texture2D[] sprs;
         static public void Load(ContentManager c)
         {
-            sprs = new Texture2D[] { c.Load<Texture2D>("wall") /*,c.Load<Texture2D>("SmallMiddle")*/ };//***
+            sprs = new Texture2D[] { c.Load<Texture2D>("crossWall"), c.Load<Texture2D>("Reco") };//***
         }
         //Rot
         enum RotTyep
@@ -61,11 +61,8 @@ namespace SliderAction
                     Vector2[] dp = DamagePosAsk(pos, 32);
                     List<Vector2[]> recoP = RecoverPos(j, i, dp, mapCsv, 30); //SIZE
 
-                    if (j == 9 && i == 16)
-                    { Debug.WriteLine("p:" + pos + " D:" + dp); }
-
                     WallVO wvo = new WallVO(spr, pos, dp, recoP, rot, cr, gap, bend);
-                    Wall w = new Wall(wvo, sprs[StatusCsv[mapE][(int)ColumnNum.SPR]]);
+                    Wall w = new Wall(wvo, sprs[1]);
                     walls.Add(w);
                 }
             }
@@ -104,7 +101,7 @@ namespace SliderAction
                 else iAfIndex = 0;
 
                 int afE = mapCsv[iAfIndex][jAfIndex];
-                if (afE < 100) continue;
+                if (afE != 101) continue;
 
                 //床なら方向ごとにRecoPを格納
                 Vector2 ul; Vector2 dr;

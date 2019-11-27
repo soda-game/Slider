@@ -42,6 +42,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Animetion.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="Collition.cs" />
     <Compile Include="Floor.cs" />
@@ -56,7 +57,10 @@
     <Compile Include="ReadCSV.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Result.cs" />
     <Compile Include="SlideGame.cs" />
+    <Compile Include="Title.cs" />
+    <Compile Include="Tutorial.cs" />
     <Compile Include="Wall.cs" />
     <Compile Include="WallFactory.cs" />
     <Compile Include="IWall.cs" />

@@ -47,7 +47,6 @@ namespace SliderAction
             for (int i = 0; i < floorOb.Count; i++)
                 if (StayColl(floorOb[i].pos, pDp))
                     index = i;
-
             return index;
         }
     }

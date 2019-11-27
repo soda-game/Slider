@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace SliderAction
 {
@@ -11,12 +13,20 @@ namespace SliderAction
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
-        const int WIN_SIZE= 700;
+        const int WIN_SIZE = 700;
 
         //クラス
-        SlideGame slideGame;
         Camera camera;
+        Title title;
+        Tutorial tutorial;
+        SlideGame slideGame;
+        Result result;
+
+        enum Scene
+        { TITL, TUTO, GAME, RESU }
+        Scene scene;
+
+        Song bgm;
 
         public Game1()
         {
@@ -24,6 +34,7 @@ namespace SliderAction
             graphics.PreferredBackBufferWidth = WIN_SIZE;
             graphics.PreferredBackBufferHeight = WIN_SIZE;
             Content.RootDirectory = "Content";
+            Window.Title = "すらいだー ver0.8";
         }
 
         /// <summary>
@@ -35,10 +46,20 @@ namespace SliderAction
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            camera = new Camera(WIN_SIZE, WIN_SIZE);
-            slideGame = new SlideGame(camera,new HpBar());
-
+            camera = new Camera();
+            title = new Title();
+            tutorial = new Tutorial();
+            slideGame = new SlideGame();
+            result = new Result();
+            Init();
+            MediaPlayer.IsRepeating = true;
+            scene = Scene.TITL;
             base.Initialize();
+        }
+        void Init()
+        {
+            camera.Init(WIN_SIZE, WIN_SIZE);
+            slideGame.Init(camera);
         }
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
@@ -50,7 +71,11 @@ namespace SliderAction
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            title.Load(Content);
             slideGame.Loads(Content);
+            result.Load(Content);
+            bgm = Content.Load<Song>("BGM");
+            MediaPlayer.Play(bgm);
         }
 
         /// <summary>
@@ -73,7 +98,27 @@ namespace SliderAction
                 Exit();
 
             // TODO: Add your update logic here
-            slideGame.Main();
+
+            if (scene == Scene.TITL)
+            {
+                if (title.PushKey()) scene = Scene.TUTO;
+            }
+            if (scene == Scene.TUTO)
+            {
+                if (tutorial.PushKey()) scene = Scene.GAME;
+            }
+            if (scene == Scene.GAME)
+            {
+                int  i =slideGame.Main();
+                if (i == 1) { Init(); }
+                else if (i == 0) {
+                    Init();
+                    scene = Scene.RESU; }
+            }
+            if (scene == Scene.RESU)
+            {
+                if (result.PushKey()) scene = Scene.TITL;
+            }
 
 
             base.Update(gameTime);
@@ -85,7 +130,7 @@ namespace SliderAction
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.Deferred,
@@ -95,8 +140,21 @@ namespace SliderAction
                               RasterizerState.CullCounterClockwise,
                               null,
                               camera.GetMatrix());
+            switch (scene)
+            {
+                case Scene.TITL:
+                    title.Draw(spriteBatch);
+                    break;
+                case Scene.TUTO:
+                    break;
+                case Scene.GAME:
+                    slideGame.Draw(spriteBatch);
+                    break;
+                case Scene.RESU:
+                    result.Draw(spriteBatch);
+                    break;
+            }
 
-            slideGame.Draw(spriteBatch);
 
             spriteBatch.End();
             base.Draw(gameTime);

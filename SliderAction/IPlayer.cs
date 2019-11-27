@@ -33,14 +33,14 @@ namespace SliderAction
     {
 
         const int HALF = 2;
-        static protected readonly Vector2 SIZE = new Vector2(32, 50);
+        static protected readonly Vector2 SIZE = new Vector2(32, 32);
         protected readonly Vector2 H_SIZE = new Vector2(SIZE.X / HALF, SIZE.Y / HALF);
         const float HP_MIN = 10;
 
         protected abstract int CharaNum { get; }
         public abstract Vector2 Pos { get; }
         protected abstract float Speed { get; }
-        protected abstract int RotNum { get; }
+        public abstract int RotNum { get; }
         protected abstract Texture2D[] Spr { get; }
         public abstract Vector2[] ColliPos { get; }
     }

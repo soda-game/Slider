@@ -25,7 +25,7 @@ namespace SliderAction
         public override List<Vector2[]> RecoverPos => wallVo.RecoverPos;
 
         //テスト
-        Texture2D recT;
+     public  Texture2D recT;
 
         public Wall(WallVO wvo, Texture2D rect)
         {
@@ -50,7 +50,7 @@ namespace SliderAction
             int ul = (int)WallFactory.Square.UP_LEFT;
             int dr = (int)WallFactory.Square.DOWN_RIGHT;
             foreach (var r in RecoverPos)
-                sb.Draw(recT, new Rectangle((int)r[ul].X, (int)r[ul].Y, (int)(r[dr].X - r[ul].X), (int)(r[dr].Y -r[ul].Y)), Color.Wheat*0.5f);
+                sb.Draw(recT, new Rectangle((int)r[ul].X, (int)r[ul].Y, (int)(r[dr].X - r[ul].X), (int)(r[dr].Y -r[ul].Y)), Color.Wheat*0.8f);
 
         }
     }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -13,15 +14,15 @@ namespace SliderAction
     {
         Texture2D bar;
         readonly Vector2 size = new Vector2(300, 40);
-
         readonly Vector2 posInit = new Vector2(330, 330);
         Vector2 pos;
+       
 
         const float maxHp = 200f;
         float nowHp;
         float percent; //hp最大値と画像サイズの割合 サイズや最大値が変わっても対応できる
 
-        public HpBar()
+        public void Init()
         {
             nowHp = maxHp;
             percent = size.X / maxHp;
@@ -49,6 +50,7 @@ namespace SliderAction
 
         public void Draw(SpriteBatch sb)
         {
+            sb.Draw(bar, pos, Color.Red);
             sb.Draw(bar, pos, new Rectangle((int)pos.X, (int)pos.Y, (int)(nowHp * percent), (int)size.Y), Color.White);
         }
     }

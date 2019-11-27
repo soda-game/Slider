@@ -21,7 +21,7 @@ namespace SliderAction
         static Texture2D[] sprs;
         static public void Load(ContentManager c)
         {
-            sprs = new Texture2D[] { c.Load<Texture2D>("none"), c.Load<Texture2D>("bend") };
+            sprs = new Texture2D[] { c.Load<Texture2D>("floor")};
         }
 
 
@@ -77,6 +77,7 @@ namespace SliderAction
         {
             public Vector2[] pos;
             public int rot;
+            public bool end;
         }
         static public List<BendSqr> BendPosAsk(List<Floor> floors)
         {
@@ -99,29 +100,34 @@ namespace SliderAction
                             if (fx.Bend == (int)BendType.END)
                             {
                                 dr.X = fx.ColliPos[(int)WallFactory.Square.DOWN_RIGHT].X;
+                                Debug.WriteLine(f.Index[(int)IndecType.Y] + j);
                                 break;
                             }
                         }
                     //下がどこまでつながってるか
-                    int i = 0;
                     foreach (var fy in floors)
                         if (fy.Index[(int)IndecType.X] == f.Index[(int)IndecType.X] && fy.Index[(int)IndecType.Y] >= f.Index[(int)IndecType.Y])
                         {
                             if (fy.Bend == (int)BendType.END)
                             {
                                 dr.Y = fy.ColliPos[(int)WallFactory.Square.DOWN_RIGHT].Y;
-                                Debug.WriteLine(f.Index[(int)IndecType.Y] + i);
                                 break;
                             }
                         }
 
                     //合わせる
                     Vector2[] spuare = { ul, dr };
-                    BendSqr bs = new BendSqr { pos = spuare, rot = rot };
+                    BendSqr bs = new BendSqr { pos = spuare, rot = rot, end = false };
                     bends.Add(bs);
                 }
 
             return bends;
+        }
+
+        static public BendSqr BendChenge(BendSqr bend)
+        {
+            bend.end = true;
+            return bend;
         }
     }
 }
