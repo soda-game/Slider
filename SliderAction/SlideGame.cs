@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
+using Microsoft.Xna.Framework.Audio;
 
 namespace SliderAction
 {
@@ -20,12 +21,13 @@ namespace SliderAction
         //壁
         List<Wall> walls;
         List<Floor> floors;
-        List<FloorFactory.BendSqr> bendPos;
+        List<FloorFactory.BendSqr> bends;
         //プレイヤー
         Player player;
         HpBar hpBar = new HpBar();
         Camera camera;
 
+        SoundEffect se;
         //あにめ
         Animetion anime = new Animetion();
 
@@ -43,6 +45,8 @@ namespace SliderAction
             FloorFactory.Load(c);
             hpBar.Load(c);
             anime.Load(c);
+            se = c.Load<SoundEffect>("recover");
+
         }
 
         public void Init()
@@ -50,7 +54,7 @@ namespace SliderAction
             walls = WallFactory.WallsCreate(stageNum);
             player = PlayerFactory.PlayerCreate(stageNum);
             floors = FloorFactory.CriateFloor(stageNum);
-            bendPos = FloorFactory.BendPosAsk(floors);
+            bends = FloorFactory.BendPosAsk(floors);
 
             foreach (var w in walls) w.Init();
             player.Init();
@@ -64,20 +68,28 @@ namespace SliderAction
         public int Main()
         {
             if (!initF) { Init(); return -1; }
- 
-            if (game == 0) {
-                return 0; }
+
+            if (game == 0)
+            {
+                return 0;
+            }
             else if (game == 1)
             {
                 return 1;
             }
             if (player.deadF) { return -1; }
 
+            player.Count();
             if (Input.DownKey(Keys.Space))
             {
-                if (!BendHit())
+                if (player.CountCheck())
                 {
-                    Oblique();
+                    if (!BendHit())
+                    {
+                        Oblique();
+
+                    }
+                    player.CountCheckStart();
                 }
             }
             //else if (Input.DownKey(Keys.J))
@@ -116,11 +128,12 @@ namespace SliderAction
 
         bool BendHit()//曲がり角だったら曲がる
         {
-            int bi = Collition.StayColl(bendPos, player.ColliPos);
-            if (bi == -1) return false;
-            if (player.RotNum == bendPos[bi].rot) return false;
-            player.RotChenge(bendPos[bi].rot);
+            int bi = Collition.StayColl(bends, player.ColliPos);
+            if (bi == -1 || bends[bi].end == true) return false;
+            player.RotChenge(bends[bi].rot);
+            bends[bi] = FloorFactory.BendChenge(bends[bi]);
             hpBar.HpPlus(40f);
+            se.Play();
             return true;
         }
         void Oblique()//斜め
@@ -130,7 +143,8 @@ namespace SliderAction
                 int ri = Collition.StayColl(w.RecoverPos, player.ColliPos);
                 if (ri != -1)
                 {
-                    hpBar.HpPlus(10f); //回復ゾーンだったら回復
+                    hpBar.HpPlus(20f); //回復ゾーンだったら回復
+                    se.Play();
                 }
             }
             player.Checkout();
@@ -145,8 +159,8 @@ namespace SliderAction
         {
             foreach (var f in floors) f.Draw(sb);
             foreach (var w in walls) w.Draw(sb);
-            foreach (var f in bendPos)
-                sb.Draw(walls[0].recT, new Rectangle((int)f.pos[0].X, (int)f.pos[0].Y, (int)(f.pos[1].X - f.pos[0].X), (int)(f.pos[1].Y - f.pos[0].Y)), Color.Red);
+            foreach (var f in bends)
+                sb.Draw(walls[0].recT, new Rectangle((int)f.pos[0].X, (int)f.pos[0].Y, (int)(f.pos[1].X - f.pos[0].X), (int)(f.pos[1].Y - f.pos[0].Y)), Color.White * 0.7f);
             player.Draw(sb);
             anime.Draw(sb, player.Pos);
             hpBar.Draw(sb);

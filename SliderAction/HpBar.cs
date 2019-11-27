@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -13,9 +14,9 @@ namespace SliderAction
     {
         Texture2D bar;
         readonly Vector2 size = new Vector2(300, 40);
-
         readonly Vector2 posInit = new Vector2(330, 330);
         Vector2 pos;
+       
 
         const float maxHp = 200f;
         float nowHp;
@@ -48,6 +49,7 @@ namespace SliderAction
 
         public void Draw(SpriteBatch sb)
         {
+            sb.Draw(bar, pos, Color.Red);
             sb.Draw(bar, pos, new Rectangle((int)pos.X, (int)pos.Y, (int)(nowHp * percent), (int)size.Y), Color.White);
         }
     }

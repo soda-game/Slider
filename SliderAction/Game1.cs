@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace SliderAction
 {
@@ -24,12 +26,15 @@ namespace SliderAction
         { TITL, TUTO, GAME, RESU }
         Scene scene;
 
+        Song bgm;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = WIN_SIZE;
             graphics.PreferredBackBufferHeight = WIN_SIZE;
             Content.RootDirectory = "Content";
+            Window.Title = "すらいだー ver0.8";
         }
 
         /// <summary>
@@ -47,6 +52,7 @@ namespace SliderAction
             slideGame = new SlideGame();
             result = new Result();
             Init();
+            MediaPlayer.IsRepeating = true;
             scene = Scene.TITL;
             base.Initialize();
         }
@@ -67,6 +73,9 @@ namespace SliderAction
             // TODO: use this.Content to load your game content here
             title.Load(Content);
             slideGame.Loads(Content);
+            result.Load(Content);
+            bgm = Content.Load<Song>("BGM");
+            MediaPlayer.Play(bgm);
         }
 
         /// <summary>
@@ -89,6 +98,7 @@ namespace SliderAction
                 Exit();
 
             // TODO: Add your update logic here
+
             if (scene == Scene.TITL)
             {
                 if (title.PushKey()) scene = Scene.TUTO;
@@ -120,7 +130,7 @@ namespace SliderAction
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.Deferred,
@@ -141,6 +151,7 @@ namespace SliderAction
                     slideGame.Draw(spriteBatch);
                     break;
                 case Scene.RESU:
+                    result.Draw(spriteBatch);
                     break;
             }
 

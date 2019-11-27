@@ -21,7 +21,7 @@ namespace SliderAction
         int a = 0;
         public /*abstract*/ void Load(ContentManager c)
         {
-            t = new Texture2D[] { c.Load<Texture2D>("ready"), c.Load<Texture2D>("go") };
+            t = new Texture2D[] { c.Load<Texture2D>("goal"), c.Load<Texture2D>("out"), c.Load<Texture2D>("ready"), c.Load<Texture2D>("go") };
         }
 
         public async void SplitWaitDelay(int time)
@@ -29,14 +29,15 @@ namespace SliderAction
             if (a == 0)
             {
                 drawF = true;
-                nowT = t[0];
-                this.pos = new Vector2(-100, -100);
+                nowT = t[2];
+                this.pos = new Vector2(-200, 100);
                 await Task.Delay(time);
                 a = 1;
             }
             else if (a == 1)
             {
-                nowT = t[1];
+                this.pos = new Vector2(-100, 100);
+                nowT = t[3];
                 await Task.Delay(time);
                 drawF = false;
                 SlideGame.initF = true;
@@ -48,6 +49,7 @@ namespace SliderAction
         {
             drawF = true;
             nowT = t[num];
+            this.pos = new Vector2(-210, 100);
             await Task.Delay(time);
             drawF = false;
             d(num);

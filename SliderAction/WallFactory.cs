@@ -25,7 +25,7 @@ namespace SliderAction
         static Texture2D[] sprs;
         static public void Load(ContentManager c)
         {
-            sprs = new Texture2D[] { c.Load<Texture2D>("wall") /*,c.Load<Texture2D>("SmallMiddle")*/ };//***
+            sprs = new Texture2D[] { c.Load<Texture2D>("crossWall"), c.Load<Texture2D>("Reco") };//***
         }
         //Rot
         enum RotTyep
@@ -62,7 +62,7 @@ namespace SliderAction
                     List<Vector2[]> recoP = RecoverPos(j, i, dp, mapCsv, 30); //SIZE
 
                     WallVO wvo = new WallVO(spr, pos, dp, recoP, rot, cr, gap, bend);
-                    Wall w = new Wall(wvo, sprs[StatusCsv[mapE][(int)ColumnNum.SPR]]);
+                    Wall w = new Wall(wvo, sprs[1]);
                     walls.Add(w);
                 }
             }

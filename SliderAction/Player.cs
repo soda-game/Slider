@@ -13,7 +13,7 @@ namespace SliderAction
         public const int hp = 20; //hp***
 
         PlayerVO pvo;
-         public bool deadF;
+        public bool deadF;
 
         int charaNum;
         protected override int CharaNum => charaNum;
@@ -34,22 +34,25 @@ namespace SliderAction
             DOWN, DOWN_LEFT, DOWN_RIGHT,
             LEFT, LEFT_LEFT, LEFT_RIGHT
         }
+        //readonly float[] rots = new float[] {
+        //     0,MathHelper.ToRadians(330), MathHelper.ToRadians(30),
+        //     MathHelper.ToRadians(90), MathHelper.ToRadians(60), MathHelper.ToRadians(120),
+        //     MathHelper.ToRadians(180), MathHelper.ToRadians(150), MathHelper.ToRadians(210),
+        //     MathHelper.ToRadians(270), MathHelper.ToRadians(240), MathHelper.ToRadians(300)
+        //};
         readonly float[] rots = new float[] {
-             0,MathHelper.ToRadians(330), MathHelper.ToRadians(30),
-             MathHelper.ToRadians(90), MathHelper.ToRadians(60), MathHelper.ToRadians(120),
-             MathHelper.ToRadians(180), MathHelper.ToRadians(150), MathHelper.ToRadians(210),
-             MathHelper.ToRadians(270), MathHelper.ToRadians(240), MathHelper.ToRadians(300)
+             0,0,0,
+             MathHelper.ToRadians(90), MathHelper.ToRadians(90), MathHelper.ToRadians(90),
+             MathHelper.ToRadians(180), MathHelper.ToRadians(180), MathHelper.ToRadians(180),
+             MathHelper.ToRadians(270), MathHelper.ToRadians(270), MathHelper.ToRadians(270)
         };
-        Vector2[] MovesAsk() //配列内にref出来なかったので
-        {
-            return new Vector2[] {
-              new Vector2(0, -speed),new Vector2(-speed, -speed), new Vector2(speed, -speed),
-              new Vector2(speed, 0), new Vector2(speed, -speed), new Vector2(speed, speed),
-              new Vector2(0, speed), new Vector2(speed, speed), new Vector2(-speed, speed),
-              new Vector2(-speed, 0), new Vector2(-speed, speed), new Vector2(-speed, -speed)
+        Vector2[] MovesAsk = new Vector2[] {
+              new Vector2(0, -1),new Vector2(-1, -1), new Vector2(1, -1),
+              new Vector2(1, 0), new Vector2(1, -1), new Vector2(1, 1),
+              new Vector2(0, 1), new Vector2(1, 1), new Vector2(-1, 1),
+              new Vector2(-1, 0), new Vector2(-1, 1), new Vector2(-1, -1)
               };
-        }
-
+        int count;
         public Player(PlayerVO pvo)
         {
             this.pvo = pvo;
@@ -62,11 +65,12 @@ namespace SliderAction
             speed = pvo.InitSpeed;
             rotNum = pvo.InitRotNum;
             colliPos = pvo.ColliPos;
+            count = 0;
         }
 
         public void Move()
         {
-            Vector2 move = Vector2.Normalize(MovesAsk()[rotNum]);
+            Vector2 move = Vector2.Normalize(MovesAsk[rotNum])*speed;
             pos += move;
             for (int i = 0; i < colliPos.Length; i++) colliPos[i] += move;
         }
@@ -74,6 +78,19 @@ namespace SliderAction
         {
             this.rotNum = rot;
         }
+
+        public void Count() { count--; }
+        public bool CountCheck()
+        {
+            if (count < 0) return true;
+            return false;
+        }
+        public void CountCheckStart()
+        {
+            count = 10;
+        }
+
+
         public void Checkout()
         {
             switch (rotNum)
