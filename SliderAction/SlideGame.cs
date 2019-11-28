@@ -111,7 +111,7 @@ namespace SliderAction
             player.Move();
             camera.Move(player.Pos);
             hpBar.Move(player.Pos);
-            hpBar.HpPlus(-0.3f);
+            hpBar.HpPlus(-0.45f);
 
             return -1;
         }
@@ -127,7 +127,7 @@ namespace SliderAction
             if (bi == -1 || bends[bi].end == true) return false;
             player.RotChenge(bends[bi].rot);
             bends[bi] = FloorFactory.BendChenge(bends[bi]);
-            hpBar.HpPlus(40f);
+            hpBar.HpPlus(50f);
             se.Play();
             return true;
         }
@@ -138,8 +138,9 @@ namespace SliderAction
                 int ri = Collition.StayColl(w.RecoverPos, player.ColliPos);
                 if (ri != -1)
                 {
-                    hpBar.HpPlus(20f); //回復ゾーンだったら回復
+                    hpBar.HpPlus(30f); //回復ゾーンだったら回復
                     se.Play();
+                    break;
                 }
             }
             player.Checkout();
