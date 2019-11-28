@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 
 namespace SliderAction
@@ -72,6 +71,7 @@ namespace SliderAction
 
             // TODO: use this.Content to load your game content here
             title.Load(Content);
+            tutorial.Load(Content);
             slideGame.Loads(Content);
             result.Load(Content);
             bgm = Content.Load<Song>("BGM");
@@ -146,6 +146,7 @@ namespace SliderAction
                     title.Draw(spriteBatch);
                     break;
                 case Scene.TUTO:
+                    tutorial.Draw(spriteBatch);
                     break;
                 case Scene.GAME:
                     slideGame.Draw(spriteBatch);
