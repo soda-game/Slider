@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace SliderAction
 {
@@ -93,14 +88,12 @@ namespace SliderAction
                     Vector2 dr = Vector2.Zero;
 
                     //隣がどこまでつながっているか
-                    int j = 0;
                     foreach (var fx in floors)
                         if (fx.Index[(int)IndecType.X] >= f.Index[(int)IndecType.X] && fx.Index[(int)IndecType.Y] == f.Index[(int)IndecType.Y])
                         {
                             if (fx.Bend == (int)BendType.END)
                             {
                                 dr.X = fx.ColliPos[(int)WallFactory.Square.DOWN_RIGHT].X;
-                                Debug.WriteLine(f.Index[(int)IndecType.Y] + j);
                                 break;
                             }
                         }
