@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Graphics;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace SliderAction
 {
     class Result
     {
-        Texture2D title;
+        Texture2D result;
         readonly Vector2 pos = Vector2.Zero;
 
         public void Load(ContentManager c)
-        { title = c.Load<Texture2D>("Result"); }
+        { result = c.Load<Texture2D>("Result"); }
         public Result()
         { }
 
@@ -29,7 +24,7 @@ namespace SliderAction
 
         public void Draw(SpriteBatch sb)
         {
-            sb.Draw(title, pos, Color.White);
+            sb.Draw(result, pos, Color.White);
         }
     }
 }
