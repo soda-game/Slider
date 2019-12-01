@@ -71,6 +71,8 @@ namespace SliderAction
 
             // TODO: use this.Content to load your game content here
             title.Load(Content);
+            title.Init();
+
             tutorial.Load(Content);
             slideGame.Loads(Content);
             result.Load(Content);
@@ -101,7 +103,7 @@ namespace SliderAction
 
             if (scene == Scene.TITL)
             {
-                if (title.PushKey()) scene = Scene.TUTO;
+                if (title.PushKey()) scene = Scene.TUTO; //ここで次のinitを呼ぶ
             }
             if (scene == Scene.TUTO)
             {
@@ -109,11 +111,13 @@ namespace SliderAction
             }
             if (scene == Scene.GAME)
             {
-                int  i =slideGame.Main();
+                int i = slideGame.Main();
                 if (i == 1) { Init(); }
-                else if (i == 0) {
+                else if (i == 0)
+                {
                     Init();
-                    scene = Scene.RESU; }
+                    scene = Scene.RESU;
+                }
             }
             if (scene == Scene.RESU)
             {
@@ -143,7 +147,7 @@ namespace SliderAction
             switch (scene)
             {
                 case Scene.TITL:
-                    title.Draw(spriteBatch);
+                    title.Draw(spriteBatch,Vector2.Zero);
                     break;
                 case Scene.TUTO:
                     tutorial.Draw(spriteBatch);

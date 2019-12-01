@@ -4,28 +4,22 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 namespace SliderAction
 {
-    class Title
+    class Title : IUI
     {
-        Texture2D title;
-        readonly Vector2 pos = Vector2.Zero;
+        UIVO uiVo;
 
-        public void Load(ContentManager c)
-        { title = c.Load<Texture2D>("Title"); }
-        public Title()
-        { }
+        protected override Texture2D Texture => uiVo.texture;
+        protected override Vector2 LocalPos => uiVo.localPos;
+        bool drawF;
+        protected override bool DrawF => drawF;
 
-        //public bool Main() *** abs作る
-        //{ }
-        public bool PushKey()
+        public override void Load(ContentManager c)
+        { uiVo = new UIVO(c.Load<Texture2D>("Title"), Vector2.Zero); }
+        public override void Init()
         {
-            if (Input.DownKey(Keys.Space))
-                return true;
-            return false;
+            drawF = uiVo.drawF;
         }
 
-        public void Draw(SpriteBatch sb)
-        {
-            sb.Draw(title, pos, Color.White);
-        }
+
     }
 }

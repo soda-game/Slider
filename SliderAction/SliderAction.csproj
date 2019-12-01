@@ -61,6 +61,7 @@
     <Compile Include="SlideGame.cs" />
     <Compile Include="Title.cs" />
     <Compile Include="Tutorial.cs" />
+    <Compile Include="UI.cs" />
     <Compile Include="Wall.cs" />
     <Compile Include="WallFactory.cs" />
     <Compile Include="IWall.cs" />
