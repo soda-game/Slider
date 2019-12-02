@@ -32,6 +32,7 @@ namespace SliderAction
             initF = false;
             camera = c;
             hpBar.Init();
+
         }
         public void Loads(ContentManager c)
         {

@@ -49,6 +49,7 @@
     <Compile Include="FloorFactory.cs" />
     <Compile Include="HpBar.cs" />
     <Compile Include="IFloor.cs" />
+    <Compile Include="IManager.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Player.cs" />
@@ -61,7 +62,8 @@
     <Compile Include="SlideGame.cs" />
     <Compile Include="Title.cs" />
     <Compile Include="Tutorial.cs" />
-    <Compile Include="UI.cs" />
+    <Compile Include="IUI.cs" />
+    <Compile Include="TitleManager.cs" />
     <Compile Include="Wall.cs" />
     <Compile Include="WallFactory.cs" />
     <Compile Include="IWall.cs" />

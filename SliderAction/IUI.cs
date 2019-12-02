@@ -12,31 +12,40 @@ namespace SliderAction
 {
     struct UIVO
     {
-        public Texture2D texture;
-        public Vector2 localPos;
-        public bool drawF;
+        public Texture2D[] textures;
+        public Vector2[] localPos;
+        public bool[] drawF;
 
-        public UIVO(Texture2D texture, Vector2 localPos)
+        public UIVO(Texture2D[] texture, Vector2[] localPos)
         {
-            this.texture = texture;
+            this.textures = texture;
             this.localPos = localPos;
-            drawF = true;
+
+            drawF = new bool[texture.Length];
+            drawF = OtherSystem.AllIn(drawF, true);
         }
     }
 
     abstract class IUI
     {
-        abstract protected Texture2D Texture { get; }
-        abstract protected Vector2 LocalPos { get; }
-        abstract protected bool DrawF { get; }
+        protected UIVO uiVo;
+        protected Vector2[] localPos;
+        protected bool[] drawF;
 
-        abstract public void Init();
         abstract public void Load(ContentManager c);
+        virtual public void Init()
+        {
+            localPos = uiVo.localPos;
+            drawF = uiVo.drawF;
+        }
 
         virtual public void Draw(SpriteBatch sb, Vector2 localDif)
         {
-            if (DrawF)
-                sb.Draw(Texture, LocalPos + localDif, Color.White);
+            for (int i = 0; i < drawF.Length; i++)
+            {
+                if (drawF[i])
+                    sb.Draw(uiVo.textures[i], localPos[i] + localDif, Color.White);
+            }
         }
     }
 }

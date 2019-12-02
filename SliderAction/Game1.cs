@@ -16,7 +16,7 @@ namespace SliderAction
 
         //クラス
         Camera camera;
-        Title title;
+        TitleManager titleManager;
         Tutorial tutorial;
         SlideGame slideGame;
         Result result;
@@ -46,7 +46,7 @@ namespace SliderAction
         {
             // TODO: Add your initialization logic here
             camera = new Camera();
-            title = new Title();
+            titleManager = new TitleManager();
             tutorial = new Tutorial();
             slideGame = new SlideGame();
             result = new Result();
@@ -70,8 +70,7 @@ namespace SliderAction
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            title.Load(Content);
-            title.Init();
+            titleManager.Load(Content);
 
             tutorial.Load(Content);
             slideGame.Loads(Content);
@@ -103,7 +102,8 @@ namespace SliderAction
 
             if (scene == Scene.TITL)
             {
-                if (title.PushKey()) scene = Scene.TUTO; //ここで次のinitを呼ぶ
+
+                if (titleManager.Main()) scene = Scene.TUTO; //ここで次のinitを呼ぶ
             }
             if (scene == Scene.TUTO)
             {
@@ -147,7 +147,7 @@ namespace SliderAction
             switch (scene)
             {
                 case Scene.TITL:
-                    title.Draw(spriteBatch,Vector2.Zero);
+                    titleManager.Draw(spriteBatch,Vector2.Zero);
                     break;
                 case Scene.TUTO:
                     tutorial.Draw(spriteBatch);
