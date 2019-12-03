@@ -15,7 +15,7 @@ namespace SliderAction
         void Load(ContentManager c);
         void Init();
 
-        bool Main();
+        int Main();
         void Draw(SpriteBatch sb, Vector2 localDif);
     }
 }

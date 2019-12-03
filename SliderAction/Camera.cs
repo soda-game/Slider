@@ -15,7 +15,7 @@ namespace SliderAction
         Vector2 zoom;
 
 
-        public void Init(int w, int h)
+        public Camera(int w, int h)
         {
             this.w = w;
             this.h = h;

@@ -45,21 +45,20 @@ namespace SliderAction
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            camera = new Camera();
+            camera = new Camera(WIN_SIZE, WIN_SIZE);
             titleManager = new TitleManager();
             tutorial = new Tutorial();
-            slideGame = new SlideGame();
+            slideGame = new SlideGame(camera);
             result = new Result();
-            Init();
             MediaPlayer.IsRepeating = true;
             scene = Scene.TITL;
             base.Initialize();
         }
-        void Init()
+        void TitleInit()
         {
-            camera.Init(WIN_SIZE, WIN_SIZE);
-            slideGame.Init(camera);
+
         }
+
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -71,13 +70,13 @@ namespace SliderAction
 
             // TODO: use this.Content to load your game content here
             titleManager.Load(Content);
-
             tutorial.Load(Content);
-            slideGame.Loads(Content);
+            slideGame.Load(Content);
             result.Load(Content);
-            bgm = Content.Load<Song>("BGM");
-            MediaPlayer.Play(bgm);
+            //bgm = Content.Load<Song>("BGM");
+            //MediaPlayer.Play(bgm);
         }
+
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
@@ -103,7 +102,8 @@ namespace SliderAction
             if (scene == Scene.TITL)
             {
 
-                if (titleManager.Main()) scene = Scene.TUTO; //ここで次のinitを呼ぶ
+                if (titleManager.Main() == (int)TitleManager.GameType.NEXT)
+                    scene = Scene.TUTO; //ここで次のinitを呼ぶ
             }
             if (scene == Scene.TUTO)
             {
@@ -112,12 +112,8 @@ namespace SliderAction
             if (scene == Scene.GAME)
             {
                 int i = slideGame.Main();
-                if (i == 1) { Init(); }
-                else if (i == 0)
-                {
-                    Init();
-                    scene = Scene.RESU;
-                }
+                if (i == (int)SlideGame.GameType.OVER) slideGame.Init();
+                else if (i == (int)SlideGame.GameType.CLEAR) scene = Scene.RESU;
             }
             if (scene == Scene.RESU)
             {
@@ -147,13 +143,13 @@ namespace SliderAction
             switch (scene)
             {
                 case Scene.TITL:
-                    titleManager.Draw(spriteBatch,Vector2.Zero);
+                    titleManager.Draw(spriteBatch, Vector2.Zero);
                     break;
                 case Scene.TUTO:
                     tutorial.Draw(spriteBatch);
                     break;
                 case Scene.GAME:
-                    slideGame.Draw(spriteBatch);
+                    slideGame.Draw(spriteBatch,);
                     break;
                 case Scene.RESU:
                     result.Draw(spriteBatch);

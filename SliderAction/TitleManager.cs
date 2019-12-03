@@ -15,6 +15,12 @@ namespace SliderAction
         TitleUI title;
         bool initF;
 
+        public enum GameType
+        {
+            NONE,
+            NEXT
+        }
+
         public TitleManager()
         {
             title = new TitleUI();
@@ -30,13 +36,13 @@ namespace SliderAction
             initF = true;
         }
 
-        public bool Main()
+        public int Main()
         {
             if (!initF) Init();
 
             if (Input.DownKey(Keys.Space))
-                return true;
-            return false;
+                return (int)GameType.NEXT;
+            return (int)GameType.NONE;
         }
 
         public void Draw(SpriteBatch sb, Vector2 localDif)
