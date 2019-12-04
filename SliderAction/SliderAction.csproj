@@ -25,6 +25,7 @@
     <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -52,9 +53,11 @@
     <Compile Include="IManager.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="OtherSystem.cs" />
+    <Compile Include="OtherValue.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PlayerFactory.cs" />
-    <Compile Include="IPlayer.cs" />
+    <Compile Include="PlayerBase.cs" />
     <Compile Include="ReadCSV.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

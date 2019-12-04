@@ -34,6 +34,7 @@ namespace SliderAction
         {
             stageNum = 0;
             camera = c;
+            initF = true;
         }
         public void Load(ContentManager c)
         {
@@ -51,19 +52,18 @@ namespace SliderAction
             bends = FloorFactory.BendPosAsk(floors);
             player = PlayerFactory.PlayerCreate(stageNum);
 
-            player.Init();
             hpBar.Init();
             initF = false;
         }
 
         public int Main()
         {
-            if (!initF) Init();
+            if (initF) Init();
             if (player.Pos.Y < 0) return (int)GameType.CLEAR;
             else if (hpBar.DeadCheck())
             {
                 //anime.SplitWaitDelay2(Dad, 1, 2000);
-                player.deadF = true;
+                player.DeadF = true;
                 return (int)GameType.OVER;
             }
 
