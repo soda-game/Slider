@@ -8,6 +8,7 @@ namespace SliderAction
         int w, h, wh, hh;
 
         Rectangle viewArea;
+        public Vector2 localDiff => new Vector2(viewArea.X,viewArea.Y); 
         Vector3 viewOrigin;
 
        public Vector2 posOrigin; //***

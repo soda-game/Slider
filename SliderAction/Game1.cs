@@ -149,7 +149,7 @@ namespace SliderAction
                     tutorial.Draw(spriteBatch);
                     break;
                 case Scene.GAME:
-                    slideGame.Draw(spriteBatch,);
+                    slideGame.Draw(spriteBatch,camera.localDiff);
                     break;
                 case Scene.RESU:
                     result.Draw(spriteBatch);
