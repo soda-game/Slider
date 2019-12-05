@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 
 namespace SliderAction
@@ -56,9 +57,9 @@ namespace SliderAction
         }
         static Vector2[] ColliPosAsk(Vector2 pos, int hsize) //当たり判定の矩形を配列に
         {
-            Vector2[] dp = new Vector2[2];
-            dp[(int)WallFactory.Square.UP_LEFT] = new Vector2(pos.X - hsize, pos.Y - hsize);
-            dp[(int)WallFactory.Square.DOWN_RIGHT] = new Vector2(pos.X + hsize, pos.Y + hsize);
+            Vector2[] dp = new Vector2[Enum.GetNames(typeof(OtherValue.Square)).Length];
+            dp[(int)OtherValue.Square.UP_LEFT] = new Vector2(pos.X - hsize, pos.Y - hsize);
+            dp[(int)OtherValue.Square.DOWN_RIGHT] = new Vector2(pos.X + hsize, pos.Y + hsize);
 
             return dp;
         }
@@ -82,7 +83,7 @@ namespace SliderAction
             foreach (var f in floors)
                 if (f.Bend == (int)BendType.START)
                 {
-                    Vector2 ul = f.ColliPos[(int)WallFactory.Square.UP_LEFT];
+                    Vector2 ul = f.ColliPos[(int)OtherValue.Square.UP_LEFT];
                     int rot = (f.B_Rot - 1) * 3; //playerのenumに合わせる
 
                     Vector2 dr = Vector2.Zero;
@@ -93,7 +94,7 @@ namespace SliderAction
                         {
                             if (fx.Bend == (int)BendType.END)
                             {
-                                dr.X = fx.ColliPos[(int)WallFactory.Square.DOWN_RIGHT].X;
+                                dr.X = fx.ColliPos[(int)OtherValue.Square.DOWN_RIGHT].X;
                                 break;
                             }
                         }
@@ -103,7 +104,7 @@ namespace SliderAction
                         {
                             if (fy.Bend == (int)BendType.END)
                             {
-                                dr.Y = fy.ColliPos[(int)WallFactory.Square.DOWN_RIGHT].Y;
+                                dr.Y = fy.ColliPos[(int)OtherValue.Square.DOWN_RIGHT].Y;
                                 break;
                             }
                         }

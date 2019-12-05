@@ -10,23 +10,6 @@ namespace SliderAction
 {
     static class OtherSystem
     {
-        //両辺を同じ値で計算
-        static public Vector2 Vec2PulMin(Vector2 vec2, float value)
-        {
-            vec2 += new Vector2(value, value);
-            return vec2;
-        }
-        static public Vector2 Vec2Mul(Vector2 vec2, float value)
-        {
-            vec2 *= new Vector2(value, value);
-            return vec2;
-        }
-        static public Vector2 Vec2SidesDiv(Vector2 vec2, float value)
-        {
-            vec2 /= new Vector2(value, value);
-            return vec2;
-        }
-
         //待機処理
         static async void WaitAction(Action[] actions, int milli)
         {
@@ -40,11 +23,6 @@ namespace SliderAction
                 await Task.Delay(milli);
                 a();
             }
-            //for (int i = 0; i < actions.Length; i++)
-            //{
-            //    await Task.Delay(milli);
-            //    actions[i]();
-            //}
         }
         static async void WaitActions(Action[] actions, int[] milli)
         {

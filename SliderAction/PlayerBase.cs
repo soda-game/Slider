@@ -8,11 +8,7 @@ namespace SliderAction
         public bool deadF { get; set; }
         public Vector2 Size { get; }
         public int CharaNum { get; }
-        public Vector2 Pos
-        {
-            get;
-            set;
-        }
+        public Vector2 Pos { get; set; }
         public float Speed { get; }
         public int RotNum { get; set; }
         public Texture2D[] Sprs { get; }
@@ -29,7 +25,7 @@ namespace SliderAction
         }
 
 
-        public PlayerVO(int cNum, Texture2D[] spr, Vector2 Pos, float speed, int Rot, Vector2[] cp)
+        public PlayerVO(int cNum, Texture2D[] spr, Vector2 Pos, float speed, int Rot, Vector2[] cp,Vector2 size)
         {
             CharaNum = cNum;
             Sprs = spr;
@@ -37,7 +33,7 @@ namespace SliderAction
             Speed = speed;
             RotNum = Rot;
             ColliPos = cp;
-            Size = new Vector2(32, 50);
+            Size = size;
             deadF = false;
 
             Rots = new float[] {
