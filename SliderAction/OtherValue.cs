@@ -15,5 +15,7 @@ namespace SliderAction
         static public readonly int HALF = 2;
         public enum Square
         { UP_LEFT, DOWN_RIGHT }
+        public enum MainTyep
+        { NONE, NEXT }
     }
 }

@@ -16,10 +16,11 @@ namespace SliderAction
 
         //クラス
         Camera camera;
+        AssetVo assetVo;
         TitleManager titleManager;
-        Tutorial tutorial;
+        TutorialManager tutorialManager;
         SlideGame slideGame;
-        Result result;
+        ResultManager resultManager;
 
         enum Scene
         { TITL, TUTO, GAME, RESU }
@@ -30,10 +31,7 @@ namespace SliderAction
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = WIN_SIZE;
-            graphics.PreferredBackBufferHeight = WIN_SIZE;
             Content.RootDirectory = "Content";
-            Window.Title = "すらいだー ver0.8";
         }
 
         /// <summary>
@@ -45,18 +43,23 @@ namespace SliderAction
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            camera = new Camera(WIN_SIZE, WIN_SIZE);
-            titleManager = new TitleManager();
-            tutorial = new Tutorial();
-            slideGame = new SlideGame(camera);
-            result = new Result();
+            Window.Title = "すらいだー ver0.8";
+            graphics.PreferredBackBufferWidth = WIN_SIZE;
+            graphics.PreferredBackBufferHeight = WIN_SIZE;
+
             MediaPlayer.IsRepeating = true;
             scene = Scene.TITL;
+
             base.Initialize();
         }
+
         void TitleInit()
         {
-
+            camera = new Camera(WIN_SIZE, WIN_SIZE);
+            titleManager = new TitleManager(assetVo);
+            tutorialManager = new TutorialManager(assetVo);
+            slideGame = new SlideGame(camera);
+            resultManager = new ResultManager(assetVo);
         }
 
         /// <summary>
@@ -69,10 +72,8 @@ namespace SliderAction
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            titleManager.Load(Content);
-            tutorial.Load(Content);
+            assetVo = new AssetVo(Content);
             slideGame.Load(Content);
-            result.Load(Content);
             //bgm = Content.Load<Song>("BGM");
             //MediaPlayer.Play(bgm);
         }
@@ -101,23 +102,24 @@ namespace SliderAction
 
             if (scene == Scene.TITL)
             {
-
-                if (titleManager.Main() == (int)TitleManager.GameType.NEXT)
+                if (titleManager.Main() == (int)OtherValue.MainTyep.NEXT)
                     scene = Scene.TUTO; //ここで次のinitを呼ぶ
             }
             if (scene == Scene.TUTO)
             {
-                if (tutorial.PushKey()) scene = Scene.GAME;
+                if (tutorialManager.Main() == (int)OtherValue.MainTyep.NEXT)
+                    scene = Scene.GAME;
             }
             if (scene == Scene.GAME)
             {
-                int i = slideGame.Main();
-                if (i == (int)SlideGame.GameType.OVER) slideGame.Init();
-                else if (i == (int)SlideGame.GameType.CLEAR) scene = Scene.RESU;
+                int mgType = slideGame.Main();
+                if (mgType == (int)SlideGame.MainGameType.OVER) slideGame.Init();
+                else if (mgType == (int)SlideGame.MainGameType.CLEAR) scene = Scene.RESU;
             }
             if (scene == Scene.RESU)
             {
-                if (result.PushKey()) scene = Scene.TITL;
+                if (resultManager.Main() == (int)OtherValue.MainTyep.NEXT)
+                    scene = Scene.TITL;
             }
 
 
@@ -143,16 +145,16 @@ namespace SliderAction
             switch (scene)
             {
                 case Scene.TITL:
-                    titleManager.Draw(spriteBatch, Vector2.Zero);
+                    titleManager.Draw(spriteBatch, camera.localDiff);
                     break;
                 case Scene.TUTO:
-                    tutorial.Draw(spriteBatch);
+                    tutorialManager.Draw(spriteBatch, camera.localDiff);
                     break;
                 case Scene.GAME:
-                    slideGame.Draw(spriteBatch,camera.localDiff);
+                    slideGame.Draw(spriteBatch, camera.localDiff);
                     break;
                 case Scene.RESU:
-                    result.Draw(spriteBatch);
+                    resultManager.Draw(spriteBatch, camera.localDiff);
                     break;
             }
 

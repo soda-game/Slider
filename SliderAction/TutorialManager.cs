@@ -10,26 +10,25 @@ using Microsoft.Xna.Framework.Input;
 
 namespace SliderAction
 {
-    class TitleManager : IManager
+    class TutorialManager : IManager
     {
-        TitleUI titleUI;
+        TutorialUI tutorialUI;
 
-        public TitleManager(AssetVo avo)
+        public TutorialManager(AssetVo avo)
         {
-            titleUI = new TitleUI(avo);
+            tutorialUI = new TutorialUI(avo);
         }
 
         public int Main()
         {
             if (Input.DownKey(Keys.Space))
                 return (int)OtherValue.MainTyep.NEXT;
-            return (int)OtherValue.MainTyep.NONE;
+            return (int)OtherValue.MainTyep.NEXT;
         }
 
         public void Draw(SpriteBatch sb, Vector2 localDif)
         {
-            titleUI.Draw(sb, localDif);
+            throw new NotImplementedException();
         }
-
     }
 }

@@ -6,30 +6,29 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace SliderAction
 {
-    class TitleManager : IManager
+    class TutorailManager : IManager
     {
-        TitleUI titleUI;
-
-        public TitleManager(AssetVo avo)
+        public void Init()
         {
-            titleUI = new TitleUI(avo);
+            throw new NotImplementedException();
+        }
+
+        public void Load(ContentManager c)
+        {
+            throw new NotImplementedException();
         }
 
         public int Main()
         {
-            if (Input.DownKey(Keys.Space))
-                return (int)OtherValue.MainTyep.NEXT;
-            return (int)OtherValue.MainTyep.NONE;
+            throw new NotImplementedException();
         }
 
         public void Draw(SpriteBatch sb, Vector2 localDif)
         {
-            titleUI.Draw(sb, localDif);
+            throw new NotImplementedException();
         }
-
     }
 }

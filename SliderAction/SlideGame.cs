@@ -12,7 +12,7 @@ namespace SliderAction
         //ステージ1
         int stageNum;
         public static bool initF;
-        public enum GameType
+        public enum MainGameType
         { NOW, CLEAR, OVER }
         Camera camera;
 
@@ -59,12 +59,12 @@ namespace SliderAction
         public int Main()
         {
             if (initF) Init();
-            if (player.Pos.Y < 0) return (int)GameType.CLEAR;
+            if (player.Pos.Y < 0) return (int)MainGameType.CLEAR;
             else if (hpBar.DeadCheck())
             {
                 //anime.SplitWaitDelay2(Dad, 1, 2000);
                 player.DeadF = true;
-                return (int)GameType.OVER;
+                return (int)MainGameType.OVER;
             }
 
             if (Input.DownKey(Keys.Space))
@@ -83,7 +83,7 @@ namespace SliderAction
 
             player.Move();
             camera.Move(player.Pos);
-            return (int)GameType.NOW;
+            return (int)MainGameType.NOW;
         }
 
         bool BendHit()//曲がり角だったら曲がる

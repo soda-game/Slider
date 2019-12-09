@@ -5,26 +5,18 @@ using Microsoft.Xna.Framework.Input;
 
 namespace SliderAction
 {
-    class Result
+    class TutorialUI : UIBase
     {
-        Texture2D result;
-        readonly Vector2 pos = Vector2.Zero;
-
-        public void Load(ContentManager c)
-        { result = c.Load<Texture2D>("Result"); }
-        public Result()
-        { }
+        public TutorialUI(AssetVo avo) : base(avo)
+        {
+            uavo = new Uavo(new Texture2D[] { avo.Tutorial }, new Vector2[] { new Vector2(0, -50) });
+        }
 
         public bool PushKey()
         {
             if (Input.DownKey(Keys.Space))
                 return true;
             return false;
-        }
-
-        public void Draw(SpriteBatch sb)
-        {
-            sb.Draw(result, pos, Color.White);
         }
     }
 }

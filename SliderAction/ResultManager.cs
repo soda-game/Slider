@@ -4,19 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace SliderAction
 {
-    class TitleManager : IManager
+    class ResultManager : IManager
     {
-        TitleUI titleUI;
+        ResultUI resultUI;
 
-        public TitleManager(AssetVo avo)
+        public ResultManager(AssetVo avo)
         {
-            titleUI = new TitleUI(avo);
+            resultUI = new ResultUI(avo);
         }
 
         public int Main()
@@ -28,8 +27,7 @@ namespace SliderAction
 
         public void Draw(SpriteBatch sb, Vector2 localDif)
         {
-            titleUI.Draw(sb, localDif);
+            throw new NotImplementedException();
         }
-
     }
 }

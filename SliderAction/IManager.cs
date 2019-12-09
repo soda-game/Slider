@@ -12,9 +12,6 @@ namespace SliderAction
 {
     interface IManager
     {
-        void Load(ContentManager c);
-        void Init();
-
         int Main();
         void Draw(SpriteBatch sb, Vector2 localDif);
     }

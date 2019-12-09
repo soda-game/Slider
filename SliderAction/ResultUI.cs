@@ -2,14 +2,16 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+
 namespace SliderAction
 {
-    class TitleUI : UIBase
+    class ResultUI : UIBase
     {
-        public TitleUI(AssetVo avo) : base(avo)
+        public ResultUI(AssetVo avo) : base(avo)
         {
-            uavo = new Uavo(new Texture2D[] { avo.Title },
-                            new Vector2[] { Vector2.Zero });
+            uavo = new Uavo(new Texture2D[] { avo.Result },
+                            new Vector2[] { new Vector2(0, 0) });
         }
+
     }
 }
