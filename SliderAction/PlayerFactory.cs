@@ -17,13 +17,11 @@ namespace SliderAction
             Player01
         }
         static Texture2D[] spr;
-        static public void Load(ContentManager c)
-        {
-            spr = new Texture2D[] { c.Load<Texture2D>("Player") };
-        }
 
-        static public Player PlayerCreate(int sn)
+        static public Player PlayerCreate(int sn,AssetVo avo)
         {
+            spr = new Texture2D[] { avo.Player };
+
             int[] stat = ReadCSV.Status("CSV/playerS.csv", sn + 1);
 
             Vector2 size = new Vector2(32, 32);

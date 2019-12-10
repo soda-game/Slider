@@ -19,10 +19,7 @@ namespace SliderAction
         enum SizeTyep
         { WAY, END, CROSS }
         static Texture2D[] sprs;
-        static public void Load(ContentManager c)
-        {
-            sprs = new Texture2D[] { c.Load<Texture2D>("crossWall"), c.Load<Texture2D>("Reco") };//***
-        }
+
         //Rot
         enum RotTyep
         { UP, RIGHT, DOWN, LEFT }
@@ -33,8 +30,10 @@ namespace SliderAction
         static readonly Color[] crs = new Color[] { Color.Red, Color.Blue, Color.Orange, Color.Yellow, Color.Green };
 
 
-        static public List<Wall> WallsCreate(int sn)
+        static public List<Wall> WallsCreate(int sn,AssetVo avo)
         {
+            sprs = new Texture2D[] { avo.CroosWall, avo.Reco };
+
             const int FIX_ROW = 1;
             List<int[]> mapCsv = ReadCSV.Map(mapPaths[sn]);
             List<int[]> StatusCsv = ReadCSV.Status(statPaths[sn]); //csv読み込み結果を受け取り

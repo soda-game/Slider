@@ -5,13 +5,12 @@ using Microsoft.Xna.Framework.Input;
 
 namespace SliderAction
 {
-    class ResultUI : UIBase
+    class ResultUI:UIBase
     {
-        public ResultUI(AssetVo avo) : base(avo)
+        public ResultUI(AssetVo ivo):base(ivo)
         {
-            uavo = new Uavo(new Texture2D[] { avo.Result },
+            uiVo = new UIVO(new Texture2D[] { ivo.Result },
                             new Vector2[] { new Vector2(0, 0) });
         }
-
     }
 }

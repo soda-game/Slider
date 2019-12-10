@@ -8,7 +8,7 @@ namespace SliderAction
     {
         public TitleUI(AssetVo avo) : base(avo)
         {
-            uavo = new Uavo(new Texture2D[] { avo.Title },
+            uavo = new UIVO(new Texture2D[] { avo.Title },
                             new Vector2[] { Vector2.Zero });
         }
     }

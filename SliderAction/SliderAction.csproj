@@ -50,7 +50,7 @@
     <Compile Include="FloorFactory.cs" />
     <Compile Include="HpBar.cs" />
     <Compile Include="IFloor.cs" />
-    <Compile Include="ImageVo.cs" />
+    <Compile Include="AssetVo.cs" />
     <Compile Include="IManager.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="Game1.cs" />

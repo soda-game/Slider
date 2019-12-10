@@ -10,13 +10,13 @@ using Microsoft.Xna.Framework.Input;
 
 namespace SliderAction
 {
-    struct Uavo
+    struct UIVO
     {
         public Texture2D[] textures { get; }
         public Vector2[] localPos { get; }
         public bool[] drawF { get; }
 
-        public Uavo(Texture2D[] texture, Vector2[] localPos)
+        public UIVO(Texture2D[] texture, Vector2[] localPos)
         {
             this.textures = texture;
             this.localPos = localPos;
@@ -28,17 +28,17 @@ namespace SliderAction
 
     abstract class UIBase
     {
-        protected Uavo uavo;
+        protected UIVO uiVo;
 
-        public UIBase(AssetVo avo)
+        public UIBase(AssetVo ivo)
         { }
 
         virtual public void Draw(SpriteBatch sb, Vector2 localDif)
         {
-            for (int i = 0; i < uavo.drawF.Length; i++)
+            for (int i = 0; i < uiVo.drawF.Length; i++)
             {
-                if (uavo.drawF[i])
-                    sb.Draw(uavo.textures[i], uavo.localPos[i] + localDif, Color.White);
+                if (uiVo.drawF[i])
+                    sb.Draw(uiVo.textures[i], uiVo.localPos[i] + localDif, Color.White);
             }
         }
     }

@@ -15,14 +15,11 @@ namespace SliderAction
         { NUM, SPR, BEND, B_ROT }
         //Spr
         static Texture2D[] sprs;
-        static public void Load(ContentManager c)
-        {
-            sprs = new Texture2D[] { c.Load<Texture2D>("floor")};
-        }
 
-
-        static public List<Floor> CriateFloor(int sn)
+        static public List<Floor> CriateFloor(int sn, AssetVo avo)
         {
+            sprs = new Texture2D[] { avo.Floor };
+
             List<int[]> mapCsv = ReadCSV.Map(WallFactory.mapPaths[sn]);
             List<int[]> statCsv = ReadCSV.Status(statPash[sn]);
             List<Floor> floors = new List<Floor>();

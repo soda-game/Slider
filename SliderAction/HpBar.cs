@@ -21,9 +21,9 @@ namespace SliderAction
             }
         }
 
-        public HpBar(AssetVo avo) : base(avo)
+        public HpBar(AssetVo ivo) : base(ivo)
         {
-            uavo = new Uavo(new Texture2D[] { avo.HpBar },
+            uiVo = new UIVO(new Texture2D[] { ivo.HpBar },
                                 new Vector2[] { new Vector2(100, 100) });
             NowHp = maxHp;
             percent = size.X / maxHp;
@@ -31,8 +31,8 @@ namespace SliderAction
 
         public override void Draw(SpriteBatch sb, Vector2 localDif)
         {
-            sb.Draw(uavo.textures[0], uavo.localPos[0] + localDif, Color.Red);
-            sb.Draw(uavo.textures[0], uavo.localPos[0] + localDif, new Rectangle(0, 0, (int)(NowHp * percent), (int)size.Y), Color.White);
+            sb.Draw(uiVo.textures[0], uiVo.localPos[0] + localDif, Color.Red);
+            sb.Draw(uiVo.textures[0], uiVo.localPos[0] + localDif, new Rectangle(0, 0, (int)(NowHp * percent), (int)size.Y), Color.White);
         }
 
     }
