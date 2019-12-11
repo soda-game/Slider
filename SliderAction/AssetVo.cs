@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace SliderAction
 {
-    struct AssetVo //***
+    struct ImageVo 
     {
         public Texture2D Title { get; }
         public Texture2D HpBar { get; }
@@ -20,7 +22,7 @@ namespace SliderAction
         public Texture2D Reco { get; }
         public Texture2D Floor { get; }
 
-        public AssetVo(ContentManager c)
+        public ImageVo(ContentManager c)//***一枚にする
         {
             Title = c.Load<Texture2D>("Title");
             HpBar = c.Load<Texture2D>("HpBar");
@@ -30,6 +32,17 @@ namespace SliderAction
             CroosWall = c.Load<Texture2D>("crossWall");
             Reco = c.Load<Texture2D>("Reco");
             Floor = c.Load<Texture2D>("Floor");
+        }
+    }
+
+    struct MusicVo
+    {
+        public Song Bgm { get; }
+        public SoundEffect Reco { get; }
+
+        public MusicVo(ContentManager c)
+        {
+            bgm
         }
     }
 }
