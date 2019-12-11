@@ -16,16 +16,15 @@ namespace SliderAction
         public float[] Rots { get; }
         public Vector2[] MovesAsk { get; }
 
+        public int rotCount { get; }
         public enum RotTyep
         {
-            UP, UP_LEFT, UP_RIGHT,
-            RIGHT, RIGHT_LEFT, RIGHT_RIGHT,
-            DOWN, DOWN_LEFT, DOWN_RIGHT,
-            LEFT, LEFT_LEFT, LEFT_RIGHT
+            UP, RIGHT, DOWN, LEFT,
+            UP_LEFT, RIGHT_LEFT, DOWN_LEFT, LEFT_LEFT,
+            UP_RIGHT, RIGHT_RIGHT, DOWN_RIGHT, LEFT_RIGHT
         }
 
-
-        public PlayerVO(int cNum, Texture2D[] spr, Vector2 Pos, float speed, int Rot, Vector2[] cp,Vector2 size)
+        public PlayerVO(int cNum, Texture2D[] spr, Vector2 Pos, float speed, int Rot, Vector2[] cp, Vector2 size)
         {
             CharaNum = cNum;
             Sprs = spr;
@@ -36,17 +35,17 @@ namespace SliderAction
             Size = size;
             deadF = false;
 
+            rotCount = 4;
             Rots = new float[] {
-             0,0,0,
-             MathHelper.ToRadians(90), MathHelper.ToRadians(90), MathHelper.ToRadians(90),
-             MathHelper.ToRadians(180), MathHelper.ToRadians(180), MathHelper.ToRadians(180),
-             MathHelper.ToRadians(270), MathHelper.ToRadians(270), MathHelper.ToRadians(270)
+             0, MathHelper.ToRadians(90), MathHelper.ToRadians(180),  MathHelper.ToRadians(270),
+             0, MathHelper.ToRadians(90), MathHelper.ToRadians(180),  MathHelper.ToRadians(270),
+             0, MathHelper.ToRadians(90), MathHelper.ToRadians(180),  MathHelper.ToRadians(270),
               };
             MovesAsk = new Vector2[] {
-              new Vector2(0, -1),new Vector2(-1, -1), new Vector2(1, -1),
-              new Vector2(1, 0), new Vector2(1, -1), new Vector2(1, 1),
-              new Vector2(0, 1), new Vector2(1, 1), new Vector2(-1, 1),
-              new Vector2(-1, 0), new Vector2(-1, 1), new Vector2(-1, -1)
+              new Vector2(0, -1), new Vector2(1, 0), new Vector2(0, 1), new Vector2(-1, 0),
+              new Vector2(-1, -1), new Vector2(1, -1),  new Vector2(1, 1), new Vector2(-1, 1),
+              new Vector2(1, -1), new Vector2(1, 1),  new Vector2(-1, 1),  new Vector2(-1, -1)
+
               };
 
         }
@@ -93,12 +92,12 @@ namespace SliderAction
         {
             if (pvo.RotNum <= (int)PlayerVO.RotTyep.LEFT)
             {  //自分がその道の真ん中よりどっちか***
-                pvo.RotNum++;
+                pvo.RotNum += pvo.rotCount;
             }
             else if (pvo.RotNum <= (int)PlayerVO.RotTyep.LEFT_LEFT)
-                pvo.RotNum++;
+                pvo.RotNum += pvo.rotCount;
             else if (pvo.RotNum <= (int)PlayerVO.RotTyep.LEFT_RIGHT)
-                pvo.RotNum--;
+                pvo.RotNum -= pvo.rotCount;
         }
 
         public void Draw(SpriteBatch sb)

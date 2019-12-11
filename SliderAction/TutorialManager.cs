@@ -14,21 +14,21 @@ namespace SliderAction
     {
         TutorialUI tutorialUI;
 
-        public TutorialManager(AssetVo avo)
+        public TutorialManager(ImageVo ivo)
         {
-            tutorialUI = new TutorialUI(avo);
+            tutorialUI = new TutorialUI(ivo);
         }
 
         public int Main()
         {
             if (Input.DownKey(Keys.Space))
                 return (int)OtherValue.MainTyep.NEXT;
-            return (int)OtherValue.MainTyep.NEXT;
+            return (int)OtherValue.MainTyep.NONE;
         }
 
         public void Draw(SpriteBatch sb, Vector2 localDif)
         {
-            throw new NotImplementedException();
+            tutorialUI.Draw(sb,localDif);
         }
     }
 }

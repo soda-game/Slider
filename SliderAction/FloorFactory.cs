@@ -16,9 +16,9 @@ namespace SliderAction
         //Spr
         static Texture2D[] sprs;
 
-        static public List<Floor> CriateFloor(int sn, AssetVo avo)
+        static public List<Floor> CriateFloor(int sn, ImageVo ivo)
         {
-            sprs = new Texture2D[] { avo.Floor };
+            sprs = new Texture2D[] { ivo.Floor };
 
             List<int[]> mapCsv = ReadCSV.Map(WallFactory.mapPaths[sn]);
             List<int[]> statCsv = ReadCSV.Status(statPash[sn]);
@@ -81,7 +81,7 @@ namespace SliderAction
                 if (f.Bend == (int)BendType.START)
                 {
                     Vector2 ul = f.ColliPos[(int)OtherValue.Square.UP_LEFT];
-                    int rot = (f.B_Rot - 1) * 3; //playerのenumに合わせる
+                    int rot = f.B_Rot - 1; //0=なし
 
                     Vector2 dr = Vector2.Zero;
 

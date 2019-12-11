@@ -6,10 +6,11 @@ namespace SliderAction
 {
     class TitleUI : UIBase
     {
-        public TitleUI(AssetVo avo) : base(avo)
+        public TitleUI(ImageVo ivo) : base(ivo)
         {
-            uavo = new UIVO(new Texture2D[] { avo.Title },
+            uvo = new UIVO(new Texture2D[] { ivo.Title },
                             new Vector2[] { Vector2.Zero });
         }
+
     }
 }

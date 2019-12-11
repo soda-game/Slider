@@ -10,29 +10,36 @@ namespace SliderAction
 
         const float maxHp = 200f;
         float percent; //hp最大値と画像サイズの割合 サイズや最大値が変わっても対応できる
-        public float NowHp
+        float nowHp;
+        public float NowHp => nowHp;
+
+
+
+        public HpBar(ImageVo ivo) : base(ivo)
         {
-            get { return NowHp; }
-            set
-            {
-                NowHp += value;
-                if (NowHp < maxHp) return;
-                NowHp = maxHp; ;
-            }
+            uvo = new UIVO(new Texture2D[] { ivo.HpBar },
+                                new Vector2[] { new Vector2(100, 100) });
+            nowHp = maxHp;
+            percent = size.X / maxHp;
         }
 
-        public HpBar(AssetVo ivo) : base(ivo)
+        public bool DeadCheck()
         {
-            uiVo = new UIVO(new Texture2D[] { ivo.HpBar },
-                                new Vector2[] { new Vector2(100, 100) });
-            NowHp = maxHp;
-            percent = size.X / maxHp;
+            if (NowHp < 0) return true;
+            return false;
+        }
+
+        public void HpPlus(float value)
+        {
+            nowHp += value;
+            if (NowHp < maxHp) return;
+            nowHp = maxHp; ;
         }
 
         public override void Draw(SpriteBatch sb, Vector2 localDif)
         {
-            sb.Draw(uiVo.textures[0], uiVo.localPos[0] + localDif, Color.Red);
-            sb.Draw(uiVo.textures[0], uiVo.localPos[0] + localDif, new Rectangle(0, 0, (int)(NowHp * percent), (int)size.Y), Color.White);
+            sb.Draw(uvo.textures[0], uvo.localPos[0] + localDif, Color.Red);
+            sb.Draw(uvo.textures[0], uvo.localPos[0] + localDif, new Rectangle(0, 0, (int)(NowHp * percent), (int)size.Y), Color.White);
         }
 
     }

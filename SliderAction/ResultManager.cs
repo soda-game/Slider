@@ -13,9 +13,9 @@ namespace SliderAction
     {
         ResultUI resultUI;
 
-        public ResultManager(AssetVo avo)
+        public ResultManager(ImageVo ivo)
         {
-            resultUI = new ResultUI(avo);
+            resultUI = new ResultUI(ivo);
         }
 
         public int Main()
@@ -27,7 +27,7 @@ namespace SliderAction
 
         public void Draw(SpriteBatch sb, Vector2 localDif)
         {
-            throw new NotImplementedException();
+            resultUI.Draw(sb, localDif);
         }
     }
 }

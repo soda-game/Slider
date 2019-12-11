@@ -28,17 +28,17 @@ namespace SliderAction
 
     abstract class UIBase
     {
-        protected UIVO uiVo;
+        protected UIVO uvo;
 
-        public UIBase(AssetVo ivo)
+        public UIBase(ImageVo ivo)
         { }
 
         virtual public void Draw(SpriteBatch sb, Vector2 localDif)
         {
-            for (int i = 0; i < uiVo.drawF.Length; i++)
+            for (int i = 0; i < uvo.drawF.Length; i++)
             {
-                if (uiVo.drawF[i])
-                    sb.Draw(uiVo.textures[i], uiVo.localPos[i] + localDif, Color.White);
+                if (uvo.drawF[i])
+                    sb.Draw(uvo.textures[i], uvo.localPos[i] + localDif, Color.White);
             }
         }
     }

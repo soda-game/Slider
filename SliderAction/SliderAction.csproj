@@ -66,7 +66,6 @@
     <Compile Include="ResultUI.cs" />
     <Compile Include="SlideGame.cs" />
     <Compile Include="TitleUI.cs" />
-    <Compile Include="TutorailManager.cs" />
     <Compile Include="TutorialUI.cs" />
     <Compile Include="TutorialManager.cs" />
     <Compile Include="UIBase.cs" />

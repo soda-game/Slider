@@ -30,9 +30,9 @@ namespace SliderAction
         static readonly Color[] crs = new Color[] { Color.Red, Color.Blue, Color.Orange, Color.Yellow, Color.Green };
 
 
-        static public List<Wall> WallsCreate(int sn,AssetVo avo)
+        static public List<Wall> WallsCreate(int sn,ImageVo ivo)
         {
-            sprs = new Texture2D[] { avo.CroosWall, avo.Reco };
+            sprs = new Texture2D[] { ivo.CroosWall, ivo.Reco };
 
             const int FIX_ROW = 1;
             List<int[]> mapCsv = ReadCSV.Map(mapPaths[sn]);

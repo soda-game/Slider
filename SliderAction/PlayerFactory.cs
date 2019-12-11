@@ -18,9 +18,9 @@ namespace SliderAction
         }
         static Texture2D[] spr;
 
-        static public Player PlayerCreate(int sn,AssetVo avo)
+        static public Player PlayerCreate(int sn,ImageVo ivo)
         {
-            spr = new Texture2D[] { avo.Player };
+            spr = new Texture2D[] { ivo.Player };
 
             int[] stat = ReadCSV.Status("CSV/playerS.csv", sn + 1);
 

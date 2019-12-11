@@ -14,9 +14,9 @@ namespace SliderAction
     {
         TitleUI titleUI;
 
-        public TitleManager(AssetVo avo)
+        public TitleManager(ImageVo ivo)
         {
-            titleUI = new TitleUI(avo);
+            titleUI = new TitleUI(ivo);
         }
 
         public int Main()

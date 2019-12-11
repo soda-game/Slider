@@ -11,7 +11,6 @@ namespace SliderAction
     {
         //ステージ1
         int stageNum;
-        public static bool initF;
         public enum MainGameType
         { NOW, CLEAR, OVER }
         Camera camera;
@@ -24,41 +23,28 @@ namespace SliderAction
         Player player;
 
         //UI
-        HpBar hpBar = new HpBar();
+        HpBar hpBar;
 
         //SoundEffect se;
         //あにめ
         //Animetion anime = new Animetion();
 
-        public SlideGame(Camera c)
+        public SlideGame(Camera c, ImageVo ivo)
         {
             stageNum = 0;
             camera = c;
-            initF = true;
-        }
-        public void Load(ContentManager c)
-        {
-            WallFactory.Load(c);
-            PlayerFactory.Load(c);
-            FloorFactory.Load(c);
-            hpBar.Load(c);
-            //anime.Load(c);
-            //se = c.Load<SoundEffect>("recover");
-        }
-        public void Init()
-        {
-            walls = WallFactory.WallsCreate(stageNum);
-            floors = FloorFactory.CriateFloor(stageNum);
+            walls = WallFactory.WallsCreate(stageNum, ivo);
+            floors = FloorFactory.CriateFloor(stageNum, ivo);
+            player = PlayerFactory.PlayerCreate(stageNum, ivo);
             bends = FloorFactory.BendPosAsk(floors);
-            player = PlayerFactory.PlayerCreate(stageNum);
 
-            hpBar.Init();
-            initF = false;
+            hpBar = new HpBar(ivo);
         }
+        //anime.Load(c);
+        //se = c.Load<SoundEffect>("recover");
 
         public int Main()
         {
-            if (initF) Init();
             if (player.Pos.Y < 0) return (int)MainGameType.CLEAR;
             else if (hpBar.DeadCheck())
             {
@@ -123,9 +109,10 @@ namespace SliderAction
         {
             foreach (var f in floors) f.Draw(sb);
             foreach (var w in walls) w.Draw(sb);
+            player.Draw(sb);
+
             foreach (var f in bends)
                 sb.Draw(walls[0].recT, new Rectangle((int)f.pos[0].X, (int)f.pos[0].Y, (int)(f.pos[1].X - f.pos[0].X), (int)(f.pos[1].Y - f.pos[0].Y)), Color.White * 0.7f);
-            player.Draw(sb);
             //anime.Draw(sb, player.Pos);
             hpBar.Draw(sb, localDif);
         }

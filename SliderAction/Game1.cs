@@ -16,7 +16,7 @@ namespace SliderAction
 
         //クラス
         Camera camera;
-        AssetVo assetVo;
+        ImageVo imageVo;
         TitleManager titleManager;
         TutorialManager tutorialManager;
         SlideGame slideGame;
@@ -26,11 +26,13 @@ namespace SliderAction
         { TITL, TUTO, GAME, RESU }
         Scene scene;
 
-        Song bgm;
+        //Song bgm;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = WIN_SIZE;
+            graphics.PreferredBackBufferHeight = WIN_SIZE;
             Content.RootDirectory = "Content";
         }
 
@@ -44,11 +46,8 @@ namespace SliderAction
         {
             // TODO: Add your initialization logic here
             Window.Title = "すらいだー ver0.8";
-            graphics.PreferredBackBufferWidth = WIN_SIZE;
-            graphics.PreferredBackBufferHeight = WIN_SIZE;
 
             MediaPlayer.IsRepeating = true;
-            scene = Scene.TITL;
 
             base.Initialize();
         }
@@ -56,10 +55,23 @@ namespace SliderAction
         void TitleInit()
         {
             camera = new Camera(WIN_SIZE, WIN_SIZE);
-            titleManager = new TitleManager(assetVo);
-            tutorialManager = new TutorialManager(assetVo);
-            slideGame = new SlideGame(camera);
-            resultManager = new ResultManager(assetVo);
+            titleManager = new TitleManager(imageVo);
+            scene = Scene.TITL;
+        }
+        void TutoInit()
+        {
+            tutorialManager = new TutorialManager(imageVo);
+            scene = Scene.TUTO;
+        }
+        void SliderInit()
+        {
+            slideGame = new SlideGame(camera, imageVo);
+            scene = Scene.GAME;
+        }
+        void ResetInit()
+        {
+            resultManager = new ResultManager(imageVo);
+            scene = Scene.RESU;
         }
 
         /// <summary>
@@ -72,8 +84,9 @@ namespace SliderAction
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            assetVo = new AssetVo(Content);
-            slideGame.Load(Content);
+            imageVo = new ImageVo(Content);
+            TitleInit();
+
             //bgm = Content.Load<Song>("BGM");
             //MediaPlayer.Play(bgm);
         }
@@ -100,26 +113,27 @@ namespace SliderAction
 
             // TODO: Add your update logic here
 
-            if (scene == Scene.TITL)
+            switch (scene)
             {
-                if (titleManager.Main() == (int)OtherValue.MainTyep.NEXT)
-                    scene = Scene.TUTO; //ここで次のinitを呼ぶ
-            }
-            if (scene == Scene.TUTO)
-            {
-                if (tutorialManager.Main() == (int)OtherValue.MainTyep.NEXT)
-                    scene = Scene.GAME;
-            }
-            if (scene == Scene.GAME)
-            {
-                int mgType = slideGame.Main();
-                if (mgType == (int)SlideGame.MainGameType.OVER) slideGame.Init();
-                else if (mgType == (int)SlideGame.MainGameType.CLEAR) scene = Scene.RESU;
-            }
-            if (scene == Scene.RESU)
-            {
-                if (resultManager.Main() == (int)OtherValue.MainTyep.NEXT)
-                    scene = Scene.TITL;
+                case Scene.TITL:
+                    if (titleManager.Main() == (int)OtherValue.MainTyep.NEXT)
+                        TutoInit();
+                    break;
+                case Scene.TUTO:
+                    if (tutorialManager.Main() == (int)OtherValue.MainTyep.NEXT)
+                        SliderInit();
+                    break;
+                case Scene.GAME:
+                    int mgType = slideGame.Main();
+                    if (mgType == (int)SlideGame.MainGameType.OVER) SliderInit();
+                    else if (mgType == (int)SlideGame.MainGameType.CLEAR) ResetInit();
+                    break;
+                case Scene.RESU:
+                    if (resultManager.Main() == (int)OtherValue.MainTyep.NEXT)
+                        TitleInit();
+                    break;
+                default:
+                    break;
             }
 
 

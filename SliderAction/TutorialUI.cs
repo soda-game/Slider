@@ -7,9 +7,9 @@ namespace SliderAction
 {
     class TutorialUI : UIBase
     {
-        public TutorialUI(AssetVo avo) : base(avo)
+        public TutorialUI(ImageVo ivo) : base(ivo)
         {
-            uavo = new Uavo(new Texture2D[] { avo.Tutorial }, new Vector2[] { new Vector2(0, -50) });
+            uvo = new UIVO(new Texture2D[] { ivo.Tutorial }, new Vector2[] { new Vector2(0, -50) });
         }
 
         public bool PushKey()

@@ -15,6 +15,10 @@ namespace SliderAction
         public Texture2D HpBar { get; }
         public Texture2D Tutorial { get; }
         public Texture2D Result { get; }
+        public Texture2D Player { get; }
+        public Texture2D CroosWall { get; }
+        public Texture2D Reco { get; }
+        public Texture2D Floor { get; }
 
         public AssetVo(ContentManager c)
         {
@@ -22,6 +26,10 @@ namespace SliderAction
             HpBar = c.Load<Texture2D>("HpBar");
             Tutorial = c.Load<Texture2D>("tuto");
             Result = c.Load<Texture2D>("Result");
+            Player = c.Load<Texture2D>("Player");
+            CroosWall = c.Load<Texture2D>("crossWall");
+            Reco = c.Load<Texture2D>("Reco");
+            Floor = c.Load<Texture2D>("Floor");
         }
     }
 }
