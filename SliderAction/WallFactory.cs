@@ -19,10 +19,7 @@ namespace SliderAction
         enum SizeTyep
         { WAY, END, CROSS }
         static Texture2D[] sprs;
-        static public void Load(ContentManager c)
-        {
-            sprs = new Texture2D[] { c.Load<Texture2D>("crossWall"), c.Load<Texture2D>("Reco") };//***
-        }
+
         //Rot
         enum RotTyep
         { UP, RIGHT, DOWN, LEFT }
@@ -33,8 +30,10 @@ namespace SliderAction
         static readonly Color[] crs = new Color[] { Color.Red, Color.Blue, Color.Orange, Color.Yellow, Color.Green };
 
 
-        static public List<Wall> WallsCreate(int sn)
+        static public List<Wall> WallsCreate(int sn,ImageVo ivo)
         {
+            sprs = new Texture2D[] { ivo.CroosWall, ivo.Reco };
+
             const int FIX_ROW = 1;
             List<int[]> mapCsv = ReadCSV.Map(mapPaths[sn]);
             List<int[]> StatusCsv = ReadCSV.Status(statPaths[sn]); //csv読み込み結果を受け取り
@@ -65,8 +64,6 @@ namespace SliderAction
             return walls;
         }
 
-        public enum Square
-        { UP_LEFT, DOWN_RIGHT }
         static Vector2 PosAsk(int x, int y, int size, Vector2 gap)
         {
             return new Vector2((x * size) + gap.X, (y * size) + gap.Y);
@@ -74,9 +71,9 @@ namespace SliderAction
 
         static Vector2[] DamagePosAsk(Vector2 pos, int hsize) //当たり判定の矩形を配列に
         {
-            Vector2[] dp = new Vector2[2];
-            dp[(int)Square.UP_LEFT] = new Vector2(pos.X - hsize, pos.Y - hsize);
-            dp[(int)Square.DOWN_RIGHT] = new Vector2(pos.X + hsize, pos.Y + hsize);
+            Vector2[] dp = new Vector2[Enum.GetNames(typeof(OtherValue.Square)).Length];
+            dp[(int)OtherValue.Square.UP_LEFT] = new Vector2(pos.X - hsize, pos.Y - hsize);
+            dp[(int)OtherValue.Square.DOWN_RIGHT] = new Vector2(pos.X + hsize, pos.Y + hsize);
 
             return dp;
         }
@@ -105,26 +102,26 @@ namespace SliderAction
                 switch (n)
                 {
                     case (int)RotTyep.UP:
-                        ul = new Vector2(dp[(int)Square.UP_LEFT].X, dp[(int)Square.UP_LEFT].Y - RecoSize);
-                        dr = new Vector2(dp[(int)Square.DOWN_RIGHT].X, dp[(int)Square.UP_LEFT].Y);
+                        ul = new Vector2(dp[(int)OtherValue.Square.UP_LEFT].X, dp[(int)OtherValue.Square.UP_LEFT].Y - RecoSize);
+                        dr = new Vector2(dp[(int)OtherValue.Square.DOWN_RIGHT].X, dp[(int)OtherValue.Square.UP_LEFT].Y);
                         sqr = new Vector2[] { ul, dr };
                         recoPos.Add(sqr);
                         break;
                     case (int)RotTyep.RIGHT:
-                        ul = new Vector2(dp[(int)Square.DOWN_RIGHT].X, dp[(int)Square.UP_LEFT].Y);
-                        dr = new Vector2(dp[(int)Square.DOWN_RIGHT].X + RecoSize, dp[(int)Square.DOWN_RIGHT].Y);
+                        ul = new Vector2(dp[(int)OtherValue.Square.DOWN_RIGHT].X, dp[(int)OtherValue.Square.UP_LEFT].Y);
+                        dr = new Vector2(dp[(int)OtherValue.Square.DOWN_RIGHT].X + RecoSize, dp[(int)OtherValue.Square.DOWN_RIGHT].Y);
                         sqr = new Vector2[] { ul, dr };
                         recoPos.Add(sqr);
                         break;
                     case (int)RotTyep.DOWN:
-                        ul = new Vector2(dp[(int)Square.UP_LEFT].X, dp[(int)Square.DOWN_RIGHT].Y);
-                        dr = new Vector2(dp[(int)Square.DOWN_RIGHT].X, dp[(int)Square.DOWN_RIGHT].Y + RecoSize);
+                        ul = new Vector2(dp[(int)OtherValue.Square.UP_LEFT].X, dp[(int)OtherValue.Square.DOWN_RIGHT].Y);
+                        dr = new Vector2(dp[(int)OtherValue.Square.DOWN_RIGHT].X, dp[(int)OtherValue.Square.DOWN_RIGHT].Y + RecoSize);
                         sqr = new Vector2[] { ul, dr };
                         recoPos.Add(sqr);
                         break;
                     case (int)RotTyep.LEFT:
-                        ul = new Vector2(dp[(int)Square.UP_LEFT].X - RecoSize, dp[(int)Square.UP_LEFT].Y);
-                        dr = new Vector2(dp[(int)Square.UP_LEFT].X, dp[(int)Square.DOWN_RIGHT].Y);
+                        ul = new Vector2(dp[(int)OtherValue.Square.UP_LEFT].X - RecoSize, dp[(int)OtherValue.Square.UP_LEFT].Y);
+                        dr = new Vector2(dp[(int)OtherValue.Square.UP_LEFT].X, dp[(int)OtherValue.Square.DOWN_RIGHT].Y);
                         sqr = new Vector2[] { ul, dr };
                         recoPos.Add(sqr);
                         break;

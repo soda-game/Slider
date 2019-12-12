@@ -16,16 +16,16 @@ namespace SliderAction
 
         //クラス
         Camera camera;
-        Title title;
-        Tutorial tutorial;
+        ImageVo imageVo;
+        SoundVo soundVo;
+        TitleManager titleManager;
+        TutorialManager tutorialManager;
         SlideGame slideGame;
-        Result result;
+        ResultManager resultManager;
 
         enum Scene
-        { TITL, TUTO, GAME, RESU }
+        { TITL, TUTO, READY, GAME, GOAL, OUT, RESU }
         Scene scene;
-
-        Song bgm;
 
         public Game1()
         {
@@ -33,7 +33,6 @@ namespace SliderAction
             graphics.PreferredBackBufferWidth = WIN_SIZE;
             graphics.PreferredBackBufferHeight = WIN_SIZE;
             Content.RootDirectory = "Content";
-            Window.Title = "すらいだー ver0.8";
         }
 
         /// <summary>
@@ -45,21 +44,31 @@ namespace SliderAction
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            camera = new Camera();
-            title = new Title();
-            tutorial = new Tutorial();
-            slideGame = new SlideGame();
-            result = new Result();
-            Init();
+            Window.Title = "すらいだー ver0.8";
+
             MediaPlayer.IsRepeating = true;
-            scene = Scene.TITL;
+
             base.Initialize();
         }
-        void Init()
+
+        void TitleInit()
         {
-            camera.Init(WIN_SIZE, WIN_SIZE);
-            slideGame.Init(camera);
+            camera = new Camera(WIN_SIZE, WIN_SIZE);
+            titleManager = new TitleManager(imageVo);
         }
+        void TutoInit()
+        {
+            tutorialManager = new TutorialManager(imageVo);
+        }
+        void SliderInit()
+        {
+            slideGame = new SlideGame(camera, imageVo, soundVo.Reco,WIN_SIZE);
+        }
+        void ResultInit()
+        {
+            resultManager = new ResultManager(imageVo);
+        }
+
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -70,13 +79,12 @@ namespace SliderAction
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            title.Load(Content);
-            tutorial.Load(Content);
-            slideGame.Loads(Content);
-            result.Load(Content);
-            bgm = Content.Load<Song>("BGM");
-            MediaPlayer.Play(bgm);
+            imageVo = new ImageVo(Content);
+            soundVo = new SoundVo(Content);
+            TitleInit();
+            MediaPlayer.Play(soundVo.Bgm);
         }
+
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
@@ -99,25 +107,45 @@ namespace SliderAction
 
             // TODO: Add your update logic here
 
-            if (scene == Scene.TITL)
+            switch (scene)
             {
-                if (title.PushKey()) scene = Scene.TUTO;
-            }
-            if (scene == Scene.TUTO)
-            {
-                if (tutorial.PushKey()) scene = Scene.GAME;
-            }
-            if (scene == Scene.GAME)
-            {
-                int  i =slideGame.Main();
-                if (i == 1) { Init(); }
-                else if (i == 0) {
-                    Init();
-                    scene = Scene.RESU; }
-            }
-            if (scene == Scene.RESU)
-            {
-                if (result.PushKey()) scene = Scene.TITL;
+                case Scene.TITL:
+                    if (titleManager.Main() != (int)OtherValue.MainTyep.NEXT) break;
+                    TutoInit();
+                    scene = Scene.TUTO;
+                    break;
+                case Scene.TUTO:
+                    if (tutorialManager.Main() != (int)OtherValue.MainTyep.NEXT) break;
+                    SliderInit();
+                    scene = Scene.READY;
+                    break;
+                case Scene.READY:
+                    if (!slideGame.ReadyAnime((int)ReadyUI.Type.READY)) break;
+                    if (!slideGame.ReadyAnime((int)ReadyUI.Type.GO)) break;
+                    scene = Scene.GAME;
+                    break;
+                case Scene.GAME:
+                    int mgType = slideGame.Main();
+                    if (mgType == (int)SlideGame.MainGameType.OVER) scene = Scene.OUT;
+                    else if (mgType == (int)SlideGame.MainGameType.CLEAR) scene = Scene.GOAL;
+                    break;
+                case Scene.GOAL:
+                    if (!slideGame.ReadyAnime((int)ReadyUI.Type.GOAL)) break;
+                    scene = Scene.RESU;
+                    ResultInit();
+                    break;
+                case Scene.OUT:
+                    if (!slideGame.ReadyAnime((int)ReadyUI.Type.OUT)) break;
+                    scene = Scene.READY;
+                    SliderInit();
+                    break;
+                case Scene.RESU:
+                    if (resultManager.Main() == (int)OtherValue.MainTyep.NEXT)
+                        TitleInit();
+                    scene = Scene.TITL;
+                    break;
+                default:
+                    break;
             }
 
 
@@ -143,16 +171,22 @@ namespace SliderAction
             switch (scene)
             {
                 case Scene.TITL:
-                    title.Draw(spriteBatch);
+                    titleManager.MainDraw(spriteBatch, camera.localDiff);
                     break;
                 case Scene.TUTO:
-                    tutorial.Draw(spriteBatch);
+                    tutorialManager.MainDraw(spriteBatch, camera.localDiff);
+                    break;
+                case Scene.READY:
+                case Scene.GOAL:
+                case Scene.OUT:
+                    slideGame.MainDraw(spriteBatch, camera.localDiff);
+                    slideGame.ReadyDraw(spriteBatch, camera.localDiff);
                     break;
                 case Scene.GAME:
-                    slideGame.Draw(spriteBatch);
+                    slideGame.MainDraw(spriteBatch, camera.localDiff);
                     break;
                 case Scene.RESU:
-                    result.Draw(spriteBatch);
+                    resultManager.MainDraw(spriteBatch, camera.localDiff);
                     break;
             }
 

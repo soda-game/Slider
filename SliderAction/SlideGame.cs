@@ -7,130 +7,88 @@ using System.Collections.Generic;
 
 namespace SliderAction
 {
-    class SlideGame
+    class SlideGame : IManager
     {
-
         //ステージ1
         int stageNum;
-        public static bool initF;
+        public enum MainGameType
+        { NOW, CLEAR, OVER }
+        Camera camera;
+
         //壁
         List<Wall> walls;
         List<Floor> floors;
         List<FloorFactory.BendSqr> bends;
         //プレイヤー
         Player player;
-        HpBar hpBar = new HpBar();
-        Camera camera;
 
-        SoundEffect se;
-        //あにめ
-        Animetion anime = new Animetion();
+        //UI
+        HpBar hpBar;
+        SoundEffect reco;
+        ReadyUI readyUI;
 
-        public void Init(Camera c)
+        public SlideGame(Camera c, ImageVo ivo, SoundEffect reco,int winSize)
         {
             stageNum = 0;
-            initF = false;
             camera = c;
-            hpBar.Init();
-        }
-        public void Loads(ContentManager c)
-        {
-            WallFactory.Load(c);
-            PlayerFactory.Load(c);
-            FloorFactory.Load(c);
-            hpBar.Load(c);
-            anime.Load(c);
-            se = c.Load<SoundEffect>("recover");
-
-        }
-
-        public void Init()
-        {
-            walls = WallFactory.WallsCreate(stageNum);
-            player = PlayerFactory.PlayerCreate(stageNum);
-            floors = FloorFactory.CriateFloor(stageNum);
+            walls = WallFactory.WallsCreate(stageNum, ivo);
+            floors = FloorFactory.CriateFloor(stageNum, ivo);
+            player = PlayerFactory.PlayerCreate(stageNum, ivo);
             bends = FloorFactory.BendPosAsk(floors);
 
-            foreach (var w in walls) w.Init();
-            player.Init();
+            hpBar = new HpBar(ivo);
+            readyUI = new ReadyUI(ivo,winSize);
+            this.reco = reco;
+
             camera.Move(player.Pos);
-            hpBar.Move(player.Pos);
-            anime.SplitWaitDelay(2000);
-            game = -1;
         }
 
-        int game = -1;
+        public bool ReadyAnime(int typeNum)
+        {
+            if (readyUI.Anime(typeNum)) return true;
+            return false;
+        }
+
         public int Main()
         {
-            if (!initF) { Init(); return -1; }
-
-            if (game == 0)
+            if (player.Pos.Y < 0) return (int)MainGameType.CLEAR;
+            else if (hpBar.DeadCheck())
             {
-                return 0;
+                player.DeadF = true;
+                return (int)MainGameType.OVER;
             }
-            else if (game == 1)
-            {
-                return 1;
-            }
-            if (player.deadF) { return -1; }
 
-            player.Count();
             if (Input.DownKey(Keys.Space))
             {
                 if (player.CountCheck())
                 {
-                    if (!BendHit())
-                    {
-                        Oblique();
-
-                    }
+                    if (!BendHit()) Oblique();
                     player.CountCheckStart();
                 }
             }
-            //else if (Input.DownKey(Keys.J))
-            //{
-            //    //まっすぐに
-            //}
             else
             {
                 WallHit();
             }
-
-            if (player.Pos.Y < 0)
-            {
-                anime.SplitWaitDelay2(Dad, 0, 2000);
-                return -1;
-            }
-            else if (hpBar.DeadCheck())
-            {
-                anime.SplitWaitDelay2(Dad, 1, 2000);
-                player.deadF = true;
-                return -1;
-            }
+            hpBar.HpPlus(-0.45f);
 
             player.Move();
             camera.Move(player.Pos);
-            hpBar.Move(player.Pos);
-            hpBar.HpPlus(-0.45f);
-
-            return -1;
-        }
-
-        public void Dad(int num)
-        {
-            game = num;
+            return (int)MainGameType.NOW;
         }
 
         bool BendHit()//曲がり角だったら曲がる
         {
             int bi = Collition.StayColl(bends, player.ColliPos);
-            if (bi == -1 || bends[bi].end == true) return false;
+            if (bi == -1 || bends[bi].end == true) return false; //2度めは判定しない
+
             player.RotChenge(bends[bi].rot);
             bends[bi] = FloorFactory.BendChenge(bends[bi]);
             hpBar.HpPlus(50f);
-            se.Play();
+            reco.Play();
             return true;
         }
+
         void Oblique()//斜め
         {
             foreach (var w in walls)
@@ -139,27 +97,33 @@ namespace SliderAction
                 if (ri != -1)
                 {
                     hpBar.HpPlus(30f); //回復ゾーンだったら回復
-                    se.Play();
+                    reco.Play();
                     break;
                 }
             }
             player.Checkout();
         }
+
         void WallHit()//壁に当たったら死ぬ
         {
             foreach (var w in walls)
                 if (Collition.StayColl(w.DamagePos, player.ColliPos)) hpBar.HpPlus(-100f);
         }
 
-        public void Draw(SpriteBatch sb)
+        public void MainDraw(SpriteBatch sb, Vector2 localDif)
         {
             foreach (var f in floors) f.Draw(sb);
             foreach (var w in walls) w.Draw(sb);
+            player.Draw(sb);
+
             foreach (var f in bends)
                 sb.Draw(walls[0].recT, new Rectangle((int)f.pos[0].X, (int)f.pos[0].Y, (int)(f.pos[1].X - f.pos[0].X), (int)(f.pos[1].Y - f.pos[0].Y)), Color.White * 0.7f);
-            player.Draw(sb);
-            anime.Draw(sb, player.Pos);
-            hpBar.Draw(sb);
+            hpBar.Draw(sb, localDif);
+        }
+
+        public void ReadyDraw(SpriteBatch sb, Vector2 localDif)
+        {
+            readyUI.Draw(sb, localDif);
         }
     }
 }

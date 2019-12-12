@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Input;
+using System.Diagnostics;
 
 namespace SliderAction
 {
@@ -14,27 +15,27 @@ namespace SliderAction
 
         static public bool DownKey(Keys key)
         {
-            bool down = false;
-
             //そもそもキーが押されていない
             if (!Keyboard.GetState().IsKeyDown(key))
             {
                 statNum = InputStat.NONE;
-                return down;
+                return false;
             }
 
+            bool test = false;
             //キーが押されている
             switch (statNum)
             {
                 case InputStat.NONE:
                     statNum = InputStat.FARST;
-                    down = true;
+                    test = true;
                     break;
                 case InputStat.FARST:
                     statNum = InputStat.CONT;
                     break;
             }
-            return down;
+
+            return test;
 
         }
     }

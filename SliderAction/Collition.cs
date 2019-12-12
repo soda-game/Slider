@@ -12,8 +12,8 @@ namespace SliderAction
 
         static public bool StayColl(Vector2[] wDp, Vector2[] pDp)
         {
-            int ul = (int)WallFactory.Square.UP_LEFT;
-            int dr = (int)WallFactory.Square.DOWN_RIGHT;
+            int ul = (int)OtherValue.Square.UP_LEFT;
+            int dr = (int)OtherValue.Square.DOWN_RIGHT;
 
             if (pDp[dr].X > wDp[ul].X && pDp[ul].X < wDp[dr].X && pDp[dr].Y > wDp[ul].Y && pDp[ul].Y < wDp[dr].Y)
             {

@@ -4,48 +4,43 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace SliderAction
 {
-    class HpBar
+    class HpBar : UIBase
     {
-        Texture2D bar;
         readonly Vector2 size = new Vector2(300, 40);
-        readonly Vector2 posInit = new Vector2(330, 330);
-        Vector2 pos;
-       
 
         const float maxHp = 200f;
-        float nowHp;
         float percent; //hp最大値と画像サイズの割合 サイズや最大値が変わっても対応できる
+        float nowHp;
+        public float NowHp => nowHp;
 
-        public void Init()
+
+
+        public HpBar(ImageVo ivo) : base(ivo)
         {
+            uvo = new UIVO(new Texture2D[] { ivo.HpBar },
+                                new Vector2[] { new Vector2(100, 100) });
             nowHp = maxHp;
             percent = size.X / maxHp;
         }
-        public void Load(ContentManager c)
-        {
-            bar = c.Load<Texture2D>("HpBar");
-        }
 
-        public void Move(Vector2 pMove)
-        {
-            pos = pMove - posInit;
-        }
-        public void HpPlus(float value)
-        {
-            nowHp += value;
-            if (nowHp < maxHp) return;
-            nowHp = maxHp;
-        }
         public bool DeadCheck()
         {
-            if (nowHp <= 0) return true;
+            if (NowHp < 0) return true;
             return false;
         }
 
-        public void Draw(SpriteBatch sb)
+        public void HpPlus(float value)
         {
-            sb.Draw(bar, pos, Color.Red);
-            sb.Draw(bar, pos, new Rectangle((int)pos.X, (int)pos.Y, (int)(nowHp * percent), (int)size.Y), Color.White);
+            nowHp += value;
+            if (NowHp < maxHp) return;
+            nowHp = maxHp; ;
         }
+
+        public override void Draw(SpriteBatch sb, Vector2 localDif)
+        {
+            sb.Draw(uvo.textures[0], uvo.localPos[0] + localDif, Color.Red);
+            sb.Draw(uvo.textures[0], uvo.localPos[0] + localDif, new Rectangle(0, 0, (int)(NowHp * percent), (int)size.Y), Color.White);
+        }
+
     }
 }
