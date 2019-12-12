@@ -17,16 +17,15 @@ namespace SliderAction
         //クラス
         Camera camera;
         ImageVo imageVo;
+        SoundVo soundVo;
         TitleManager titleManager;
         TutorialManager tutorialManager;
         SlideGame slideGame;
         ResultManager resultManager;
 
         enum Scene
-        { TITL, TUTO, GAME, RESU }
+        { TITL, TUTO, READY, GAME, GOAL, OUT, RESU }
         Scene scene;
-
-        //Song bgm;
 
         public Game1()
         {
@@ -56,22 +55,18 @@ namespace SliderAction
         {
             camera = new Camera(WIN_SIZE, WIN_SIZE);
             titleManager = new TitleManager(imageVo);
-            scene = Scene.TITL;
         }
         void TutoInit()
         {
             tutorialManager = new TutorialManager(imageVo);
-            scene = Scene.TUTO;
         }
         void SliderInit()
         {
-            slideGame = new SlideGame(camera, imageVo);
-            scene = Scene.GAME;
+            slideGame = new SlideGame(camera, imageVo, soundVo.Reco,WIN_SIZE);
         }
-        void ResetInit()
+        void ResultInit()
         {
             resultManager = new ResultManager(imageVo);
-            scene = Scene.RESU;
         }
 
         /// <summary>
@@ -85,10 +80,9 @@ namespace SliderAction
 
             // TODO: use this.Content to load your game content here
             imageVo = new ImageVo(Content);
+            soundVo = new SoundVo(Content);
             TitleInit();
-
-            //bgm = Content.Load<Song>("BGM");
-            //MediaPlayer.Play(bgm);
+            MediaPlayer.Play(soundVo.Bgm);
         }
 
 
@@ -116,21 +110,39 @@ namespace SliderAction
             switch (scene)
             {
                 case Scene.TITL:
-                    if (titleManager.Main() == (int)OtherValue.MainTyep.NEXT)
-                        TutoInit();
+                    if (titleManager.Main() != (int)OtherValue.MainTyep.NEXT) break;
+                    TutoInit();
+                    scene = Scene.TUTO;
                     break;
                 case Scene.TUTO:
-                    if (tutorialManager.Main() == (int)OtherValue.MainTyep.NEXT)
-                        SliderInit();
+                    if (tutorialManager.Main() != (int)OtherValue.MainTyep.NEXT) break;
+                    SliderInit();
+                    scene = Scene.READY;
+                    break;
+                case Scene.READY:
+                    if (!slideGame.ReadyAnime((int)ReadyUI.Type.READY)) break;
+                    if (!slideGame.ReadyAnime((int)ReadyUI.Type.GO)) break;
+                    scene = Scene.GAME;
                     break;
                 case Scene.GAME:
                     int mgType = slideGame.Main();
-                    if (mgType == (int)SlideGame.MainGameType.OVER) SliderInit();
-                    else if (mgType == (int)SlideGame.MainGameType.CLEAR) ResetInit();
+                    if (mgType == (int)SlideGame.MainGameType.OVER) scene = Scene.OUT;
+                    else if (mgType == (int)SlideGame.MainGameType.CLEAR) scene = Scene.GOAL;
+                    break;
+                case Scene.GOAL:
+                    if (!slideGame.ReadyAnime((int)ReadyUI.Type.GOAL)) break;
+                    scene = Scene.RESU;
+                    ResultInit();
+                    break;
+                case Scene.OUT:
+                    if (!slideGame.ReadyAnime((int)ReadyUI.Type.OUT)) break;
+                    scene = Scene.READY;
+                    SliderInit();
                     break;
                 case Scene.RESU:
                     if (resultManager.Main() == (int)OtherValue.MainTyep.NEXT)
                         TitleInit();
+                    scene = Scene.TITL;
                     break;
                 default:
                     break;
@@ -159,16 +171,22 @@ namespace SliderAction
             switch (scene)
             {
                 case Scene.TITL:
-                    titleManager.Draw(spriteBatch, camera.localDiff);
+                    titleManager.MainDraw(spriteBatch, camera.localDiff);
                     break;
                 case Scene.TUTO:
-                    tutorialManager.Draw(spriteBatch, camera.localDiff);
+                    tutorialManager.MainDraw(spriteBatch, camera.localDiff);
+                    break;
+                case Scene.READY:
+                case Scene.GOAL:
+                case Scene.OUT:
+                    slideGame.MainDraw(spriteBatch, camera.localDiff);
+                    slideGame.ReadyDraw(spriteBatch, camera.localDiff);
                     break;
                 case Scene.GAME:
-                    slideGame.Draw(spriteBatch, camera.localDiff);
+                    slideGame.MainDraw(spriteBatch, camera.localDiff);
                     break;
                 case Scene.RESU:
-                    resultManager.Draw(spriteBatch, camera.localDiff);
+                    resultManager.MainDraw(spriteBatch, camera.localDiff);
                     break;
             }
 

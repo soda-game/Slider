@@ -25,7 +25,7 @@ namespace SliderAction
             return (int)OtherValue.MainTyep.NONE;
         }
 
-        public void Draw(SpriteBatch sb, Vector2 localDif)
+        public void MainDraw(SpriteBatch sb, Vector2 localDif)
         {
             resultUI.Draw(sb, localDif);
         }

@@ -13,6 +13,6 @@ namespace SliderAction
     interface IManager
     {
         int Main();
-        void Draw(SpriteBatch sb, Vector2 localDif);
+        void MainDraw(SpriteBatch sb, Vector2 localDif);
     }
 }

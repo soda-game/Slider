@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace SliderAction
 {
-    struct ImageVo 
+    struct ImageVo
     {
         public Texture2D Title { get; }
         public Texture2D HpBar { get; }
@@ -21,6 +21,10 @@ namespace SliderAction
         public Texture2D CroosWall { get; }
         public Texture2D Reco { get; }
         public Texture2D Floor { get; }
+        public Texture2D Goal { get; }
+        public Texture2D Out { get; }
+        public Texture2D Ready { get; }
+        public Texture2D Go { get; }
 
         public ImageVo(ContentManager c)//***一枚にする
         {
@@ -32,17 +36,22 @@ namespace SliderAction
             CroosWall = c.Load<Texture2D>("crossWall");
             Reco = c.Load<Texture2D>("Reco");
             Floor = c.Load<Texture2D>("Floor");
+            Goal = c.Load<Texture2D>("goal");
+            Out = c.Load<Texture2D>("out");
+            Ready = c.Load<Texture2D>("ready");
+           Go = c.Load<Texture2D>("go");
         }
     }
 
-    struct MusicVo
+    struct SoundVo
     {
         public Song Bgm { get; }
         public SoundEffect Reco { get; }
 
-        public MusicVo(ContentManager c)
+        public SoundVo(ContentManager c)
         {
-            bgm
+            Bgm = c.Load<Song>("BGM");
+            Reco = c.Load<SoundEffect>("recover");
         }
     }
 }

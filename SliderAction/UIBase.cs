@@ -14,9 +14,9 @@ namespace SliderAction
     {
         public Texture2D[] textures { get; }
         public Vector2[] localPos { get; }
-        public bool[] drawF { get; }
+        public bool[] drawF;
 
-        public UIVO(Texture2D[] texture, Vector2[] localPos)
+        public UIVO(Texture2D[] texture, Vector2[] localPos/*,bool drawsInit*/)
         {
             this.textures = texture;
             this.localPos = localPos;

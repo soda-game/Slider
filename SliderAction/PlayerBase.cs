@@ -102,7 +102,7 @@ namespace SliderAction
 
         public void Draw(SpriteBatch sb)
         {
-            sb.Draw(pvo.Sprs[pvo.CharaNum], pvo.Pos, null, Color.White, pvo.Rots[pvo.RotNum], new Vector2(pvo.Size.X / OtherValue.HALF, pvo.Size.Y / OtherValue.HALF), Vector2.One, SpriteEffects.None, 0);
+            sb.Draw(pvo.Sprs[pvo.CharaNum], pvo.Pos, null, Color.White, pvo.Rots[pvo.RotNum], pvo.Size / OtherValue.HALF, Vector2.One, SpriteEffects.None, 0);
         }
     }
 

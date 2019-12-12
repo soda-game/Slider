@@ -24,12 +24,10 @@ namespace SliderAction
 
         //UI
         HpBar hpBar;
+        SoundEffect reco;
+        ReadyUI readyUI;
 
-        //SoundEffect se;
-        //あにめ
-        //Animetion anime = new Animetion();
-
-        public SlideGame(Camera c, ImageVo ivo)
+        public SlideGame(Camera c, ImageVo ivo, SoundEffect reco,int winSize)
         {
             stageNum = 0;
             camera = c;
@@ -39,16 +37,23 @@ namespace SliderAction
             bends = FloorFactory.BendPosAsk(floors);
 
             hpBar = new HpBar(ivo);
+            readyUI = new ReadyUI(ivo,winSize);
+            this.reco = reco;
+
+            camera.Move(player.Pos);
         }
-        //anime.Load(c);
-        //se = c.Load<SoundEffect>("recover");
+
+        public bool ReadyAnime(int typeNum)
+        {
+            if (readyUI.Anime(typeNum)) return true;
+            return false;
+        }
 
         public int Main()
         {
             if (player.Pos.Y < 0) return (int)MainGameType.CLEAR;
             else if (hpBar.DeadCheck())
             {
-                //anime.SplitWaitDelay2(Dad, 1, 2000);
                 player.DeadF = true;
                 return (int)MainGameType.OVER;
             }
@@ -80,7 +85,7 @@ namespace SliderAction
             player.RotChenge(bends[bi].rot);
             bends[bi] = FloorFactory.BendChenge(bends[bi]);
             hpBar.HpPlus(50f);
-            //se.Play();
+            reco.Play();
             return true;
         }
 
@@ -92,7 +97,7 @@ namespace SliderAction
                 if (ri != -1)
                 {
                     hpBar.HpPlus(30f); //回復ゾーンだったら回復
-                    //se.Play();
+                    reco.Play();
                     break;
                 }
             }
@@ -105,7 +110,7 @@ namespace SliderAction
                 if (Collition.StayColl(w.DamagePos, player.ColliPos)) hpBar.HpPlus(-100f);
         }
 
-        public void Draw(SpriteBatch sb, Vector2 localDif)
+        public void MainDraw(SpriteBatch sb, Vector2 localDif)
         {
             foreach (var f in floors) f.Draw(sb);
             foreach (var w in walls) w.Draw(sb);
@@ -113,10 +118,12 @@ namespace SliderAction
 
             foreach (var f in bends)
                 sb.Draw(walls[0].recT, new Rectangle((int)f.pos[0].X, (int)f.pos[0].Y, (int)(f.pos[1].X - f.pos[0].X), (int)(f.pos[1].Y - f.pos[0].Y)), Color.White * 0.7f);
-            //anime.Draw(sb, player.Pos);
             hpBar.Draw(sb, localDif);
         }
 
-
+        public void ReadyDraw(SpriteBatch sb, Vector2 localDif)
+        {
+            readyUI.Draw(sb, localDif);
+        }
     }
 }
