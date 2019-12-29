@@ -60,6 +60,15 @@ namespace SliderAction
             camera.Init(WIN_SIZE, WIN_SIZE);
             slideGame.Init(camera);
         }
+        void SliderInit()
+        {
+            slideGame = new SlideGame(camera, imageVo, soundVo.Reco, WIN_SIZE);
+        }
+        void ResultInit()
+        {
+            resultManager = new ResultManager(imageVo);
+        }
+
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -101,23 +110,44 @@ namespace SliderAction
 
             if (scene == Scene.TITL)
             {
-                if (title.PushKey()) scene = Scene.TUTO;
-            }
-            if (scene == Scene.TUTO)
-            {
-                if (tutorial.PushKey()) scene = Scene.GAME;
-            }
-            if (scene == Scene.GAME)
-            {
-                int  i =slideGame.Main();
-                if (i == 1) { Init(); }
-                else if (i == 0) {
-                    Init();
-                    scene = Scene.RESU; }
-            }
-            if (scene == Scene.RESU)
-            {
-                if (result.PushKey()) scene = Scene.TITL;
+                case Scene.TITL:
+                    if (titleManager.Main() != (int)OtherValue.MainTyep.NEXT) break;
+                    TutoInit();
+                    scene = Scene.TUTO;
+                    break;
+                case Scene.TUTO:
+                    if (tutorialManager.Main() != (int)OtherValue.MainTyep.NEXT) break;
+                        SliderInit();
+                        scene = Scene.READY;
+                    break;
+                case Scene.READY:
+                    if (!slideGame.ReadyAnime((int)ReadyUI.Type.READY)) break;
+                    if (!slideGame.ReadyAnime((int)ReadyUI.Type.GO)) break;
+                    scene = Scene.GAME;
+                    break;
+                case Scene.GAME:
+                    int mgType = slideGame.Main();
+                    if (mgType == (int)SlideGame.MainGameType.OVER) scene = Scene.OUT;
+                    else if (mgType == (int)SlideGame.MainGameType.CLEAR) scene = Scene.GOAL;
+                    break;
+                case Scene.GOAL:
+                    if (!slideGame.ReadyAnime((int)ReadyUI.Type.GOAL)) break;
+                        scene = Scene.RESU;
+                        ResultInit();
+                    break;
+                case Scene.OUT:
+                    if (!slideGame.ReadyAnime((int)ReadyUI.Type.OUT)) break;
+                        scene = Scene.READY;
+                        SliderInit();
+                    break;
+                case Scene.RESU:
+                    if (resultManager.Main() != (int)OtherValue.MainTyep.NEXT) break;
+                        TitleInit();
+                        scene = Scene.TITL;
+                    break;
+                default:
+                    break;
+>>>>>>> Stashed changes
             }
 
 
